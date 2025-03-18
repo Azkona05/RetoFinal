@@ -23,6 +23,6 @@ public class Usuario {
 
 	@Override
 	public String toString() {
-		return "Erabiltzailea [nombre=" + nom + ", password=" + contrasenia + "]";
+		return "USUARIO: Nombre=" + nom + ", Password=" + contrasenia;
 	}
 }
