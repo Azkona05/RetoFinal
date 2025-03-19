@@ -1,7 +1,6 @@
 package controlador;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,7 +14,6 @@ import modelo.Competicion;
 import modelo.Equipo;
 import modelo.Jugador;
 import modelo.Partido;
-import modelo.Posicion;
 import modelo.Usuario;
 
 public class DaoImplementacion implements Interfaz_Dao {
@@ -121,6 +119,7 @@ public class DaoImplementacion implements Interfaz_Dao {
 			stmt.setString(3, jug.getApellido());
 			stmt.setInt(4, jug.getDorsal());
 			stmt.setString(5, jug.getPosicion().name());
+			stmt.setString(6, jug.getCod_equi());
 			stmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();

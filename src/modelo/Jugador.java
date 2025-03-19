@@ -7,7 +7,7 @@ public class Jugador {
 	private String apellido;
 	private int dorsal;
 	private Posicion posicion;
-	private int cod_equi;
+	private String cod_equi;
 
 	public String getDni() {
 		return dni;
@@ -45,11 +45,11 @@ public class Jugador {
 		return posicion;
 	}
 
-	public int getCod_equi() {
+	public String getCod_equi() {
 		return cod_equi;
 	}
 
-	public void setCod_equi(int cod_equi) {
+	public void setCod_equi(String cod_equi) {
 		this.cod_equi = cod_equi;
 	}
 
