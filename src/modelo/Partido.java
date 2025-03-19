@@ -9,6 +9,7 @@ public class Partido {
 	private String equipo_visitante;
 	private String ganador;
 	private LocalDate fecha;
+	private String cod_comp;
 	
 	
 	public String getCod_part() {
@@ -41,12 +42,17 @@ public class Partido {
 	public void setFecha(LocalDate fecha) {
 		this.fecha = fecha;
 	}
+	public String getCod_comp() {
+		return cod_comp;
+	}
+	public void setCod_comp(String cod_comp) {
+		this.cod_comp = cod_comp;
+	}
 	@Override
 	public String toString() {
 		return "Partido [cod_part=" + cod_part + ", equipo_local=" + equipo_local + ", equipo_visitante="
 				+ equipo_visitante + ", ganador=" + ganador + ", fecha=" + fecha + "]";
 	}
-	
 	
 	
 }

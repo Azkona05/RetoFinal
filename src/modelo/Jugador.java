@@ -7,6 +7,7 @@ public class Jugador {
 	private String apellido;
 	private int dorsal;
 	private Posicion posicion;
+	private int cod_equi;
 
 	public String getDni() {
 		return dni;
@@ -40,8 +41,16 @@ public class Jugador {
 		this.dorsal = dorsal;
 	}
 
-	public Enum getPosicion() {
+	public Posicion getPosicion() {
 		return posicion;
+	}
+
+	public int getCod_equi() {
+		return cod_equi;
+	}
+
+	public void setCod_equi(int cod_equi) {
+		this.cod_equi = cod_equi;
 	}
 
 	@Override
@@ -49,5 +58,4 @@ public class Jugador {
 		return "Jugador [dni=" + dni + ", nombre=" + nombre + ", apellido=" + apellido + ", dorsal=" + dorsal
 				+ ", posicion=" + posicion + "]";
 	}
-
 }
