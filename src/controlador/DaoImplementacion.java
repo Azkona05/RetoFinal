@@ -370,7 +370,7 @@ public class DaoImplementacion implements InterfazDao {
 	@Override
 	public Map<String, Equipo> listarEquipos() {
 		Equipo equi;
-		Map<String, Equipo> jugadores = new TreeMap<>();
+		Map<String, Equipo> equipos = new TreeMap<>();
 		ResultSet rs = null;
 		openConnection();
 		try {
@@ -381,7 +381,7 @@ public class DaoImplementacion implements InterfazDao {
 				equi = new Equipo();
 				equi.setCod_equi(rs.getString("Cod_equi"));;
 				equi.setNombre_equipo(rs.getString("Nombre_equipo"));
-				jugadores.put(equi.getCod_equi(), equi);
+				equipos.put(equi.getCod_equi(), equi);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -400,7 +400,7 @@ public class DaoImplementacion implements InterfazDao {
 				System.out.println("Error en cierre del ResultSet");
 			}
 		}
-		return null;
+		return equipos;
 	}
 
 	@Override
