@@ -2,20 +2,20 @@ package modelo;
 
 import java.time.LocalDate;
 
-public class Partido {
+public class ClasePartido {
 
-	private String cod_part;
+	private int cod_part;
 	private String equipo_local;
 	private String equipo_visitante;
-	private String ganador;
+	private EnumGanador ganador;
 	private LocalDate fecha;
 	private String cod_comp;
 	
 	
-	public String getCod_part() {
+	public int getCod_part() {
 		return cod_part;
 	}
-	public void setCod_part(String cod_part) {
+	public void setCod_part(int cod_part) {
 		this.cod_part = cod_part;
 	}
 	public String getEquipo_local() {
@@ -30,12 +30,10 @@ public class Partido {
 	public void setEquipo_visitante(String equipo_visitante) {
 		this.equipo_visitante = equipo_visitante;
 	}
-	public String getGanador() {
+	public EnumGanador getGanador() {
 		return ganador;
 	}
-	public void setGanador(String ganador) {
-		this.ganador = ganador;
-	}
+	
 	public LocalDate getFecha() {
 		return fecha;
 	}

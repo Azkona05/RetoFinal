@@ -1,6 +1,6 @@
 package controlador;
 
-public class Principal {
+public class ClasePrincipal {
 
 	public static void main(String[] args) {
 		

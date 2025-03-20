@@ -1,6 +1,6 @@
 package modelo;
 
-public enum Posicion {
+public enum EnumPosicion {
 
 	QUARTERBACK,TACKLE, RUNNING, GUARD;
 }

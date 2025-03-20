@@ -1,12 +1,12 @@
 package modelo;
 
-public class Jugador {
+public class ClaseJugador {
 
 	private String dni;
 	private String nombre;
 	private String apellido;
 	private int dorsal;
-	private Posicion posicion;
+	private EnumPosicion posicion;
 	private String cod_equi;
 
 	public String getDni() {
@@ -41,7 +41,7 @@ public class Jugador {
 		this.dorsal = dorsal;
 	}
 
-	public Posicion getPosicion() {
+	public EnumPosicion getPosicion() {
 		return posicion;
 	}
 
