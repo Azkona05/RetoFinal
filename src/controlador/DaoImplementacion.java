@@ -12,12 +12,12 @@ import java.util.ResourceBundle;
 import java.util.TreeMap;
 
 import excepciones.LoginException;
-import modelo.ClaseCompeticion;
-import modelo.ClaseEquipo;
-import modelo.ClaseJugador;
-import modelo.ClasePartido;
-import modelo.ClaseUsuario;
+import modelo.Competicion;
 import modelo.EnumGanador;
+import modelo.Equipo;
+import modelo.Jugador;
+import modelo.Partido;
+import modelo.Usuario;
 
 public class DaoImplementacion implements InterfazDao {
 	// Atributos
@@ -337,7 +337,7 @@ public class DaoImplementacion implements InterfazDao {
 	}
 
 	@Override
-	public void altaPartido(ClasePartido part) {
+	public void altaPartido(Partido part) {
 		openConnection();
 		try {
 			stmt = con.prepareStatement(ALTA_PARTIDO);
@@ -359,7 +359,7 @@ public class DaoImplementacion implements InterfazDao {
 	}
 
 	@Override
-	public void bajaPartido(ClasePartido part) {
+	public void bajaPartido(Partido part) {
 		openConnection();
 		try {
 			stmt = con.prepareStatement(BAJA_PARTIDO);
@@ -378,7 +378,7 @@ public class DaoImplementacion implements InterfazDao {
 	}
 
 	@Override
-	public void modificarPartido(ClasePartido part) {
+	public void modificarPartido(Partido part) {
 		openConnection();
 		try {
 			stmt = con.prepareStatement(MODIFICAR_PARTIDO);
@@ -401,16 +401,16 @@ public class DaoImplementacion implements InterfazDao {
 	}
 
 	@Override
-	public Map<Integer, ClasePartido> listarPartidos() {
+	public Map<Integer, Partido> listarPartidos() {
 		ResultSet rs = null;
-		Map<Integer, ClasePartido> partidos = new HashMap<Integer, ClasePartido>();
+		Map<Integer, Partido> partidos = new HashMap<Integer, Partido>();
 		openConnection();
 		try {
 			stmt = con.prepareStatement(BUSCAR_PARTIDO);
 			rs = stmt.executeQuery();
 
 			while (rs.next()) {
-				ClasePartido part = new ClasePartido();
+				Partido part = new Partido();
 				part.setCod_part(rs.getInt(1));
 				part.setEquipo_local(rs.getString(2));
 				part.setEquipo_visitante(rs.getString(3));
