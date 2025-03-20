@@ -3,34 +3,34 @@ package controlador;
 import java.util.Map;
 
 import excepciones.LoginException;
-import modelo.ClaseCompeticion;
-import modelo.ClaseEquipo;
-import modelo.ClaseJugador;
-import modelo.ClasePartido;
-import modelo.ClaseUsuario;
+import modelo.Competicion;
+import modelo.Equipo;
+import modelo.Jugador;
+import modelo.Partido;
+import modelo.Usuario;
 
 public interface InterfazDao {
 	//LOGIN
-	public void login(ClaseUsuario usuario) throws LoginException;
+	public void login(Usuario usuario) throws LoginException;
 	//JUGADOR
-	public void altaJugador(ClaseJugador jug);
-	public void bajaJugador(ClaseJugador jug);
-	public void modificarJugador(ClaseJugador jug);
-	public Map<String, ClaseJugador> listarJugadores();
+	public void altaJugador(Jugador jug);
+	public void bajaJugador(Jugador jug);
+	public void modificarJugador(Jugador jug);
+	public Map<String, Jugador> listarJugadores();
 	//COMPETICION
-	public void altaCompeticion(ClaseCompeticion comp);
-	public void bajaCompeticion (ClaseCompeticion comp);
-	public void modificarCompeticion (ClaseCompeticion comp);
-	public Map<String, ClaseCompeticion> listarCompeticiones();
+	public void altaCompeticion(Competicion comp);
+	public void bajaCompeticion (Competicion comp);
+	public void modificarCompeticion (Competicion comp);
+	public Map<String, Competicion> listarCompeticiones();
 	//EQUIPO
-	public void altaEquipo (ClaseEquipo eq);
-	public void bajaEquipo (ClaseEquipo eq);
-	public void modificarEquipo (ClaseEquipo eq);
-	public Map<String, ClaseEquipo> listarEquipos();
+	public void altaEquipo (Equipo eq);
+	public void bajaEquipo (Equipo eq);
+	public void modificarEquipo (Equipo eq);
+	public Map<String, Equipo> listarEquipos();
 	//PARTIDO
-	public void altaPartido (ClasePartido part);
-	public void bajaPartido (ClasePartido part);
-	public void modificarPartido (ClasePartido part);
-	public Map<Integer, ClasePartido> listarPartidos();
+	public void altaPartido (Partido part);
+	public void bajaPartido (Partido part);
+	public void modificarPartido (Partido part);
+	public Map<Integer, Partido> listarPartidos();
 	
 }

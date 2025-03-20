@@ -10,13 +10,13 @@ import java.util.ResourceBundle;
 import java.util.TreeMap;
 
 import excepciones.LoginException;
-import modelo.ClaseCompeticion;
-import modelo.ClaseEquipo;
-import modelo.ClaseJugador;
-import modelo.ClasePartido;
-import modelo.ClaseUsuario;
+import modelo.Competicion;
+import modelo.Equipo;
+import modelo.Jugador;
+import modelo.Partido;
+import modelo.Usuario;
 
-public class ClaseDaoImplementacion implements InterfazDao {
+public class DaoImplementacion implements InterfazDao {
 	// Atributos
 
 	private ResourceBundle configFile;
@@ -50,7 +50,7 @@ public class ClaseDaoImplementacion implements InterfazDao {
 	final String MODIFICAR_PARTIDO = "UPDATE PAARTIDO SET equipo_local = ?, equipo_visitante = ?, ganador = ?, fecha = ?, cod_comp = ? WHERE cod_part = ?";
 	final String BUSCAR_PARTIDO = "SELECT * FROM PARTIDO";
 
-	public ClaseDaoImplementacion() {
+	public DaoImplementacion() {
 		this.configFile = ResourceBundle.getBundle("modelo.configClass");
 		this.urlDB = this.configFile.getString("Conn");
 		this.userDB = this.configFile.getString("DBUser");
@@ -80,7 +80,7 @@ public class ClaseDaoImplementacion implements InterfazDao {
 	}
 
 	@Override
-	public void login(ClaseUsuario usuario) throws LoginException {
+	public void login(Usuario usuario) throws LoginException {
 		ResultSet rs = null;
 		openConnection();
 		try {
@@ -108,7 +108,7 @@ public class ClaseDaoImplementacion implements InterfazDao {
 	}
 
 	@Override
-	public void altaJugador(ClaseJugador jug) {
+	public void altaJugador(Jugador jug) {
 		openConnection();
 		try {
 			stmt = con.prepareStatement(ALTA_JUGADOR);
@@ -132,7 +132,7 @@ public class ClaseDaoImplementacion implements InterfazDao {
 	}
 
 	@Override
-	public void bajaJugador(ClaseJugador jug) {
+	public void bajaJugador(Jugador jug) {
 
 		openConnection();
 		try {
@@ -152,7 +152,7 @@ public class ClaseDaoImplementacion implements InterfazDao {
 	}
 
 	@Override
-	public void modificarJugador(ClaseJugador jug) {
+	public void modificarJugador(Jugador jug) {
 		openConnection();
 		try {
 			stmt = con.prepareStatement(MODIFICAR_JUGADOR);
@@ -176,9 +176,9 @@ public class ClaseDaoImplementacion implements InterfazDao {
 	}
 
 	@Override
-	public Map<String, ClaseJugador> listarJugadores() {
-		ClaseJugador jug;
-		Map<String, ClaseJugador> jugadores = new TreeMap<>();
+	public Map<String, Jugador> listarJugadores() {
+		Jugador jug;
+		Map<String, Jugador> jugadores = new TreeMap<>();
 		ResultSet rs = null;
 		openConnection();
 		try {
@@ -186,7 +186,7 @@ public class ClaseDaoImplementacion implements InterfazDao {
 			rs = stmt.executeQuery();
 			// Leemos de uno en uno los propietarios devueltos en el ResultSet
 			while (rs.next()) {
-				jug = new ClaseJugador();
+				jug = new Jugador();
 				jug.setDni(rs.getString("dni"));;
 				jug.setNombre(rs.getString("nombre"));
 				jug.setApellido(rs.getString("apellido"));
@@ -215,7 +215,7 @@ public class ClaseDaoImplementacion implements InterfazDao {
 	}
 
 	@Override
-	public void altaCompeticion(ClaseCompeticion comp) {
+	public void altaCompeticion(Competicion comp) {
 		openConnection();
 		try {
 			stmt = con.prepareStatement(ALTA_COMPETICION);
@@ -236,7 +236,7 @@ public class ClaseDaoImplementacion implements InterfazDao {
 	}
 
 	@Override
-	public void bajaCompeticion(ClaseCompeticion comp) {
+	public void bajaCompeticion(Competicion comp) {
 		openConnection();
 		try {
 			stmt = con.prepareStatement(BAJA_COMPETICION);
@@ -255,7 +255,7 @@ public class ClaseDaoImplementacion implements InterfazDao {
 	}
 
 	@Override
-	public void modificarCompeticion(ClaseCompeticion comp) {
+	public void modificarCompeticion(Competicion comp) {
 		openConnection();
 		try {
 			stmt = con.prepareStatement(MODIFICAR_COMPETICION);
@@ -275,9 +275,9 @@ public class ClaseDaoImplementacion implements InterfazDao {
 	}
 
 	@Override
-	public Map<String, ClaseCompeticion> listarCompeticiones() {
-		ClaseCompeticion comp;
-		Map<String, ClaseCompeticion> competiciones = new TreeMap<>();
+	public Map<String, Competicion> listarCompeticiones() {
+		Competicion comp;
+		Map<String, Competicion> competiciones = new TreeMap<>();
 		ResultSet rs = null;
 		openConnection();
 		try {
@@ -285,7 +285,7 @@ public class ClaseDaoImplementacion implements InterfazDao {
 			rs = stmt.executeQuery();
 			// Leemos de uno en uno los propietarios devueltos en el ResultSet
 			while (rs.next()) {
-				comp = new ClaseCompeticion();
+				comp = new Competicion();
 				comp.setNombre_competicion(rs.getString("nombre_competicion"));;
 				competiciones.put(comp.getCod_comp(), comp);
 			}
@@ -310,49 +310,49 @@ public class ClaseDaoImplementacion implements InterfazDao {
 	}
 
 	@Override
-	public void altaEquipo(ClaseEquipo eq) {
+	public void altaEquipo(Equipo eq) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void bajaEquipo(ClaseEquipo eq) {
+	public void bajaEquipo(Equipo eq) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void modificarEquipo(ClaseEquipo eq) {
+	public void modificarEquipo(Equipo eq) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public Map<String, ClaseEquipo> listarEquipos() {
+	public Map<String, Equipo> listarEquipos() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public void altaPartido(ClasePartido part) {
+	public void altaPartido(Partido part) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void bajaPartido(ClasePartido part) {
+	public void bajaPartido(Partido part) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void modificarPartido(ClasePartido part) {
+	public void modificarPartido(Partido part) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public Map<Integer, ClasePartido> listarPartidos() {
+	public Map<Integer, Partido> listarPartidos() {
 		// TODO Auto-generated method stub
 		return null;
 	}

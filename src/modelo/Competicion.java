@@ -1,15 +1,15 @@
 package modelo;
 
-public class ClaseCompeticion {
+public class Competicion {
 
 	private String cod_comp;
 	private String nombre_competicion;
 	
-	public ClaseCompeticion() {
+	public Competicion() {
 		
 	}
 
-	public ClaseCompeticion(String cod_comp, String nombre_competicion) {
+	public Competicion(String cod_comp, String nombre_competicion) {
 		super();
 		this.cod_comp = cod_comp;
 		this.nombre_competicion = nombre_competicion;

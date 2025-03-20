@@ -6,13 +6,13 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import modelo.ClaseCompeticion;
+import modelo.Competicion;
 
 class TestCompeticion {
-	ClaseCompeticion comp;
+	Competicion comp;
 	@BeforeEach
 	void setUp() throws Exception {
-		comp = new ClaseCompeticion ("AME", "AMERICANA");
+		comp = new Competicion ("AME", "AMERICANA");
 	}
 	
 	@Test
