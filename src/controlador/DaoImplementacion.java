@@ -311,25 +311,95 @@ public class DaoImplementacion implements InterfazDao {
 
 	@Override
 	public void altaEquipo(Equipo eq) {
-		// TODO Auto-generated method stub
-
+		openConnection();
+		try {
+			stmt = con.prepareStatement(ALTA_EQUIPO);
+			stmt.setString(1, eq.getNombre_equipo());
+			stmt.setString(2, eq.getCod_equi());
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				closeConnection();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	@Override
 	public void bajaEquipo(Equipo eq) {
-		// TODO Auto-generated method stub
+		openConnection();
+		try {
+			stmt = con.prepareStatement(BAJA_EQUIPO);
+			stmt.setString(1, eq.getCod_equi());
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				closeConnection();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
 
 	}
 
 	@Override
 	public void modificarEquipo(Equipo eq) {
-		// TODO Auto-generated method stub
+		openConnection();
+		try {
+			stmt = con.prepareStatement(MODIFICAR_EQUIPO);
+			stmt.setString(1, eq.getCod_equi());
+			stmt.setString(2, eq.getNombre_equipo());
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				closeConnection();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
 
 	}
 
 	@Override
 	public Map<String, Equipo> listarEquipos() {
-		// TODO Auto-generated method stub
+		Equipo equi;
+		Map<String, Equipo> jugadores = new TreeMap<>();
+		ResultSet rs = null;
+		openConnection();
+		try {
+			stmt = con.prepareStatement(BUSCAR_JUGADOR);
+			rs = stmt.executeQuery();
+			// Leemos de uno en uno los propietarios devueltos en el ResultSet
+			while (rs.next()) {
+				equi = new Equipo();
+				equi.setCod_equi(rs.getString("Cod_equi"));;
+				equi.setNombre_equipo(rs.getString("Nombre_equipo"));
+				jugadores.put(equi.getCod_equi(), equi);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				closeConnection();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		if (rs != null) {
+			try {
+				rs.close();
+			} catch (SQLException ex) {
+				System.out.println("Error en cierre del ResultSet");
+			}
+		}
 		return null;
 	}
 
