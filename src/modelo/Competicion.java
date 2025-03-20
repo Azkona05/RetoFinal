@@ -4,6 +4,16 @@ public class Competicion {
 
 	private String cod_comp;
 	private String nombre_competicion;
+	
+	public Competicion() {
+		
+	}
+
+	public Competicion(String cod_comp, String nombre_competicion) {
+		super();
+		this.cod_comp = cod_comp;
+		this.nombre_competicion = nombre_competicion;
+	}
 
 	public String getCod_comp() {
 		return cod_comp;

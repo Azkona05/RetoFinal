@@ -37,7 +37,7 @@ public class DaoImplementacion implements Interfaz_Dao {
 	// SQL Competicion
 	final String ALTA_COMPETICION = "INSERT INTO COMPETICICION (cod_comp, nombre_competicion) VALUES (?, ?)";
 	final String BAJA_COMPETICION = "DELETE FROM COMPETICION WHERE cod_comp = ?";
-	final String MODIFICAR_COMUPTICION = "UPDATE COMPETICION SET nombre_competicion = ? WHERE cod_comp = ?";
+	final String MODIFICAR_COMPETICION = "UPDATE COMPETICION SET nombre_competicion = ? WHERE cod_comp = ?";
 	final String BUSCAR_COMPETICION = "SELECT * FROM COMPETICION";
 	// SQL Equipo
 	final String ALTA_EQUIPO = "INSERT INTO EQUIPO (cod_equi, nombre_equipo) VALUES (?, ?)";
@@ -78,8 +78,6 @@ public class DaoImplementacion implements Interfaz_Dao {
 		if (con != null)
 			con.close();
 	}
-
-	// Tenemos que definie el ResusultSet para recoger el resultado de la consulta
 
 	@Override
 	public void login(Usuario usuario) throws LoginException {
@@ -217,26 +215,97 @@ public class DaoImplementacion implements Interfaz_Dao {
 
 	@Override
 	public void altaCompeticion(Competicion comp) {
-		// TODO Auto-generated method stub
+		openConnection();
+		try {
+			stmt = con.prepareStatement(ALTA_COMPETICION);
+			stmt.setString(1, comp.getCod_comp());
+			stmt.setString(2, comp.getNombre_competicion());
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				closeConnection();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
 
 	}
 
 	@Override
 	public void bajaCompeticion(Competicion comp) {
-		// TODO Auto-generated method stub
+		openConnection();
+		try {
+			stmt = con.prepareStatement(BAJA_COMPETICION);
+			stmt.setString(1, comp.getCod_comp());
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				closeConnection();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
 
 	}
 
 	@Override
 	public void modificarCompeticion(Competicion comp) {
-		// TODO Auto-generated method stub
+		openConnection();
+		try {
+			stmt = con.prepareStatement(MODIFICAR_COMPETICION);
+			stmt.setString(1, comp.getNombre_competicion());
+			stmt.setString(2, comp.getCod_comp());
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				closeConnection();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
 
 	}
 
 	@Override
 	public Map<String, Competicion> listarCompeticiones() {
-		// TODO Auto-generated method stub
-		return null;
+		Competicion comp;
+		Map<String, Competicion> competiciones = new TreeMap<>();
+		ResultSet rs = null;
+		openConnection();
+		try {
+			stmt = con.prepareStatement(BUSCAR_JUGADOR);
+			rs = stmt.executeQuery();
+			// Leemos de uno en uno los propietarios devueltos en el ResultSet
+			while (rs.next()) {
+				comp = new Competicion();
+				comp.setNombre_competicion(rs.getString("nombre_competicion"));;
+				competiciones.put(comp.getCod_comp(), comp);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				closeConnection();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		if (rs != null) {
+			try {
+				rs.close();
+			} catch (SQLException ex) {
+				System.out.println("Error en cierre del ResultSet");
+			}
+		}
+		return competiciones;
 	}
 
 	@Override
