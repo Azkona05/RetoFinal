@@ -1,10 +1,12 @@
 package controlador;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.TreeMap;
@@ -15,6 +17,7 @@ import modelo.ClaseEquipo;
 import modelo.ClaseJugador;
 import modelo.ClasePartido;
 import modelo.ClaseUsuario;
+import modelo.EnumGanador;
 
 public class ClaseDaoImplementacion implements InterfazDao {
 	// Atributos
@@ -335,25 +338,98 @@ public class ClaseDaoImplementacion implements InterfazDao {
 
 	@Override
 	public void altaPartido(ClasePartido part) {
-		// TODO Auto-generated method stub
-
+		openConnection();
+		try {
+			stmt = con.prepareStatement(ALTA_PARTIDO);
+			stmt.setInt(0, part.getCod_part());
+			stmt.setString(1, part.getEquipo_local());
+			stmt.setString(2, part.getEquipo_visitante());
+			stmt.setString(3, part.getGanadorString());
+			stmt.setDate(4, Date.valueOf(part.getFecha()));
+			stmt.setString(5, part.getCod_comp());
+		}catch (SQLException e) {
+		}
+		finally {
+			try {
+				closeConnection();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	@Override
 	public void bajaPartido(ClasePartido part) {
-		// TODO Auto-generated method stub
+		openConnection();
+		try {
+			stmt = con.prepareStatement(BAJA_PARTIDO);
+			stmt.setInt(1, part.getCod_part());
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				closeConnection();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
 
 	}
 
 	@Override
 	public void modificarPartido(ClasePartido part) {
-		// TODO Auto-generated method stub
-
+		openConnection();
+		try {
+			stmt = con.prepareStatement(MODIFICAR_PARTIDO);
+			stmt.setString(1, part.getEquipo_local());
+			stmt.setString(2, part.getEquipo_visitante());
+			stmt.setObject(3, part.getGanador());
+			stmt.setDate(4, Date.valueOf(part.getFecha()));
+			stmt.setString(5, part.getCod_comp());
+			stmt.setInt(6, part.getCod_part());
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				closeConnection();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	@Override
 	public Map<Integer, ClasePartido> listarPartidos() {
-		// TODO Auto-generated method stub
-		return null;
+		ResultSet rs = null;
+		Map<Integer, ClasePartido> partidos = new HashMap<Integer, ClasePartido>();
+		openConnection();
+		try {
+			stmt = con.prepareStatement(BUSCAR_PARTIDO);
+			rs = stmt.executeQuery();
+
+			while (rs.next()) {
+				ClasePartido part = new ClasePartido();
+				part.setCod_part(rs.getInt(1));
+				part.setEquipo_local(rs.getString(2));
+				part.setEquipo_visitante(rs.getString(3));
+				part.setGanador(EnumGanador.valueOf(rs.getString(4)));
+				part.setFecha(rs.getDate(5).toLocalDate());
+				part.setCod_comp(rs.getString(6));
+				partidos.put(part.getCod_part(), part);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				rs.close();
+				closeConnection();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return partidos;
 	}
 }

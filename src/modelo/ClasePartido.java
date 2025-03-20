@@ -33,7 +33,13 @@ public class ClasePartido {
 	public EnumGanador getGanador() {
 		return ganador;
 	}
-	
+	public String getGanadorString() {
+		
+		return ganador.toString();
+	}
+	public void setGanador(EnumGanador ganador) {
+		this.ganador = ganador;
+	}
 	public LocalDate getFecha() {
 		return fecha;
 	}
