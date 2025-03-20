@@ -1,6 +1,6 @@
 package modelo;
 
-public class ClaseJugador {
+public class Jugador {
 
 	private String dni;
 	private String nombre;

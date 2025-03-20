@@ -2,7 +2,7 @@ package modelo;
 
 import java.time.LocalDate;
 
-public class ClasePartido {
+public class Partido {
 
 	private int cod_part;
 	private String equipo_local;
