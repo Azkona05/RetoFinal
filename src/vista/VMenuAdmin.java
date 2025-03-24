@@ -18,10 +18,9 @@ public class VMenuAdmin extends JDialog implements ActionListener{
 
 	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
-	private JButton btnAlta; 
-	private JButton btnBaja;
-	private JButton btnModificacion;
-	private JButton btnNewButton;
+	private JButton btnJugador; 
+	private JButton btnCompeticion;
+	private JButton btnEquipo;
 	private JButton btnSalir;
 	/**
 	 * Launch the application.
@@ -56,31 +55,31 @@ public class VMenuAdmin extends JDialog implements ActionListener{
 		gbl_contentPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		contentPanel.setLayout(gbl_contentPanel);
 		{
-			btnAlta = new JButton("Alta");
-			btnAlta.addActionListener(this);
+			btnJugador = new JButton("Jugador");
+			btnJugador.addActionListener(this);
 			GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
 			gbc_btnNewButton.insets = new Insets(0, 0, 5, 5);
 			gbc_btnNewButton.gridx = 3;
 			gbc_btnNewButton.gridy = 3;
-			contentPanel.add(btnAlta, gbc_btnNewButton);
+			contentPanel.add(btnJugador, gbc_btnNewButton);
 		}
 		{
-			btnBaja = new JButton("Baja");
-			btnBaja.addActionListener(this);
+			btnCompeticion = new JButton("Competicion");
+			btnCompeticion.addActionListener(this);
 			GridBagConstraints gbc_btnNewButton_1 = new GridBagConstraints();
 			gbc_btnNewButton_1.insets = new Insets(0, 0, 5, 5);
 			gbc_btnNewButton_1.gridx = 10;
 			gbc_btnNewButton_1.gridy = 3;
-			contentPanel.add(btnBaja, gbc_btnNewButton_1);
+			contentPanel.add(btnCompeticion, gbc_btnNewButton_1);
 		}
 		{
-			btnModificacion = new JButton("Modificacion");
-			btnModificacion.addActionListener(this);
+			btnEquipo = new JButton("Equipo");
+			btnEquipo.addActionListener(this);
 			GridBagConstraints gbc_btnModificacion_1 = new GridBagConstraints();
 			gbc_btnModificacion_1.insets = new Insets(0, 0, 5, 5);
 			gbc_btnModificacion_1.gridx = 6;
 			gbc_btnModificacion_1.gridy = 7;
-			contentPanel.add(btnModificacion, gbc_btnModificacion_1);
+			contentPanel.add(btnEquipo, gbc_btnModificacion_1);
 		}
 		{
 			btnSalir = new JButton("Salir");
@@ -95,14 +94,14 @@ public class VMenuAdmin extends JDialog implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource().equals(btnAlta)) {
-			VAlta va = new VAlta(this, true);
+		if (e.getSource().equals(btnJugador)) {
+			VGestionJugador va = new VGestionJugador(this, true);
 			va.setVisible(true);
-		}else if (e.getSource().equals(btnBaja)) {
-			VBaja vb = new VBaja(this, true);
+		}else if (e.getSource().equals(btnCompeticion)) {
+			VGestionCompeticion vb = new VGestionCompeticion(this, true);
 			vb.setVisible(true);
-		}else if (e.getSource().equals(btnModificacion)) {
-			VModificar vm = new VModificar(this, true);
+		}else if (e.getSource().equals(btnEquipo)) {
+			VGestionEquipo vm = new VGestionEquipo(this, true);
 			vm.setVisible(true);
 		}else if (e.getSource().equals(btnSalir)) {
 			dispose();

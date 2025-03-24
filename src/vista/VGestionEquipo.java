@@ -9,7 +9,7 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-public class VModificar extends JDialog {
+public class VGestionEquipo extends JDialog {
 
 	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
@@ -19,7 +19,7 @@ public class VModificar extends JDialog {
 	 */
 	/*public static void main(String[] args) {
 		try {
-			VModificar dialog = new VModificar();
+			VGestionEquipo dialog = new VGestionEquipo();
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
 		} catch (Exception e) {
@@ -29,10 +29,10 @@ public class VModificar extends JDialog {
 
 	/**
 	 * Create the dialog.
-	 * @param b 
-	 * @param vMenu 
+	 * @param modal 
+	 * @param padre 
 	 */
-	public VModificar(VMenuAdmin padre, boolean modal) {
+	public VGestionEquipo(VMenuAdmin padre, boolean modal) {
 		super(padre);
 		this.setModal(modal);
 		setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Users\\anazk\\3EBAL\\RetoFinal\\resources/icono.jpg"));

@@ -9,7 +9,7 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-public class VBaja extends JDialog {
+public class VGestionCompeticion extends JDialog {
 
 	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
@@ -19,7 +19,7 @@ public class VBaja extends JDialog {
 	 */
 	/*public static void main(String[] args) {
 		try {
-			VBaja dialog = new VBaja();
+			VGestionCompeticion dialog = new VGestionCompeticion();
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
 		} catch (Exception e) {
@@ -29,11 +29,10 @@ public class VBaja extends JDialog {
 
 	/**
 	 * Create the dialog.
-	 * @param object 
-	 * @param b 
-	 * @param vMenu 
+	 * @param modal 
+	 * @param padre 
 	 */
-	public VBaja(VMenuAdmin padre, boolean modal) {
+	public VGestionCompeticion(VMenuAdmin padre, boolean modal) {
 		super(padre);
 		this.setModal(modal);
 		setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Users\\anazk\\3EBAL\\RetoFinal\\resources/icono.jpg"));
