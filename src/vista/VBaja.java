@@ -2,6 +2,7 @@ package vista;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+import java.awt.Toolkit;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -32,7 +33,10 @@ public class VBaja extends JDialog {
 	 * @param b 
 	 * @param vMenu 
 	 */
-	public VBaja(VMenu padre, boolean modal) {
+	public VBaja(VMenuAdmin padre, boolean modal) {
+		super(padre);
+		this.setModal(modal);
+		setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Users\\anazk\\3EBAL\\RetoFinal\\resources/icono.jpg"));
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setLayout(new FlowLayout());

@@ -6,7 +6,7 @@ import vista.VMenuPrincipal;
 
 public class Principal {
 
-	private static DaoImplementacion di = new DaoImplementacion();
+	private static InterfazDao di = new DaoImplementacion();
 	
 	public static void main(String[] args) {
 		VMenuPrincipal vmp = new VMenuPrincipal();

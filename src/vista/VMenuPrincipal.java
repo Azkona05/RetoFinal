@@ -26,6 +26,8 @@ import java.awt.GridLayout;
 import javax.swing.JComboBox;
 import javax.swing.SwingConstants;
 import javax.swing.JList;
+import javax.swing.JMenuItem;
+import java.awt.Toolkit;
 
 public class VMenuPrincipal extends JFrame implements ActionListener {
 
@@ -49,6 +51,7 @@ public class VMenuPrincipal extends JFrame implements ActionListener {
 	 * Create the frame.
 	 */
 	public VMenuPrincipal() {
+		setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Users\\anazk\\3EBAL\\RetoFinal\\resources/icono.jpg"));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 705, 428);
 		getContentPane().setLayout(new BorderLayout(0, 0));

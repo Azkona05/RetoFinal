@@ -65,9 +65,8 @@ public class DaoImplementacion implements InterfazDao {
 
 		try {
 			con = DriverManager.getConnection(urlDB, this.userDB, this.passwordDB);
-//			con = DriverManager.getConnection(
-//					"jdbc:mysql://localhost:3306/concesionario?serverTimezone=Europe/Madrid&useSSL=false", "root",
-//					"abcd*1234");
+//			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/futbol_americano?serverTimezone=Europe/Madrid&useSSL=false", "root",
+//				"abcd*1234");
 		} catch (SQLException e) {
 			System.out.println("Error al intentar abrir la BD");
 		}
@@ -190,11 +189,12 @@ public class DaoImplementacion implements InterfazDao {
 			// Leemos de uno en uno los propietarios devueltos en el ResultSet
 			while (rs.next()) {
 				jug = new Jugador();
-				jug.setDni(rs.getString("dni"));;
+				jug.setDni(rs.getString("dni"));
+				;
 				jug.setNombre(rs.getString("nombre"));
 				jug.setApellido(rs.getString("apellido"));
 				jug.setDorsal(rs.getInt("dorsal"));
-				//jug.setPosicion(rs.getString("posicion"));
+				// jug.setPosicion(rs.getString("posicion"));
 				jugadores.put(jug.getDni(), jug);
 			}
 		} catch (SQLException e) {
@@ -206,7 +206,7 @@ public class DaoImplementacion implements InterfazDao {
 				e.printStackTrace();
 			}
 		}
-		
+
 		if (rs != null) {
 			try {
 				rs.close();
@@ -234,7 +234,6 @@ public class DaoImplementacion implements InterfazDao {
 				e.printStackTrace();
 			}
 		}
-
 
 	}
 
@@ -284,12 +283,13 @@ public class DaoImplementacion implements InterfazDao {
 		ResultSet rs = null;
 		openConnection();
 		try {
-			stmt = con.prepareStatement(BUSCAR_JUGADOR);
+			stmt = con.prepareStatement(BUSCAR_COMPETICION);
 			rs = stmt.executeQuery();
 			// Leemos de uno en uno los propietarios devueltos en el ResultSet
 			while (rs.next()) {
 				comp = new Competicion();
-				comp.setNombre_competicion(rs.getString("nombre_competicion"));;
+				comp.setNombre_competicion(rs.getString("nombre_competicion"));
+				;
 				competiciones.put(comp.getCod_comp(), comp);
 			}
 		} catch (SQLException e) {
@@ -301,7 +301,7 @@ public class DaoImplementacion implements InterfazDao {
 				e.printStackTrace();
 			}
 		}
-		
+
 		if (rs != null) {
 			try {
 				rs.close();
@@ -347,9 +347,8 @@ public class DaoImplementacion implements InterfazDao {
 			stmt.setString(3, part.getGanadorString());
 			stmt.setDate(4, Date.valueOf(part.getFecha()));
 			stmt.setString(5, part.getCod_comp());
-		}catch (SQLException e) {
-		}
-		finally {
+		} catch (SQLException e) {
+		} finally {
 			try {
 				closeConnection();
 			} catch (SQLException e) {

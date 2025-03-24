@@ -1,6 +1,7 @@
 package vista;
 
 import java.awt.EventQueue;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -45,6 +46,7 @@ public class VLogin extends JDialog implements ActionListener {
 	public VLogin(VMenuPrincipal padre, boolean modal) {
 		super(padre);
 		this.setModal(modal);
+		setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Users\\anazk\\3EBAL\\RetoFinal\\resources/icono.jpg"));
 		setBounds(100, 100, 705, 428);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -97,7 +99,7 @@ public class VLogin extends JDialog implements ActionListener {
 		// Comprobar login correcto
 		try {
 			Principal.login(usuario);
-			VMenu menu = new VMenu(this, true);
+			VMenuAdmin menu = new VMenuAdmin(this, true);
 			menu.setVisible(true);
 		} catch (LoginException e) {
 			e.visualizarMsg();
