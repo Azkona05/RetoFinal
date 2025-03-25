@@ -1,20 +1,17 @@
 package vista;
 
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.ButtonGroup;
-import javax.swing.ButtonModel;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import controlador.Principal;
-import excepciones.LoginException;
 import modelo.EnumPosicion;
 import modelo.Jugador;
 
@@ -29,14 +26,18 @@ public class VGestionJugador extends JDialog implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
+	//TEXT FIELDS
 	private JTextField txtDNI;
 	private JTextField txtNombre;
 	private JTextField txtApellido;
 	private JTextField txtDorsal;
 	private JTextField txtCodEquipo;
+	//JBUTTON
 	private JButton btnBaja;
 	private JButton btnAlta;
 	private JButton btnModificar;
+	private JButton btnLimpiar;
+	//RADIO BUTTON
 	private ButtonGroup grupoPosicion;
 	private JRadioButton rdbtnGuard;
 	private JRadioButton rdbtnQuarterback;
@@ -47,15 +48,15 @@ public class VGestionJugador extends JDialog implements ActionListener {
 	 * Launch the application.
 	 */
 
-	public static void main(String[] args) {
-		try {
-			VGestionJugador dialog = new VGestionJugador(null, false);
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+//	public static void main(String[] args) {
+//		try {
+//			VGestionJugador dialog = new VGestionJugador(null, false);
+//			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+//			dialog.setVisible(true);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//	}
 
 	/**
 	 * Create the dialog.
@@ -252,7 +253,7 @@ public class VGestionJugador extends JDialog implements ActionListener {
 			txtCodEquipo.setColumns(10);
 		}
 		{
-			JButton btnLimpiar = new JButton("LIMPIAR");
+			btnLimpiar = new JButton("LIMPIAR");
 			GridBagConstraints gbc_btnLimpiar = new GridBagConstraints();
 			gbc_btnLimpiar.insets = new Insets(0, 0, 5, 5);
 			gbc_btnLimpiar.gridx = 8;
@@ -269,8 +270,22 @@ public class VGestionJugador extends JDialog implements ActionListener {
 			bajaJugador();
 		} else if (e.getSource().equals(btnModificar)) {
 			modJugador();
+		} else if (e.getSource().equals(btnLimpiar)) {
+			limipiar();
 		}
 
+	}
+
+	private void limipiar() {
+		txtDNI.setText("");
+		txtNombre.setText("");
+		txtApellido.setText("");
+		txtDorsal.setText("");
+		rdbtnGuard.setSelected(false);
+		rdbtnQuarterback.setSelected(false);
+		rdbtnRunning.setSelected(false);
+		rdbtnTackle.setSelected(false);
+		txtCodEquipo.setText("");
 	}
 
 	private void bajaJugador() {
@@ -285,13 +300,13 @@ public class VGestionJugador extends JDialog implements ActionListener {
 		j.setNombre(txtNombre.getText());
 		j.setApellido(txtApellido.getText());
 		j.setDorsal(Integer.parseInt(txtDorsal.getText()));
-		if(rdbtnQuarterback.isSelected()) {
+		if (rdbtnQuarterback.isSelected()) {
 			j.setPosicion(EnumPosicion.QUARTERBACK);
-		}else if (rdbtnRunning.isSelected()) {
+		} else if (rdbtnRunning.isSelected()) {
 			j.setPosicion(EnumPosicion.RUNNING);
-		}else if (rdbtnTackle.isSelected()) {
+		} else if (rdbtnTackle.isSelected()) {
 			j.setPosicion(EnumPosicion.TACKLE);
-		}else if(rdbtnGuard.isSelected()) {
+		} else if (rdbtnGuard.isSelected()) {
 			j.setPosicion(EnumPosicion.GUARD);
 		}
 		j.setCod_equi(txtCodEquipo.getText());
@@ -306,13 +321,13 @@ public class VGestionJugador extends JDialog implements ActionListener {
 		j.setNombre(txtNombre.getText());
 		j.setApellido(txtApellido.getText());
 		j.setDorsal(Integer.parseInt(txtDorsal.getText()));
-		if(rdbtnQuarterback.isSelected()) {
+		if (rdbtnQuarterback.isSelected()) {
 			j.setPosicion(EnumPosicion.QUARTERBACK);
-		}else if (rdbtnRunning.isSelected()) {
+		} else if (rdbtnRunning.isSelected()) {
 			j.setPosicion(EnumPosicion.RUNNING);
-		}else if (rdbtnTackle.isSelected()) {
+		} else if (rdbtnTackle.isSelected()) {
 			j.setPosicion(EnumPosicion.TACKLE);
-		}else if(rdbtnGuard.isSelected()) {
+		} else if (rdbtnGuard.isSelected()) {
 			j.setPosicion(EnumPosicion.GUARD);
 		}
 		j.setCod_equi(txtCodEquipo.getText());

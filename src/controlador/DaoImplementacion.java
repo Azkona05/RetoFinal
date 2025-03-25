@@ -6,7 +6,9 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.TreeMap;
@@ -42,16 +44,23 @@ public class DaoImplementacion implements InterfazDao {
 	final String BAJA_COMPETICION = "DELETE FROM COMPETICION WHERE cod_comp = ?";
 	final String MODIFICAR_COMPETICION = "UPDATE COMPETICION SET nombre_competicion = ? WHERE cod_comp = ?";
 	final String BUSCAR_COMPETICION = "SELECT * FROM COMPETICION";
+	final String BUSCAR_EQUIPOS_COMP = "SELECT nombre_equipo, (Select count(*) from partido p2 where p2.ganador = cod_equi) as victorias "
+			+ "	FROM futbol_americano.partido " + "		JOIN equipo ON(equipo_local=cod_equi) "
+			+ "    WHERE fecha between '2020-01-01' and current_date()  AND cod_comp like '%?%' "
+			+ "    order by victorias DESC;";
+	final String Metodo_Burro = "select * from partido where cod_comp=?";
 	// SQL Equipo
 	final String ALTA_EQUIPO = "INSERT INTO EQUIPO (cod_equi, nombre_equipo) VALUES (?, ?)";
 	final String BAJA_EQUIPO = "DELETE FROM EQUIPO WHERE cod_equi = ?";
 	final String MODIFICAR_EQUIPO = "UPDATE EQUIPO SET nombre_equipo = ? WHERE cod_equi = ?";
 	final String BUSCAR_EQUIPO = "SELECT * FROM EQUIPO";
+	final String BUSCAR_EQUIPO_LIGA = "SELECT cod_equi from equipo where cod_equi IN (SELECT equipo_local from partido where cod_comp=?) OR cod_equi IN (SELECT equipo_visitante from partido where cod_comp=?)";
 	// SQL Partido
 	final String ALTA_PARTIDO = "INSERT INTO PARTIDO (cod_part, equipo_local, equipo_visitante, ganador, fecha, cod_comp) VALUES (?, ?, ?, ?, ?)";
 	final String BAJA_PARTIDO = "DELETE FROM PARTIDO WHERE cod_part = ?";
 	final String MODIFICAR_PARTIDO = "UPDATE PAARTIDO SET equipo_local = ?, equipo_visitante = ?, ganador = ?, fecha = ?, cod_comp = ? WHERE cod_part = ?";
 	final String BUSCAR_PARTIDO = "SELECT * FROM PARTIDO";
+	final String PARTIDOS_DIA = "SELECT * FROM PARTIDO DATE(FECHA) = ? ORDER BY fecha ASC";
 
 	public DaoImplementacion() {
 		this.configFile = ResourceBundle.getBundle("modelo.configClass");
@@ -279,6 +288,8 @@ public class DaoImplementacion implements InterfazDao {
 	@Override
 	public Map<String, Competicion> listarCompeticiones() {
 		Competicion comp;
+		String nombre;
+		String codigo;
 		Map<String, Competicion> competiciones = new TreeMap<>();
 		ResultSet rs = null;
 		openConnection();
@@ -288,8 +299,10 @@ public class DaoImplementacion implements InterfazDao {
 			// Leemos de uno en uno los propietarios devueltos en el ResultSet
 			while (rs.next()) {
 				comp = new Competicion();
-				comp.setNombre_competicion(rs.getString("nombre_competicion"));
-				;
+				nombre = rs.getString("nombre_competicion");
+				codigo = nombre.length() >= 3 ? nombre.substring(0, 3).toUpperCase() : nombre.toUpperCase();
+				comp.setCod_comp(codigo);
+				comp.setNombre_competicion(nombre);
 				competiciones.put(comp.getCod_comp(), comp);
 			}
 		} catch (SQLException e) {
@@ -483,10 +496,72 @@ public class DaoImplementacion implements InterfazDao {
 				part.setCod_part(rs.getInt(1));
 				part.setEquipo_local(rs.getString(2));
 				part.setEquipo_visitante(rs.getString(3));
-				part.setGanador(EnumGanador.valueOf(rs.getString(4)));
+				part.setGanador(rs.getString(4));
 				part.setFecha(rs.getDate(5).toLocalDate());
 				part.setCod_comp(rs.getString(6));
 				partidos.put(part.getCod_part(), part);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				rs.close();
+				closeConnection();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return partidos;
+	}
+
+	@Override
+	public List<String> buscarDifEquipo(Competicion liga) {
+		ResultSet rs = null;
+		List<String> equipos = new ArrayList<String>();
+		openConnection();
+		try {
+			stmt = con.prepareStatement(BUSCAR_EQUIPO_LIGA);
+			stmt.setString(1, liga.getCod_comp());
+			stmt.setString(2, liga.getCod_comp());
+			rs = stmt.executeQuery();
+
+			while (rs.next()) {
+				equipos.add(rs.getString(1));
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				rs.close();
+				closeConnection();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return equipos;
+	}
+
+	@Override
+	public List<Partido> buscarEquiLiga(Competicion liga) {
+		Partido part;
+		int cont = 1;
+		ResultSet rs = null;
+		List<Partido> partidos = new ArrayList<Partido>();
+		openConnection();
+		try {
+			stmt = con.prepareStatement(Metodo_Burro);
+			stmt.setString(1, liga.getCod_comp());
+			rs = stmt.executeQuery();
+
+			while (rs.next()) {
+				part = new Partido();
+				part.setEquipo_local(rs.getString(2));
+				part.setEquipo_visitante(rs.getString(3));
+				part.setGanador(rs.getString(4));
+				partidos.add(part);
+
 			}
 
 		} catch (SQLException e) {
