@@ -1,5 +1,6 @@
 package controlador;
 
+import java.util.List;
 import java.util.Map;
 
 import excepciones.LoginException;
@@ -22,6 +23,7 @@ public interface InterfazDao {
 	public void bajaCompeticion (Competicion comp);
 	public void modificarCompeticion (Competicion comp);
 	public Map<String, Competicion> listarCompeticiones();
+	public List<Partido> buscarEquiLiga(Competicion liga);
 	//EQUIPO
 	public void altaEquipo (Equipo eq);
 	public void bajaEquipo (Equipo eq);
@@ -32,5 +34,7 @@ public interface InterfazDao {
 	public void bajaPartido (Partido part);
 	public void modificarPartido (Partido part);
 	public Map<Integer, Partido> listarPartidos();
+	List<String> buscarDifEquipo(Competicion liga);
+	
 	
 }

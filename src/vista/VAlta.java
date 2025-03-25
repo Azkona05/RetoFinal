@@ -1,3 +1,4 @@
+
 package vista;
 
 import java.awt.BorderLayout;
@@ -39,6 +40,7 @@ public class VAlta extends JDialog {
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
+		contentPanel.setLayout(new MigLayout("", "[]", "[]"));
 		contentPanel.setLayout(new MigLayout("", "[]", "[]"));
 		{
 			JPanel buttonPane = new JPanel();

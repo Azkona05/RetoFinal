@@ -5,6 +5,10 @@ public class Equipo {
 	private String cod_equi;
 	private String nombre_equipo;
 	
+	
+	public Equipo() {
+		
+	}
 	public String getCod_equi() {
 		return cod_equi;
 	}

@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -16,7 +17,7 @@ import controlador.Principal;
 import excepciones.LoginException;
 import modelo.Usuario;
 
-public class VLogin extends JFrame implements ActionListener {
+public class VLogin extends JDialog implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -38,9 +39,12 @@ public class VLogin extends JFrame implements ActionListener {
 
 	/**
 	 * Create the frame.
+	 * @param modal 
+	 * @param padre 
 	 */
-	public VLogin() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	public VLogin(VMenuPrincipal padre, boolean modal) {
+		super(padre);
+		this.setModal(modal);
 		setBounds(100, 100, 705, 428);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
