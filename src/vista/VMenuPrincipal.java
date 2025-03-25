@@ -38,6 +38,7 @@ import javax.swing.JList;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+import java.awt.Toolkit;
 
 public class VMenuPrincipal extends JFrame implements ActionListener {
 	private static final long serialVersionUID = 1L;
@@ -59,6 +60,7 @@ public class VMenuPrincipal extends JFrame implements ActionListener {
 	 * /** Create the frame.
 	 */
 	public VMenuPrincipal() throws LoginException {
+		setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Users\\anazk\\3EBAL\\RetoFinal\\resources/icono.jpg"));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 705, 428);
 
@@ -130,6 +132,7 @@ public class VMenuPrincipal extends JFrame implements ActionListener {
 		List<String> diferentesEquipos = Principal.devolverEquipos(liga);
 		Map<String, String> orden = new TreeMap<>(Comparator.reverseOrder());
 		int cont = 0;
+		System.out.println(partidos);
 		for (String equipo : diferentesEquipos) {
 			cont = 0;
 			for (Partido p : partidos) {

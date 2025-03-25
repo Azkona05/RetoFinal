@@ -576,4 +576,32 @@ public class DaoImplementacion implements InterfazDao {
 		}
 		return partidos;
 	}
+
+//	public void partidosDia(Date fecha) {
+//		openConnection();
+//		try {
+//			stmt = con.prepareStatement(Metodo_Burro);
+//			stmt.setString(1, liga.getCod_comp());
+//			rs = stmt.executeQuery();
+//
+//			while (rs.next()) {
+//				part = new Partido();
+//				part.setEquipo_local(rs.getString(2));
+//				part.setEquipo_visitante(rs.getString(3));
+//				part.setGanador(rs.getString(4));
+//				partidos.add(part);
+//
+//			}
+//
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		} finally {
+//			try {
+//				rs.close();
+//				closeConnection();
+//			} catch (SQLException e) {
+//				e.printStackTrace();
+//			}
+//		}
+//	}
 }
