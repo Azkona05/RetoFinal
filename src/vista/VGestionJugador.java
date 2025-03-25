@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.ButtonGroup;
+import javax.swing.ButtonModel;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
@@ -14,6 +15,7 @@ import javax.swing.border.EmptyBorder;
 
 import controlador.Principal;
 import excepciones.LoginException;
+import modelo.EnumPosicion;
 import modelo.Jugador;
 
 import java.awt.GridBagLayout;
@@ -36,15 +38,24 @@ public class VGestionJugador extends JDialog implements ActionListener {
 	private JButton btnAlta;
 	private JButton btnModificar;
 	private ButtonGroup grupoPosicion;
+	private JRadioButton rdbtnGuard;
+	private JRadioButton rdbtnQuarterback;
+	private JRadioButton rdbtnRunning;
+	private JRadioButton rdbtnTackle;
 
 	/**
 	 * Launch the application.
 	 */
-	/*
-	 * public static void main(String[] args) { try { VGestionJugador dialog = new
-	 * VGestionJugador(); dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-	 * dialog.setVisible(true); } catch (Exception e) { e.printStackTrace(); } }
-	 */
+
+	public static void main(String[] args) {
+		try {
+			VGestionJugador dialog = new VGestionJugador(null, false);
+			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+			dialog.setVisible(true);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	/**
 	 * Create the dialog.
@@ -101,6 +112,8 @@ public class VGestionJugador extends JDialog implements ActionListener {
 			gbc_btnNewButton.gridx = 8;
 			gbc_btnNewButton.gridy = 3;
 			contentPanel.add(btnAlta, gbc_btnNewButton);
+			btnAlta.addActionListener(this);
+
 		}
 		{
 			JLabel lblNombre = new JLabel("NOMBRE");
@@ -145,6 +158,7 @@ public class VGestionJugador extends JDialog implements ActionListener {
 			gbc_btnBaja.gridx = 8;
 			gbc_btnBaja.gridy = 7;
 			contentPanel.add(btnBaja, gbc_btnBaja);
+			btnBaja.addActionListener(this);
 		}
 		{
 			JLabel lblDorsal = new JLabel("DORSAL");
@@ -174,7 +188,7 @@ public class VGestionJugador extends JDialog implements ActionListener {
 		}
 		grupoPosicion = new ButtonGroup();
 		{
-			JRadioButton rdbtnQuarterback = new JRadioButton("Quarterback");
+			rdbtnQuarterback = new JRadioButton("Quarterback");
 			grupoPosicion.add(rdbtnQuarterback);
 			GridBagConstraints gbc_rdbtnQuarterback = new GridBagConstraints();
 			gbc_rdbtnQuarterback.insets = new Insets(0, 0, 5, 5);
@@ -183,7 +197,7 @@ public class VGestionJugador extends JDialog implements ActionListener {
 			contentPanel.add(rdbtnQuarterback, gbc_rdbtnQuarterback);
 		}
 		{
-			JRadioButton rdbtnTackle = new JRadioButton("Tackle");
+			rdbtnTackle = new JRadioButton("Tackle");
 			grupoPosicion.add(rdbtnTackle);
 			GridBagConstraints gbc_rdbtnTackle = new GridBagConstraints();
 			gbc_rdbtnTackle.insets = new Insets(0, 0, 5, 5);
@@ -192,7 +206,7 @@ public class VGestionJugador extends JDialog implements ActionListener {
 			contentPanel.add(rdbtnTackle, gbc_rdbtnTackle);
 		}
 		{
-			JRadioButton rdbtnRunning = new JRadioButton("Running");
+			rdbtnRunning = new JRadioButton("Running");
 			grupoPosicion.add(rdbtnRunning);
 			GridBagConstraints gbc_rdbtnRunning = new GridBagConstraints();
 			gbc_rdbtnRunning.insets = new Insets(0, 0, 5, 5);
@@ -201,7 +215,7 @@ public class VGestionJugador extends JDialog implements ActionListener {
 			contentPanel.add(rdbtnRunning, gbc_rdbtnRunning);
 		}
 		{
-			JRadioButton rdbtnGuard = new JRadioButton("Guard");
+			rdbtnGuard = new JRadioButton("Guard");
 			grupoPosicion.add(rdbtnGuard);
 			GridBagConstraints gbc_Guard = new GridBagConstraints();
 			gbc_Guard.insets = new Insets(0, 0, 5, 5);
@@ -216,6 +230,7 @@ public class VGestionJugador extends JDialog implements ActionListener {
 			gbc_btnModificar.gridx = 8;
 			gbc_btnModificar.gridy = 11;
 			contentPanel.add(btnModificar, gbc_btnModificar);
+			btnModificar.addActionListener(this);
 		}
 
 		{
@@ -270,7 +285,15 @@ public class VGestionJugador extends JDialog implements ActionListener {
 		j.setNombre(txtNombre.getText());
 		j.setApellido(txtApellido.getText());
 		j.setDorsal(Integer.parseInt(txtDorsal.getText()));
-		// FALTA POSICION
+		if(rdbtnQuarterback.isSelected()) {
+			j.setPosicion(EnumPosicion.QUARTERBACK);
+		}else if (rdbtnRunning.isSelected()) {
+			j.setPosicion(EnumPosicion.RUNNING);
+		}else if (rdbtnTackle.isSelected()) {
+			j.setPosicion(EnumPosicion.TACKLE);
+		}else if(rdbtnGuard.isSelected()) {
+			j.setPosicion(EnumPosicion.GUARD);
+		}
 		j.setCod_equi(txtCodEquipo.getText());
 		Principal.modificarJugador(j);
 		dispose();
@@ -283,7 +306,15 @@ public class VGestionJugador extends JDialog implements ActionListener {
 		j.setNombre(txtNombre.getText());
 		j.setApellido(txtApellido.getText());
 		j.setDorsal(Integer.parseInt(txtDorsal.getText()));
-		// FALTA POSICION
+		if(rdbtnQuarterback.isSelected()) {
+			j.setPosicion(EnumPosicion.QUARTERBACK);
+		}else if (rdbtnRunning.isSelected()) {
+			j.setPosicion(EnumPosicion.RUNNING);
+		}else if (rdbtnTackle.isSelected()) {
+			j.setPosicion(EnumPosicion.TACKLE);
+		}else if(rdbtnGuard.isSelected()) {
+			j.setPosicion(EnumPosicion.GUARD);
+		}
 		j.setCod_equi(txtCodEquipo.getText());
 		Principal.altaJugador(j);
 		dispose();
