@@ -13,9 +13,11 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.TreeMap;
 
+import controlador.InterfazDao;
 import excepciones.LoginException;
 import modelo.Competicion;
 import modelo.EnumGanador;
+import modelo.EnumPosicion;
 import modelo.Equipo;
 import modelo.Jugador;
 import modelo.Partido;
@@ -203,7 +205,7 @@ public class DaoImplementacion implements InterfazDao {
 				jug.setNombre(rs.getString("nombre"));
 				jug.setApellido(rs.getString("apellido"));
 				jug.setDorsal(rs.getInt("dorsal"));
-				// jug.setPosicion(rs.getString("posicion"));
+				jug.setPosicion(EnumPosicion.valueOf(rs.getString("posicion")));
 				jugadores.put(jug.getDni(), jug);
 			}
 		} catch (SQLException e) {

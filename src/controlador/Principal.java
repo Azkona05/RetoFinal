@@ -5,6 +5,7 @@ import java.util.Map;
 
 import excepciones.LoginException;
 import modelo.Competicion;
+import modelo.Equipo;
 import modelo.Jugador;
 import modelo.Partido;
 import modelo.Usuario;
@@ -55,4 +56,45 @@ public class Principal {
 	public static List<String> devolverEquipos(Competicion liga) {
 		return di.buscarDifEquipo(liga);
 	}
+
+	public static void modificarCompeticion(Competicion comp) {
+		di.modificarCompeticion(comp);
+		
+	}
+
+	public static void eliminarCompeticion(Competicion comp) {
+		di.bajaCompeticion(comp);
+		
+	}
+
+	public static void altaCompeticion(Competicion comp) {
+		di.altaCompeticion(comp);
+		
+	}
+	
+	public static void altaEquipo(Equipo eq) {
+		di.altaEquipo(eq);
+	}
+	
+	public static void bajaEquipo(Equipo eq) {
+		di.bajaEquipo(eq);
+	}
+	
+	public static void modificarEquipo(Equipo eq) {
+		di.modificarEquipo(eq);
+	}
+	
+	public static void altaPartido(Partido par) {
+		di.altaPartido(par);
+	}
+	
+	public static void bajaPartido(Partido par) {
+		di.bajaPartido(par);
+	}
+	
+	public static void modificarPartido(Partido par) {
+		di.modificarPartido(par);
+	}
+	
+	
 }

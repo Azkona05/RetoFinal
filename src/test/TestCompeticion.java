@@ -25,6 +25,16 @@ class TestCompeticion {
 		comp.setCod_comp("ABC");
 		assertEquals("ABC", comp.getCod_comp());
 	}
+	
+	@Test
+	public void testGetNombreCompeticion() {
+		
+	}
+	
+	@Test
+	public void testSetNombreCompeticion() {
+		
+	}
 
 	@AfterEach
 	void tearDown() throws Exception {
