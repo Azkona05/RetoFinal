@@ -7,7 +7,7 @@ public class Partido {
 	private int cod_part;
 	private String equipo_local;
 	private String equipo_visitante;
-	private EnumGanador ganador;
+	private String ganador;
 	private LocalDate fecha;
 	private String cod_comp;
 	
@@ -30,10 +30,16 @@ public class Partido {
 	public void setEquipo_visitante(String equipo_visitante) {
 		this.equipo_visitante = equipo_visitante;
 	}
-	public EnumGanador getGanador() {
+	public String getGanador() {
 		return ganador;
 	}
-	
+	public String getGanadorString() {
+		
+		return ganador.toString();
+	}
+	public void setGanador(String ganador) {
+		this.ganador = ganador;
+	}
 	public LocalDate getFecha() {
 		return fecha;
 	}

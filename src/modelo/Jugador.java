@@ -44,6 +44,11 @@ public class Jugador {
 	public EnumPosicion getPosicion() {
 		return posicion;
 	}
+	
+
+	public void setPosicion(EnumPosicion posicion) {
+		this.posicion = posicion;
+	}
 
 	public String getCod_equi() {
 		return cod_equi;
