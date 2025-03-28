@@ -335,5 +335,7 @@ public class VGestionJugador extends JDialog implements ActionListener {
 		dispose();
 
 	}
+	
+	
 
 }

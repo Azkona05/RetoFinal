@@ -17,13 +17,9 @@ public class Principal {
 
 	public static void main(String[] args) {
 		VMenuPrincipal vmp;
-		try {
 			vmp = new VMenuPrincipal();
 			vmp.setVisible(true);
-		} catch (LoginException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
 
 	}
 
