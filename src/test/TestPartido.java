@@ -20,7 +20,7 @@ class TestPartido {
 		part.setCod_part(0);
 		part.setEquipo_local("PAW");
 		part.setEquipo_visitante("JET");
-		part.setGanador(EnumGanador.VISITANTE);
+		part.setGanador("JET");
 		part.setFecha(LocalDate.parse("2025-01-12"));
 		part.setCod_comp("NAC");
 	}
@@ -65,8 +65,8 @@ class TestPartido {
 	
 	@Test
 	public void testSetGanador() {
-		part.setGanador(EnumGanador.LOCAL);
-		assertEquals(EnumGanador.LOCAL, part.getGanador());
+		part.setGanador("JET");
+		assertEquals("JET", part.getGanador());
 	}
 	
 	@Test
