@@ -34,7 +34,6 @@ public class Partido {
 		return ganador;
 	}
 	public String getGanadorString() {
-		
 		return ganador.toString();
 	}
 	public void setGanador(EnumGanador ganador) {
