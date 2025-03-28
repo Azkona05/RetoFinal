@@ -13,10 +13,8 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.TreeMap;
 
-import controlador.InterfazDao;
 import excepciones.LoginException;
 import modelo.Competicion;
-import modelo.EnumGanador;
 import modelo.EnumPosicion;
 import modelo.Equipo;
 import modelo.Jugador;
@@ -546,7 +544,6 @@ public class DaoImplementacion implements InterfazDao {
 	@Override
 	public List<Partido> buscarEquiLiga(Competicion liga) {
 		Partido part;
-		int cont = 1;
 		ResultSet rs = null;
 		List<Partido> partidos = new ArrayList<Partido>();
 		openConnection();
