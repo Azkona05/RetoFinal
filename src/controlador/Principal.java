@@ -1,7 +1,10 @@
 package controlador;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
+
+import com.toedter.calendar.JDayChooser;
 
 import excepciones.LoginException;
 import modelo.Competicion;
@@ -30,6 +33,9 @@ public class Principal {
 	}
 	public static List<String> devolverEquipos(Competicion liga) {
 		return dao.buscarDifEquipo(liga);
+	}
+	public static List<Partido> devolverPartidos(LocalDate fecha) {
+		return dao.devolverPartidos(fecha);
 	}
 	
 }

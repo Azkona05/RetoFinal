@@ -2,7 +2,15 @@ package vista;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Calendar;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -15,6 +23,8 @@ import javax.swing.JScrollPane;
 import javax.swing.table.DefaultTableModel;
 
 import com.toedter.calendar.JCalendar;
+import com.toedter.calendar.JDateChooser;
+import com.toedter.calendar.JDayChooser;
 
 import controlador.Principal;
 import excepciones.LoginException;
@@ -29,57 +39,63 @@ import java.awt.GridLayout;
 import javax.swing.JComboBox;
 import javax.swing.SwingConstants;
 
-
-public class VMenuPrincipal extends JFrame implements ActionListener {
+public class VMenuPrincipal extends JFrame implements ActionListener, FocusListener {
 	private static final long serialVersionUID = 1L;
-	private JButton btnLogin;
+	private JButton btnLogin, btnCalendario;
 	private JCalendar calendario;
-	private JTable tablaClasi;
-	private JPanel panel_2;
+	private JTable tablaClasi, tablaPart;
+	private JPanel panel_Derecho, panel_Izquierdo;
+	private JComboBox cbElegirLiga;
+	private JScrollPane jscroll, jscrollPartido;
+	private LocalDate fecha;
 
-	/**
-	 * Launch the application.
-	 */
-	/*
-	 * public static void main(String[] args) { EventQueue.invokeLater(new
-	 * Runnable() { public void run() { try { VInicio frame = new VInicio();
-	 * frame.setVisible(true); } catch (Exception e) { e.printStackTrace(); } } });
-	 * }
-	 * 
-	 * 
-	 * /** Create the frame.
-	 */
 	public VMenuPrincipal() throws LoginException {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 705, 428);
 
-		JPanel panel = new JPanel();
-		getContentPane().add(panel, BorderLayout.WEST);
+		// Panel Superior
+		JPanel panel_Superior = new JPanel();
+		getContentPane().add(panel_Superior, BorderLayout.NORTH);
+		panel_Superior.setLayout(new GridLayout(1, 0, 0, 0));
 
-		JPanel panel_1 = new JPanel();
-		getContentPane().add(panel_1, BorderLayout.CENTER);
-
-		panel_2 = new JPanel();
-		getContentPane().add(panel_2, BorderLayout.EAST);
-
-		JPanel panel_3 = new JPanel();
-		getContentPane().add(panel_3, BorderLayout.NORTH);
-		panel_3.setLayout(new GridLayout(1, 0, 0, 0));
-
-		calendario = new JCalendar();
-		panel_1.add(calendario);
-		calendario.getDayChooser();
-
-		JComboBox cbElegirLiga = new JComboBox();
-		panel_3.add(cbElegirLiga);
+		cbElegirLiga = new JComboBox();
+		panel_Superior.add(cbElegirLiga);
+		cbElegirLiga.addActionListener(this);
 
 		JLabel lblEquipo = new JLabel("Equipos");
 		lblEquipo.setHorizontalAlignment(SwingConstants.CENTER);
-		panel_3.add(lblEquipo);
+		panel_Superior.add(lblEquipo);
 
 		btnLogin = new JButton("Login");
-		panel_3.add(btnLogin);
+		panel_Superior.add(btnLogin);
 		btnLogin.addActionListener(this);
+
+		// Panel Izqu.
+		panel_Izquierdo = new JPanel();
+		getContentPane().add(panel_Izquierdo, BorderLayout.WEST);
+		jscrollPartido = new JScrollPane();
+		panel_Izquierdo.add(jscrollPartido);
+		if (fecha==null) {
+			presentarTablaPartido(LocalDate.now());
+		}
+
+		// Panel Central
+		JPanel panel_Central = new JPanel();
+		getContentPane().add(panel_Central, BorderLayout.CENTER);
+
+		calendario = new JCalendar();
+		panel_Central.add(calendario);
+
+		btnCalendario = new JButton();
+		btnCalendario.setText("Actualizar Fecha");
+		panel_Central.add(btnCalendario);
+		btnCalendario.addActionListener(this);
+
+		// Panel Derecho
+		panel_Derecho = new JPanel();
+		getContentPane().add(panel_Derecho, BorderLayout.EAST);
+		jscroll = new JScrollPane();
+		panel_Derecho.add(jscroll);
 
 		Map<String, Competicion> competiciones;
 		competiciones = Principal.leerCompeticiones();
@@ -87,7 +103,6 @@ public class VMenuPrincipal extends JFrame implements ActionListener {
 			cbElegirLiga.addItem(comp);
 		}
 		presentarTabla((Competicion) cbElegirLiga.getSelectedItem());
-
 	}
 
 	@Override
@@ -97,20 +112,54 @@ public class VMenuPrincipal extends JFrame implements ActionListener {
 		} else if (e.getSource().equals(btnLogin)) {
 			VLogin vL = new VLogin(this, true);
 			vL.setVisible(true);
+		} else if (e.getSource().equals(cbElegirLiga)) {
+			presentarTabla((Competicion) cbElegirLiga.getSelectedItem());
+		} else if (e.getSource().equals(btnCalendario)) {
+			Calendar calendar = calendario.getCalendar();
+			LocalDate fecha;
+			int day = calendar.get(Calendar.DAY_OF_MONTH);
+			int month = calendar.get(Calendar.MONTH) + 1;
+			int year = calendar.get(Calendar.YEAR);
+			fecha = LocalDate.of(year, month, day);
+			presentarTablaPartido(fecha);
 		} else {
 
 		}
 
 	}
 
+	private void presentarTablaPartido(LocalDate fecha) {
+		tablaPart = this.cargarTablaPart(fecha);
+		jscrollPartido.setViewportView(tablaPart);
+	}
+
+	private JTable cargarTablaPart(LocalDate fecha) {
+		String[] columnasNombre = { "Liga", "Local", "Visitante", "Ganador" };
+		DefaultTableModel model = new DefaultTableModel(null, columnasNombre);
+		List<Partido> partidos = Principal.devolverPartidos(fecha);
+		for (Partido part : partidos) {
+			String[] fila = new String[4];
+			fila[0] = part.getCod_comp();
+			fila[1] = part.getEquipo_local();
+			fila[2] = part.getEquipo_visitante();
+			if (part.getGanador()==null) {
+				part.setGanador("PSD");
+				fila[3] = part.getGanador();
+			} else {
+				fila[3] = part.getGanador();
+			}
+			model.addRow(fila);
+		}
+		return new JTable(model);
+	}
+
 	private void presentarTabla(Competicion liga) {
 		// cargarTabla (prop);
-		JScrollPane jscroll = new JScrollPane();
+		// jscroll = new JScrollPane();
 		tablaClasi = this.cargarTabla(liga);
 		jscroll.setViewportView(tablaClasi);
-
-		panel_2.add(jscroll);
-		jscroll.setBounds(5, 5, 412, 70);
+		// panel_2.add(jscroll);
+		// jscroll.setBounds(5, 5, 150, 150);
 	}
 
 	private JTable cargarTabla(Competicion liga) {
@@ -133,7 +182,6 @@ public class VMenuPrincipal extends JFrame implements ActionListener {
 
 		cont = 1;
 		for (Map.Entry<String, String> entry : orden.entrySet()) {
-			System.out.println(entry.getKey());
 			colum[0] = String.valueOf(cont);
 			colum[2] = entry.getKey().split("-")[0];
 			colum[1] = entry.getValue();
@@ -142,5 +190,15 @@ public class VMenuPrincipal extends JFrame implements ActionListener {
 		}
 
 		return new JTable(model);
+	}
+
+	@Override
+	public void focusGained(FocusEvent e) {
+
+	}
+
+	@Override
+	public void focusLost(FocusEvent e) {
+
 	}
 }

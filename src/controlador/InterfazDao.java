@@ -1,7 +1,10 @@
 package controlador;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
+
+import com.toedter.calendar.JDayChooser;
 
 import excepciones.LoginException;
 import modelo.Competicion;
@@ -35,6 +38,7 @@ public interface InterfazDao {
 	public void modificarPartido (Partido part);
 	public Map<Integer, Partido> listarPartidos();
 	List<String> buscarDifEquipo(Competicion liga);
+	List<Partido> devolverPartidos(LocalDate fecha);
 	
 	
 }

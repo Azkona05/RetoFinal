@@ -6,6 +6,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Time;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -60,7 +62,7 @@ public class DaoImplementacion implements InterfazDao {
 	final String BAJA_PARTIDO = "DELETE FROM PARTIDO WHERE cod_part = ?";
 	final String MODIFICAR_PARTIDO = "UPDATE PAARTIDO SET equipo_local = ?, equipo_visitante = ?, ganador = ?, fecha = ?, cod_comp = ? WHERE cod_part = ?";
 	final String BUSCAR_PARTIDO = "SELECT * FROM PARTIDO";
-	final String PARTIDOS_DIA = "SELECT * FROM PARTIDO DATE(FECHA) = ? ORDER BY fecha ASC";
+	final String PARTIDOS_DIA = "SELECT * FROM PARTIDO WHERE DATE(FECHA) = ? ORDER BY fecha ASC";
 
 	public DaoImplementacion() {
 		this.configFile = ResourceBundle.getBundle("modelo.configClass");
@@ -512,4 +514,33 @@ public class DaoImplementacion implements InterfazDao {
 		}
 		return partidos;
 	}
-}
+	public List<Partido> devolverPartidos(LocalDate fecha) {
+		Partido part;
+		List<Partido> partidos = new ArrayList<Partido>();
+		ResultSet rs = null;
+		openConnection();
+		try {
+			stmt = con.prepareStatement(PARTIDOS_DIA);
+			stmt.setDate(1, Date.valueOf(fecha));
+			rs = stmt.executeQuery();
+			while (rs.next()) {
+				part = new Partido();
+				part.setCod_comp(rs.getString(6));
+				part.setEquipo_local(rs.getString(2));
+				part.setEquipo_visitante(rs.getString(3));
+				part.setGanador(rs.getString(4));
+				partidos.add(part);
+
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				rs.close();
+				closeConnection();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return partidos;
+}}
