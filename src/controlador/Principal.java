@@ -1,5 +1,6 @@
 package controlador;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -15,7 +16,7 @@ public class Principal {
 
 	private static InterfazDao di = new DaoImplementacion();
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws LoginException {
 		VMenuPrincipal vmp;
 			vmp = new VMenuPrincipal();
 			vmp.setVisible(true);
@@ -92,5 +93,8 @@ public class Principal {
 		di.modificarPartido(par);
 	}
 	
+	public static List<Partido> devolverPartidos(LocalDate fecha) {
+		return di.devolverPartidos(fecha);
+	}
 	
 }

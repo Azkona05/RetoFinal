@@ -54,40 +54,41 @@ public class VMenuAdmin extends JDialog implements ActionListener{
 		gbl_contentPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		contentPanel.setLayout(gbl_contentPanel);
 		{
-			btnJugador = new JButton("Jugador");
-			btnJugador.addActionListener(this);
-			GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
-			gbc_btnNewButton.insets = new Insets(0, 0, 5, 5);
-			gbc_btnNewButton.gridx = 3;
-			gbc_btnNewButton.gridy = 3;
-			contentPanel.add(btnJugador, gbc_btnNewButton);
+			{
+				btnJugador = new JButton("Jugador");
+				btnJugador.addActionListener(this);
+				GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
+				gbc_btnNewButton.insets = new Insets(0, 0, 5, 5);
+				gbc_btnNewButton.gridx = 1;
+				gbc_btnNewButton.gridy = 0;
+				contentPanel.add(btnJugador, gbc_btnNewButton);
+			}
+			{
+				btnEquipo = new JButton("Equipo");
+				btnEquipo.addActionListener(this);
+				GridBagConstraints gbc_btnModificacion_1 = new GridBagConstraints();
+				gbc_btnModificacion_1.insets = new Insets(0, 0, 5, 5);
+				gbc_btnModificacion_1.gridx = 3;
+				gbc_btnModificacion_1.gridy = 0;
+				contentPanel.add(btnEquipo, gbc_btnModificacion_1);
+			}
 		}
 		{
 			btnCompeticion = new JButton("Competicion");
 			btnCompeticion.addActionListener(this);
 			GridBagConstraints gbc_btnNewButton_1 = new GridBagConstraints();
 			gbc_btnNewButton_1.insets = new Insets(0, 0, 5, 5);
-			gbc_btnNewButton_1.gridx = 10;
-			gbc_btnNewButton_1.gridy = 3;
+			gbc_btnNewButton_1.gridx = 5;
+			gbc_btnNewButton_1.gridy = 0;
 			contentPanel.add(btnCompeticion, gbc_btnNewButton_1);
 		}
-		{
-			btnEquipo = new JButton("Equipo");
-			btnEquipo.addActionListener(this);
-			GridBagConstraints gbc_btnModificacion_1 = new GridBagConstraints();
-			gbc_btnModificacion_1.insets = new Insets(0, 0, 5, 5);
-			gbc_btnModificacion_1.gridx = 6;
-			gbc_btnModificacion_1.gridy = 7;
-			contentPanel.add(btnEquipo, gbc_btnModificacion_1);
-		}
-		{
-			btnSalir = new JButton("Salir");
-			btnSalir.addActionListener(this);
-			GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
-			gbc_btnNewButton.gridx = 14;
-			gbc_btnNewButton.gridy = 11;
-			contentPanel.add(btnSalir, gbc_btnNewButton);
-		}
+		btnSalir = new JButton("Salir");
+		btnSalir.addActionListener(this);
+		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
+		gbc_btnNewButton.insets = new Insets(0, 0, 5, 5);
+		gbc_btnNewButton.gridx = 7;
+		gbc_btnNewButton.gridy = 0;
+		contentPanel.add(btnSalir, gbc_btnNewButton);
 		
 	}
 

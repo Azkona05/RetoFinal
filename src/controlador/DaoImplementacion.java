@@ -6,6 +6,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -574,31 +575,34 @@ public class DaoImplementacion implements InterfazDao {
 		return partidos;
 	}
 
-//	public void partidosDia(Date fecha) {
-//		openConnection();
-//		try {
-//			stmt = con.prepareStatement(Metodo_Burro);
-//			stmt.setString(1, liga.getCod_comp());
-//			rs = stmt.executeQuery();
-//
-//			while (rs.next()) {
-//				part = new Partido();
-//				part.setEquipo_local(rs.getString(2));
-//				part.setEquipo_visitante(rs.getString(3));
-//				part.setGanador(rs.getString(4));
-//				partidos.add(part);
-//
-//			}
-//
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		} finally {
-//			try {
-//				rs.close();
-//				closeConnection();
-//			} catch (SQLException e) {
-//				e.printStackTrace();
-//			}
-//		}
-//	}
+	public List<Partido> devolverPartidos(LocalDate fecha) {
+		Partido part;
+		List<Partido> partidos = new ArrayList<Partido>();
+		ResultSet rs = null;
+		openConnection();
+		try {
+			stmt = con.prepareStatement(PARTIDOS_DIA);
+			stmt.setDate(1, Date.valueOf(fecha));
+			rs = stmt.executeQuery();
+			while (rs.next()) {
+				part = new Partido();
+				part.setCod_comp(rs.getString(6));
+				part.setEquipo_local(rs.getString(2));
+				part.setEquipo_visitante(rs.getString(3));
+				part.setGanador(rs.getString(4));
+				partidos.add(part);
+
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				rs.close();
+				closeConnection();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return partidos;
+	}
 }

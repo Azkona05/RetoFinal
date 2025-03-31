@@ -8,7 +8,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import modelo.EnumGanador;
 import modelo.Partido;
 
 class TestPartido {
@@ -60,7 +59,7 @@ class TestPartido {
 	
 	@Test
 	public void testGetGanador() {
-		assertEquals(EnumGanador.VISITANTE, part.getGanador());
+		assertEquals("JET", part.getGanador());
 	}
 	
 	@Test
