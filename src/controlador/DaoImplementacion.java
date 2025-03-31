@@ -6,6 +6,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -33,7 +34,7 @@ public class DaoImplementacion implements InterfazDao {
 	private PreparedStatement stmt;
 	// Sentencias SQL
 	// SQL Login
-	final String LOGIN = "SELECT *FROM USUARIO WHERE NOM = ? AND CONTRASENIA = ?";
+	final String LOGIN = "SELECT * FROM USUARIO WHERE NOM = ? AND CONTRASENIA = ?";
 	// SQL Jugador
 	final String ALTA_JUGADOR = "INSERT INTO JUGADOR (dni, nombre, apellido, dorsal, posicion, cod_equi) VALUES (?, ?, ?, ?, ?, ?)";
 	final String BAJA_JUGADOR = "DELETE FROM JUGADOR WHERE dni = ?";
@@ -60,7 +61,9 @@ public class DaoImplementacion implements InterfazDao {
 	final String BAJA_PARTIDO = "DELETE FROM PARTIDO WHERE cod_part = ?";
 	final String MODIFICAR_PARTIDO = "UPDATE PAARTIDO SET equipo_local = ?, equipo_visitante = ?, ganador = ?, fecha = ?, cod_comp = ? WHERE cod_part = ?";
 	final String BUSCAR_PARTIDO = "SELECT * FROM PARTIDO";
-	final String PARTIDOS_DIA = "SELECT * FROM PARTIDO DATE(FECHA) = ? ORDER BY fecha ASC";
+
+	final String PARTIDOS_DIA = "SELECT * FROM PARTIDO WHERE DATE(FECHA) = ? ORDER BY fecha ASC";
+
 
 	public DaoImplementacion() {
 		this.configFile = ResourceBundle.getBundle("modelo.configClass");
@@ -394,7 +397,6 @@ public class DaoImplementacion implements InterfazDao {
 			while (rs.next()) {
 				equi = new Equipo();
 				equi.setCod_equi(rs.getString("Cod_equi"));
-				;
 				equi.setNombre_equipo(rs.getString("Nombre_equipo"));
 				equipos.put(equi.getCod_equi(), equi);
 			}
@@ -544,6 +546,7 @@ public class DaoImplementacion implements InterfazDao {
 	@Override
 	public List<Partido> buscarEquiLiga(Competicion liga) {
 		Partido part;
+		int cont = 1;
 		ResultSet rs = null;
 		List<Partido> partidos = new ArrayList<Partido>();
 		openConnection();
@@ -573,32 +576,33 @@ public class DaoImplementacion implements InterfazDao {
 		}
 		return partidos;
 	}
+	public List<Partido> devolverPartidos(LocalDate fecha) {
+		Partido part;
+		List<Partido> partidos = new ArrayList<Partido>();
+		ResultSet rs = null;
+		openConnection();
+		try {
+			stmt = con.prepareStatement(PARTIDOS_DIA);
+			stmt.setDate(1, Date.valueOf(fecha));
+			rs = stmt.executeQuery();
+			while (rs.next()) {
+				part = new Partido();
+				part.setCod_comp(rs.getString(6));
+				part.setEquipo_local(rs.getString(2));
+				part.setEquipo_visitante(rs.getString(3));
+				part.setGanador(rs.getString(4));
+				partidos.add(part);
 
-//	public void partidosDia(Date fecha) {
-//		openConnection();
-//		try {
-//			stmt = con.prepareStatement(Metodo_Burro);
-//			stmt.setString(1, liga.getCod_comp());
-//			rs = stmt.executeQuery();
-//
-//			while (rs.next()) {
-//				part = new Partido();
-//				part.setEquipo_local(rs.getString(2));
-//				part.setEquipo_visitante(rs.getString(3));
-//				part.setGanador(rs.getString(4));
-//				partidos.add(part);
-//
-//			}
-//
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		} finally {
-//			try {
-//				rs.close();
-//				closeConnection();
-//			} catch (SQLException e) {
-//				e.printStackTrace();
-//			}
-//		}
-//	}
-}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				rs.close();
+				closeConnection();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return partidos;
+}}

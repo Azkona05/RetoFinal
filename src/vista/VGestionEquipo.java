@@ -14,6 +14,7 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 import controlador.Principal;
+import modelo.Competicion;
 import modelo.Equipo;
 
 public class VGestionEquipo extends JDialog implements ActionListener {

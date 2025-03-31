@@ -1,14 +1,13 @@
 package test;
 
-import static org.junit.jupiter.api.Assertions.*;
+
+import static org.junit.Assert.assertEquals;
 
 import java.time.LocalDate;
 
+import org.junit.Test;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-import modelo.EnumGanador;
 import modelo.Partido;
 
 class TestPartido {
@@ -66,7 +65,7 @@ class TestPartido {
 	@Test
 	public void testSetGanador() {
 		part.setGanador("JET");
-		assertEquals("JET", part.getGanador());
+		assertEquals(EnumGanado.LOCAL, part.getGanador());
 	}
 	
 	@Test

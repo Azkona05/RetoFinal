@@ -20,6 +20,7 @@ public class VMenuAdmin extends JDialog implements ActionListener{
 	private JButton btnJugador; 
 	private JButton btnCompeticion;
 	private JButton btnEquipo;
+	private JButton btnPartido;
 	private JButton btnSalir;
 	/**
 	 * Launch the application.
@@ -67,7 +68,7 @@ public class VMenuAdmin extends JDialog implements ActionListener{
 			btnCompeticion.addActionListener(this);
 			GridBagConstraints gbc_btnNewButton_1 = new GridBagConstraints();
 			gbc_btnNewButton_1.insets = new Insets(0, 0, 5, 5);
-			gbc_btnNewButton_1.gridx = 10;
+			gbc_btnNewButton_1.gridx = 6;
 			gbc_btnNewButton_1.gridy = 3;
 			contentPanel.add(btnCompeticion, gbc_btnNewButton_1);
 		}
@@ -76,17 +77,27 @@ public class VMenuAdmin extends JDialog implements ActionListener{
 			btnEquipo.addActionListener(this);
 			GridBagConstraints gbc_btnModificacion_1 = new GridBagConstraints();
 			gbc_btnModificacion_1.insets = new Insets(0, 0, 5, 5);
-			gbc_btnModificacion_1.gridx = 6;
-			gbc_btnModificacion_1.gridy = 7;
+			gbc_btnModificacion_1.gridx = 9;
+			gbc_btnModificacion_1.gridy = 3;
 			contentPanel.add(btnEquipo, gbc_btnModificacion_1);
+		}
+		{
+			btnPartido = new JButton("Partidos");
+			btnPartido.addActionListener(this);
+			GridBagConstraints gbc_btnModificacion_1 = new GridBagConstraints();
+			gbc_btnModificacion_1.insets = new Insets(0, 0, 5, 5);
+			gbc_btnModificacion_1.gridx = 12;
+			gbc_btnModificacion_1.gridy = 3;
+			contentPanel.add(btnPartido, gbc_btnModificacion_1);
 		}
 		{
 			btnSalir = new JButton("Salir");
 			btnSalir.addActionListener(this);
-			GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
-			gbc_btnNewButton.gridx = 14;
-			gbc_btnNewButton.gridy = 11;
-			contentPanel.add(btnSalir, gbc_btnNewButton);
+			GridBagConstraints gbc_btnSalir = new GridBagConstraints();
+			gbc_btnSalir.insets = new Insets(0, 0, 5, 5);
+			gbc_btnSalir.gridx = 15;
+			gbc_btnSalir.gridy = 3;
+			contentPanel.add(btnSalir, gbc_btnSalir);
 		}
 		
 	}
@@ -103,6 +114,9 @@ public class VMenuAdmin extends JDialog implements ActionListener{
 			VGestionEquipo vm = new VGestionEquipo(this, true);
 			vm.setVisible(true);
 		}else if (e.getSource().equals(btnSalir)) {
+			VGestionPartidos vp = new VGestionPartidos (this, true);
+			vp.setVisible(true);
+		} else {
 			dispose();
 		}
 		
