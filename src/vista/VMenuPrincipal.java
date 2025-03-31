@@ -32,6 +32,7 @@ import javax.swing.JTable;
 import java.awt.GridLayout;
 import javax.swing.JComboBox;
 import javax.swing.SwingConstants;
+import java.awt.Toolkit;
 
 public class VMenuPrincipal extends JFrame implements ActionListener, FocusListener {
 	private static final long serialVersionUID = 1L;
@@ -39,20 +40,21 @@ public class VMenuPrincipal extends JFrame implements ActionListener, FocusListe
 	private JCalendar calendario;
 	private JTable tablaClasi, tablaPart;
 	private JPanel panel_Derecho, panel_Izquierdo;
-	private JComboBox cbElegirLiga;
+	private JComboBox<Competicion> cbElegirLiga;
 	private JScrollPane jscroll, jscrollPartido;
 	private LocalDate fecha;
 
 	public VMenuPrincipal() throws LoginException {
+		setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Users\\anazk\\3EBAL\\RetoFinal\\resources/icono.jpg"));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 705, 428);
-
+	
 		// Panel Superior
 		JPanel panel_Superior = new JPanel();
 		getContentPane().add(panel_Superior, BorderLayout.NORTH);
 		panel_Superior.setLayout(new GridLayout(1, 0, 0, 0));
 
-		cbElegirLiga = new JComboBox();
+		cbElegirLiga = new JComboBox<Competicion>();
 		panel_Superior.add(cbElegirLiga);
 		cbElegirLiga.addActionListener(this);
 
@@ -76,7 +78,6 @@ public class VMenuPrincipal extends JFrame implements ActionListener, FocusListe
 		// Panel Central
 		JPanel panel_Central = new JPanel();
 		getContentPane().add(panel_Central, BorderLayout.CENTER);
-
 		calendario = new JCalendar();
 		panel_Central.add(calendario);
 
@@ -119,7 +120,6 @@ public class VMenuPrincipal extends JFrame implements ActionListener, FocusListe
 		} else {
 
 		}
-
 	}
 
 	private void presentarTablaPartido(LocalDate fecha) {
@@ -136,7 +136,7 @@ public class VMenuPrincipal extends JFrame implements ActionListener, FocusListe
 			fila[0] = part.getCod_comp();
 			fila[1] = part.getEquipo_local();
 			fila[2] = part.getEquipo_visitante();
-			if (part.getGanador()==null) {
+			if (part.getGanador() == null) {
 				part.setGanador("PSD");
 				fila[3] = part.getGanador();
 			} else {

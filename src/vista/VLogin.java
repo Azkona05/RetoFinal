@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
@@ -25,22 +26,6 @@ public class VLogin extends JDialog implements ActionListener {
 	private JPasswordField passwordField;
 	private JButton btnComprobar;
 	private JButton btnCancelar;
-
-	/**
-	 * Launch the application.
-	 */
-	/*
-	 * public static void main(String[] args) { EventQueue.invokeLater(new
-	 * Runnable() { public void run() { try { VInicio frame = new VInicio();
-	 * frame.setVisible(true); } catch (Exception e) { e.printStackTrace(); } } });
-	 * }
-	 */
-
-	/**
-	 * Create the frame.
-	 * @param b 
-	 * @param vMenuPrincipal 
-	 */
 	public VLogin(VMenuPrincipal padre, boolean modal) {
 		super(padre);
 		this.setModal(modal);

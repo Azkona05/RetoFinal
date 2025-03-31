@@ -14,87 +14,84 @@ import vista.VMenuPrincipal;
 
 public class Principal {
 
-	private static InterfazDao di = new DaoImplementacion();
+	private static InterfazDao dao = new DaoImplementacion();
 
 	public static void main(String[] args) throws LoginException {
 		VMenuPrincipal vmp;
 			vmp = new VMenuPrincipal();
 			vmp.setVisible(true);
 		
-
 	}
 
+
 	public static void login(Usuario usuario) throws LoginException {
-		di.login(usuario);
+		dao.login(usuario);
+		}
+	public static List<Partido> buscarEquiLiga (Competicion liga) {
+		return dao.buscarEquiLiga(liga);
+	}
+
+	public static Map<String, Competicion> leerCompeticiones() {
+		return dao.listarCompeticiones();
+	}
+	public static List<String> devolverEquipos(Competicion liga) {
+		return dao.buscarDifEquipo(liga);
+	}
+	public static List<Partido> devolverPartidos(LocalDate fecha) {
+		return dao.devolverPartidos(fecha);
 	}
 
 	public static void EliminarJugador(Jugador j) {
-		di.bajaJugador(j);
+		dao.bajaJugador(j);
 	}
 
 	public static void modificarJugador(Jugador j) {
-		di.modificarJugador(j);
+		dao.modificarJugador(j);
 
 	}
 
 	public static void altaJugador(Jugador j) {
-		di.altaJugador(j);
+		dao.altaJugador(j);
 
-	}
-
-	public static List<Partido> buscarEquiLiga(Competicion liga) {
-		return di.buscarEquiLiga(liga);
-	}
-
-	public static Map<String, Competicion> leerCompeticiones() {
-		return di.listarCompeticiones();
-	}
-
-	public static List<String> devolverEquipos(Competicion liga) {
-		return di.buscarDifEquipo(liga);
 	}
 
 	public static void modificarCompeticion(Competicion comp) {
-		di.modificarCompeticion(comp);
+		dao.modificarCompeticion(comp);
 		
 	}
 
 	public static void eliminarCompeticion(Competicion comp) {
-		di.bajaCompeticion(comp);
+		dao.bajaCompeticion(comp);
 		
 	}
 
 	public static void altaCompeticion(Competicion comp) {
-		di.altaCompeticion(comp);
+		dao.altaCompeticion(comp);
 		
 	}
 	
 	public static void altaEquipo(Equipo eq) {
-		di.altaEquipo(eq);
+		dao.altaEquipo(eq);
 	}
 	
 	public static void bajaEquipo(Equipo eq) {
-		di.bajaEquipo(eq);
+		dao.bajaEquipo(eq);
 	}
 	
 	public static void modificarEquipo(Equipo eq) {
-		di.modificarEquipo(eq);
+		dao.modificarEquipo(eq);
 	}
 	
 	public static void altaPartido(Partido par) {
-		di.altaPartido(par);
+		dao.altaPartido(par);
 	}
 	
 	public static void bajaPartido(Partido par) {
-		di.bajaPartido(par);
+		dao.bajaPartido(par);
 	}
 	
 	public static void modificarPartido(Partido par) {
-		di.modificarPartido(par);
-	}
-	
-	public static List<Partido> devolverPartidos(LocalDate fecha) {
-		return di.devolverPartidos(fecha);
+		dao.modificarPartido(par);
 	}
 	
 }

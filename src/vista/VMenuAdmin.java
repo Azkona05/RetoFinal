@@ -20,6 +20,7 @@ public class VMenuAdmin extends JDialog implements ActionListener{
 	private JButton btnJugador; 
 	private JButton btnCompeticion;
 	private JButton btnEquipo;
+	private JButton btnPartido;
 	private JButton btnSalir;
 	/**
 	 * Launch the application.
@@ -60,17 +61,8 @@ public class VMenuAdmin extends JDialog implements ActionListener{
 				GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
 				gbc_btnNewButton.insets = new Insets(0, 0, 5, 5);
 				gbc_btnNewButton.gridx = 1;
-				gbc_btnNewButton.gridy = 0;
+				gbc_btnNewButton.gridy = 3;
 				contentPanel.add(btnJugador, gbc_btnNewButton);
-			}
-			{
-				btnEquipo = new JButton("Equipo");
-				btnEquipo.addActionListener(this);
-				GridBagConstraints gbc_btnModificacion_1 = new GridBagConstraints();
-				gbc_btnModificacion_1.insets = new Insets(0, 0, 5, 5);
-				gbc_btnModificacion_1.gridx = 3;
-				gbc_btnModificacion_1.gridy = 0;
-				contentPanel.add(btnEquipo, gbc_btnModificacion_1);
 			}
 		}
 		{
@@ -78,17 +70,39 @@ public class VMenuAdmin extends JDialog implements ActionListener{
 			btnCompeticion.addActionListener(this);
 			GridBagConstraints gbc_btnNewButton_1 = new GridBagConstraints();
 			gbc_btnNewButton_1.insets = new Insets(0, 0, 5, 5);
-			gbc_btnNewButton_1.gridx = 5;
-			gbc_btnNewButton_1.gridy = 0;
+
+			gbc_btnNewButton_1.gridx = 6;
+			gbc_btnNewButton_1.gridy = 3;
 			contentPanel.add(btnCompeticion, gbc_btnNewButton_1);
 		}
-		btnSalir = new JButton("Salir");
-		btnSalir.addActionListener(this);
-		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
-		gbc_btnNewButton.insets = new Insets(0, 0, 5, 5);
-		gbc_btnNewButton.gridx = 7;
-		gbc_btnNewButton.gridy = 0;
-		contentPanel.add(btnSalir, gbc_btnNewButton);
+		{
+			btnEquipo = new JButton("Equipo");
+			btnEquipo.addActionListener(this);
+			GridBagConstraints gbc_btnModificacion_1 = new GridBagConstraints();
+			gbc_btnModificacion_1.insets = new Insets(0, 0, 5, 5);
+			gbc_btnModificacion_1.gridx = 9;
+			gbc_btnModificacion_1.gridy = 3;
+			contentPanel.add(btnEquipo, gbc_btnModificacion_1);
+		}
+		{
+			btnPartido = new JButton("Partidos");
+			btnPartido.addActionListener(this);
+			GridBagConstraints gbc_btnModificacion_1 = new GridBagConstraints();
+			gbc_btnModificacion_1.insets = new Insets(0, 0, 5, 5);
+			gbc_btnModificacion_1.gridx = 12;
+			gbc_btnModificacion_1.gridy = 3;
+			contentPanel.add(btnPartido, gbc_btnModificacion_1);
+		}
+		{
+			btnSalir = new JButton("Salir");
+			btnSalir.addActionListener(this);
+			GridBagConstraints gbc_btnSalir = new GridBagConstraints();
+			gbc_btnSalir.insets = new Insets(0, 0, 5, 5);
+			gbc_btnSalir.gridx = 15;
+			gbc_btnSalir.gridy = 3;
+			contentPanel.add(btnSalir, gbc_btnSalir);
+		}
+
 		
 	}
 
@@ -104,6 +118,9 @@ public class VMenuAdmin extends JDialog implements ActionListener{
 			VGestionEquipo vm = new VGestionEquipo(this, true);
 			vm.setVisible(true);
 		}else if (e.getSource().equals(btnSalir)) {
+			VGestionPartidos vp = new VGestionPartidos (this, true);
+			vp.setVisible(true);
+		} else {
 			dispose();
 		}
 		

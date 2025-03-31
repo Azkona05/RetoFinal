@@ -3,7 +3,6 @@ package controlador;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
-
 import excepciones.LoginException;
 import modelo.Competicion;
 import modelo.Equipo;
@@ -37,5 +36,4 @@ public interface InterfazDao {
 	public Map<Integer, Partido> listarPartidos();
 	List<String> buscarDifEquipo(Competicion liga);
 	List<Partido> devolverPartidos(LocalDate fecha);
-	
 }
