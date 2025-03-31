@@ -52,7 +52,7 @@ public class VGestionPartidos extends JDialog {
 		JComboBox cbVisitante = new JComboBox();
 		cbVisitante.setBounds(128, 107, 130, 21);
 		contentPanel.add(cbVisitante);
-		
+		System.out.println("1");
 		
 		JLabel lblGanador = new JLabel("Ganador: ");
 		lblGanador.setBounds(33, 152, 85, 13);
