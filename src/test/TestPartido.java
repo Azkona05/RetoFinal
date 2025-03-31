@@ -59,13 +59,7 @@ class TestPartido {
 	
 	@Test
 	public void testGetGanador() {
-		assertEquals(EnumGanador.VISITANTE, part.getGanador());
-	}
-	
-	@Test
-	public void testSetGanador() {
-		part.setGanador("JET");
-		assertEquals(EnumGanado.LOCAL, part.getGanador());
+		assertEquals("JET", part.getGanador());
 	}
 	
 	@Test

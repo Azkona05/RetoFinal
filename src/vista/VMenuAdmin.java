@@ -55,19 +55,22 @@ public class VMenuAdmin extends JDialog implements ActionListener{
 		gbl_contentPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		contentPanel.setLayout(gbl_contentPanel);
 		{
-			btnJugador = new JButton("Jugador");
-			btnJugador.addActionListener(this);
-			GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
-			gbc_btnNewButton.insets = new Insets(0, 0, 5, 5);
-			gbc_btnNewButton.gridx = 3;
-			gbc_btnNewButton.gridy = 3;
-			contentPanel.add(btnJugador, gbc_btnNewButton);
+			{
+				btnJugador = new JButton("Jugador");
+				btnJugador.addActionListener(this);
+				GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
+				gbc_btnNewButton.insets = new Insets(0, 0, 5, 5);
+				gbc_btnNewButton.gridx = 1;
+				gbc_btnNewButton.gridy = 3;
+				contentPanel.add(btnJugador, gbc_btnNewButton);
+			}
 		}
 		{
 			btnCompeticion = new JButton("Competicion");
 			btnCompeticion.addActionListener(this);
 			GridBagConstraints gbc_btnNewButton_1 = new GridBagConstraints();
 			gbc_btnNewButton_1.insets = new Insets(0, 0, 5, 5);
+
 			gbc_btnNewButton_1.gridx = 6;
 			gbc_btnNewButton_1.gridy = 3;
 			contentPanel.add(btnCompeticion, gbc_btnNewButton_1);
@@ -99,6 +102,7 @@ public class VMenuAdmin extends JDialog implements ActionListener{
 			gbc_btnSalir.gridy = 3;
 			contentPanel.add(btnSalir, gbc_btnSalir);
 		}
+
 		
 	}
 

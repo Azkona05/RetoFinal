@@ -1,6 +1,6 @@
 package controlador;
 
-
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -8,7 +8,6 @@ import excepciones.LoginException;
 import modelo.Competicion;
 import modelo.Equipo;
 import modelo.Jugador;
-import java.time.LocalDate;
 import modelo.Partido;
 import modelo.Usuario;
 import vista.VMenuPrincipal;
@@ -18,9 +17,12 @@ public class Principal {
 	private static InterfazDao dao = new DaoImplementacion();
 
 	public static void main(String[] args) throws LoginException {
-		VMenuPrincipal vmp = new VMenuPrincipal();
-		vmp.setVisible(true);
+		VMenuPrincipal vmp;
+			vmp = new VMenuPrincipal();
+			vmp.setVisible(true);
+		
 	}
+
 
 	public static void login(Usuario usuario) throws LoginException {
 		dao.login(usuario);
@@ -91,6 +93,5 @@ public class Principal {
 	public static void modificarPartido(Partido par) {
 		dao.modificarPartido(par);
 	}
-	
 	
 }

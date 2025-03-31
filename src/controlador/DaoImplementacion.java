@@ -64,7 +64,6 @@ public class DaoImplementacion implements InterfazDao {
 
 	final String PARTIDOS_DIA = "SELECT * FROM PARTIDO WHERE DATE(FECHA) = ? ORDER BY fecha ASC";
 
-
 	public DaoImplementacion() {
 		this.configFile = ResourceBundle.getBundle("modelo.configClass");
 		this.urlDB = this.configFile.getString("Conn");
@@ -576,6 +575,7 @@ public class DaoImplementacion implements InterfazDao {
 		}
 		return partidos;
 	}
+
 	public List<Partido> devolverPartidos(LocalDate fecha) {
 		Partido part;
 		List<Partido> partidos = new ArrayList<Partido>();
@@ -592,7 +592,6 @@ public class DaoImplementacion implements InterfazDao {
 				part.setEquipo_visitante(rs.getString(3));
 				part.setGanador(rs.getString(4));
 				partidos.add(part);
-
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -605,4 +604,5 @@ public class DaoImplementacion implements InterfazDao {
 			}
 		}
 		return partidos;
-}}
+	}
+}
