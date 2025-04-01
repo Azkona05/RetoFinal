@@ -80,12 +80,12 @@ public class VLogin extends JDialog implements ActionListener {
 		usuario.setNombre(txtUsuario.getText());
 		usuario.setPassword(new String(passwordField.getPassword()));
 		// Comprobar login correcto
-		try {
-			Principal.login(usuario);
+//		try {
+			//Principal.login(usuario);
 			VMenuAdmin menu = new VMenuAdmin(this, true);
 			menu.setVisible(true);
-		} catch (LoginException e) {
-			e.visualizarMsg();
-		}
+//		} catch (LoginException e) {
+//			e.visualizarMsg();
+//		}
 	}
 }
