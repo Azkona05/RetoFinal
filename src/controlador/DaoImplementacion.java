@@ -55,7 +55,7 @@ public class DaoImplementacion implements InterfazDao {
 	final String BAJA_EQUIPO = "DELETE FROM EQUIPO WHERE cod_equi = ?";
 	final String MODIFICAR_EQUIPO = "UPDATE EQUIPO SET nombre_equipo = ? WHERE cod_equi = ?";
 	final String BUSCAR_EQUIPO = "SELECT * FROM EQUIPO";
-	final String BUSCAR_EQUIPO_LIGA = "SELECT cod_equi from equipo where cod_equi IN (SELECT equipo_local from partido where cod_comp=?) OR cod_equi IN (SELECT equipo_visitante from partido where cod_comp=?)";
+	final String BUSCAR_EQUIPO_LIGA = "SELECT cod_equi, nombre_equipo from equipo where cod_equi IN (SELECT equipo_local from partido where cod_comp=?) OR cod_equi IN (SELECT equipo_visitante from partido where cod_comp=?)";
 	// SQL Partido
 	final String ALTA_PARTIDO = "INSERT INTO PARTIDO (cod_part, equipo_local, equipo_visitante, ganador, fecha, cod_comp) VALUES (?, ?, ?, ?, ?)";
 	final String BAJA_PARTIDO = "DELETE FROM PARTIDO WHERE cod_part = ?";
@@ -63,8 +63,8 @@ public class DaoImplementacion implements InterfazDao {
 	final String BUSCAR_PARTIDO = "SELECT * FROM PARTIDO";
 
 	final String PARTIDOS_DIA = "SELECT * FROM PARTIDO WHERE DATE(FECHA) = ? ORDER BY fecha ASC";
-
-
+	final String EQUIPOS_LIGA= "SELECT * FROM EQUIPO WHERE cod_equi in (select equipo_local from partido ";
+	
 	public DaoImplementacion() {
 		this.configFile = ResourceBundle.getBundle("modelo.configClass");
 		this.urlDB = this.configFile.getString("Conn");
@@ -516,9 +516,10 @@ public class DaoImplementacion implements InterfazDao {
 	}
 
 	@Override
-	public List<String> buscarDifEquipo(Competicion liga) {
+	public List<Equipo> buscarDifEquipo(Competicion liga) {
+		Equipo equi;
 		ResultSet rs = null;
-		List<String> equipos = new ArrayList<String>();
+		List<Equipo> equipos = new ArrayList<Equipo>();
 		openConnection();
 		try {
 			stmt = con.prepareStatement(BUSCAR_EQUIPO_LIGA);
@@ -527,7 +528,10 @@ public class DaoImplementacion implements InterfazDao {
 			rs = stmt.executeQuery();
 
 			while (rs.next()) {
-				equipos.add(rs.getString(1));
+				equi = new Equipo ();
+				equi.setCod_equi(rs.getString(1));
+				equi.setNombre_equipo(rs.getString(2));
+				equipos.add(equi);
 			}
 
 		} catch (SQLException e) {
@@ -576,6 +580,7 @@ public class DaoImplementacion implements InterfazDao {
 		}
 		return partidos;
 	}
+
 	public List<Partido> devolverPartidos(LocalDate fecha) {
 		Partido part;
 		List<Partido> partidos = new ArrayList<Partido>();
@@ -605,4 +610,31 @@ public class DaoImplementacion implements InterfazDao {
 			}
 		}
 		return partidos;
-}}
+	}
+	public List<Competicion> devolverCompeticiones() {
+	Competicion comp;
+	List<Competicion> competiciones = new ArrayList<Competicion>();
+	ResultSet rs = null;
+	openConnection();
+	try {
+		stmt = con.prepareStatement(BUSCAR_COMPETICION);
+		rs = stmt.executeQuery();
+		while (rs.next()) {
+			comp = new Competicion();
+			comp.setCod_comp(rs.getString(1));
+			comp.setNombre_competicion(rs.getString(2));
+			competiciones.add(comp);
+		}
+	} catch (SQLException e) {
+		e.printStackTrace();
+	} finally {
+		try {
+			rs.close();
+			closeConnection();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	return competiciones;
+}
+}

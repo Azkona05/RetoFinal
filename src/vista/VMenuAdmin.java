@@ -113,7 +113,7 @@ public class VMenuAdmin extends JDialog implements ActionListener{
 		}else if (e.getSource().equals(btnEquipo)) {
 			VGestionEquipo vm = new VGestionEquipo(this, true);
 			vm.setVisible(true);
-		}else if (e.getSource().equals(btnSalir)) {
+		}else if (e.getSource().equals(btnPartido)) {
 			VGestionPartidos vp = new VGestionPartidos (this, true);
 			vp.setVisible(true);
 		} else {

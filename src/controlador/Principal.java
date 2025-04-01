@@ -32,7 +32,7 @@ public class Principal {
 	public static Map<String, Competicion> leerCompeticiones() {
 		return dao.listarCompeticiones();
 	}
-	public static List<String> devolverEquipos(Competicion liga) {
+	public static List<Equipo> devolverEquipos(Competicion liga) {
 		return dao.buscarDifEquipo(liga);
 	}
 	public static List<Partido> devolverPartidos(LocalDate fecha) {
@@ -91,6 +91,8 @@ public class Principal {
 	public static void modificarPartido(Partido par) {
 		dao.modificarPartido(par);
 	}
-	
+	public static List<Competicion> devolverCompeticiones() {
+		return dao.devolverCompeticiones();
+	}
 	
 }

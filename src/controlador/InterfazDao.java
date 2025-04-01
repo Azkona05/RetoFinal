@@ -34,6 +34,7 @@ public interface InterfazDao {
 	public void bajaPartido (Partido part);
 	public void modificarPartido (Partido part);
 	public Map<Integer, Partido> listarPartidos();
-	List<String> buscarDifEquipo(Competicion liga);
+	List<Equipo> buscarDifEquipo(Competicion liga);
 	List<Partido> devolverPartidos(LocalDate fecha);
+	List<Competicion> devolverCompeticiones();
 }

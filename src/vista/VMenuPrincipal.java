@@ -26,6 +26,7 @@ import com.toedter.calendar.JCalendar;
 
 import controlador.Principal;
 import modelo.Competicion;
+import modelo.Equipo;
 import modelo.Partido;
 import java.awt.BorderLayout;
 import javax.swing.JTable;
@@ -162,13 +163,13 @@ public class VMenuPrincipal extends JFrame implements ActionListener, FocusListe
 		String[] colum = new String[3];
 		DefaultTableModel model = new DefaultTableModel(null, coulumnasNombre);
 		List<Partido> partidos = Principal.buscarEquiLiga(liga);
-		List<String> diferentesEquipos = Principal.devolverEquipos(liga);
-		Map<String, String> orden = new TreeMap<>(Comparator.reverseOrder());
+		List<Equipo> diferentesEquipos = Principal.devolverEquipos(liga);
+		Map<String, Equipo> orden = new TreeMap<>(Comparator.reverseOrder());
 		int cont = 0;
-		for (String equipo : diferentesEquipos) {
+		for (Equipo equipo : diferentesEquipos) {
 			cont = 0;
 			for (Partido p : partidos) {
-				if (equipo.equals(p.getGanador())) {
+				if (equipo.getCod_equi().equals(p.getGanador())) {
 					cont++;
 				}
 			}
@@ -176,16 +177,45 @@ public class VMenuPrincipal extends JFrame implements ActionListener, FocusListe
 		}
 
 		cont = 1;
-		for (Map.Entry<String, String> entry : orden.entrySet()) {
+		for (Map.Entry<String, Equipo> entry : orden.entrySet()) {
 			colum[0] = String.valueOf(cont);
+			colum[1] = entry.getValue().getNombre_equipo();
 			colum[2] = entry.getKey().split("-")[0];
-			colum[1] = entry.getValue();
 			model.addRow(colum);
 			cont++;
 		}
 
 		return new JTable(model);
 	}
+//	private JTable cargarTabla(Competicion liga) {
+//		String[] coulumnasNombre = { "Posicion", "Nombre", "Victorias" };
+//		String[] colum = new String[3];
+//		DefaultTableModel model = new DefaultTableModel(null, coulumnasNombre);
+//		List<Partido> partidos = Principal.buscarEquiLiga(liga);
+//		List<String> diferentesEquipos = Principal.devolverEquipos(liga);
+//		Map<String, String> orden = new TreeMap<>(Comparator.reverseOrder());
+//		int cont = 0;
+//		for (String equipo : diferentesEquipos) {
+//			cont = 0;
+//			for (Partido p : partidos) {
+//				if (equipo.equals(p.getGanador())) {
+//					cont++;
+//				}
+//			}
+//			orden.put(cont + "-" + equipo, equipo);
+//		}
+//
+//		cont = 1;
+//		for (Map.Entry<String, String> entry : orden.entrySet()) {
+//			colum[0] = String.valueOf(cont);
+//			colum[2] = entry.getKey().split("-")[0];
+//			colum[1] = entry.getValue();
+//			model.addRow(colum);
+//			cont++;
+//		}
+//
+//		return new JTable(model);
+//	}
 
 	@Override
 	public void focusGained(FocusEvent e) {
