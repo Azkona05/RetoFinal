@@ -1,6 +1,7 @@
 package vista;
 
 import java.awt.BorderLayout;
+import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.SimpleDateFormat;
@@ -33,6 +34,7 @@ public class MostrarJugadores extends JDialog {
 	public MostrarJugadores(VMenuAdmin padre, boolean modal) {
 		super(padre);
 		this.setModal(modal);
+		setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/resources/icono.jpg")));
 		setTitle("Lista de Jugadores");
 		setBounds(100, 100, 600, 400);
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
