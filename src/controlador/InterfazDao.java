@@ -14,32 +14,32 @@ public interface InterfazDao {
 	//LOGIN
 	public void login(Usuario usuario) throws LoginException;
 	//JUGADOR
-	public void altaJugador(Jugador jug);
-	public void bajaJugador(Jugador jug);
-	public void modificarJugador(Jugador jug);
-	public List<Jugador> listarJugadores();
+	public void altaJugador(Jugador jug) throws LoginException;
+	public void bajaJugador(Jugador jug) throws LoginException;
+	public void modificarJugador(Jugador jug) throws LoginException;
+	public List<Jugador> listarJugadores() throws LoginException;
 	public Object[][]  mostrarDatosJugador(Jugador jug) throws LoginException; 
 	//COMPETICION
-	public void altaCompeticion(Competicion comp);
-	public void bajaCompeticion (Competicion comp);
-	public void modificarCompeticion (Competicion comp);
-	public Map<String, Competicion> listarCompeticiones();
-	public List<Partido> buscarEquiLiga(Competicion liga);
+	public void altaCompeticion(Competicion comp) throws LoginException;
+	public void bajaCompeticion (Competicion comp) throws LoginException;
+	public void modificarCompeticion (Competicion comp) throws LoginException;
+	public Map<String, Competicion> listarCompeticiones() throws LoginException;
+	public List<Partido> buscarEquiLiga(Competicion liga) throws LoginException;
 	public Object[][]  mostrarDatosCompeticion(Competicion comp) throws LoginException; 
-	public List<Competicion> devolverCompeticiones();
+	public List<Competicion> devolverCompeticiones() throws LoginException;
 	//EQUIPO
-	public void altaEquipo (Equipo eq);
-	public void bajaEquipo (Equipo eq);
-	public void modificarEquipo (Equipo eq);
-	public List<Equipo> buscarEquipos ();
-	public Map<String, Equipo> listarEquipos();
+	public void altaEquipo (Equipo eq) throws LoginException;
+	public void bajaEquipo (Equipo eq) throws LoginException;
+	public void modificarEquipo (Equipo eq) throws LoginException;
+	public List<Equipo> buscarEquipos () throws LoginException;
+	public Map<String, Equipo> listarEquipos() throws LoginException;
 	public Object[][]  mostrarDatosEquipo(Equipo eq) throws LoginException; 
 	//PARTIDO
-	public void altaPartido (Partido part);
-	public void bajaPartido (Partido part);
-	public void modificarPartido (Partido part);
-	public Map<Integer, Partido> listarPartidos();
-	List<String> buscarDifEquipo(Competicion liga);
-	List<Partido> devolverPartidos(LocalDate fecha);
+	public void altaPartido (Partido part) throws LoginException;
+	public void bajaPartido (Partido part) throws LoginException;
+	public void modificarPartido (Partido part) throws LoginException;
+	public Map<Integer, Partido> listarPartidos() throws LoginException;
+	List<String> buscarDifEquipo(Competicion liga) throws LoginException;
+	List<Partido> devolverPartidos(LocalDate fecha) throws LoginException;
 	public Object[][]  mostrarDatosPartido(Partido part) throws LoginException;
 }
