@@ -1,6 +1,6 @@
 package controlador;
 
-
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -8,7 +8,6 @@ import excepciones.LoginException;
 import modelo.Competicion;
 import modelo.Equipo;
 import modelo.Jugador;
-import java.time.LocalDate;
 import modelo.Partido;
 import modelo.Usuario;
 import vista.VMenuPrincipal;
@@ -18,9 +17,12 @@ public class Principal {
 	private static InterfazDao dao = new DaoImplementacion();
 
 	public static void main(String[] args) throws LoginException {
-		VMenuPrincipal vmp = new VMenuPrincipal();
-		vmp.setVisible(true);
+		VMenuPrincipal vmp;
+			vmp = new VMenuPrincipal();
+			vmp.setVisible(true);
+		
 	}
+
 
 	public static void login(Usuario usuario) throws LoginException {
 		dao.login(usuario);
@@ -80,6 +82,10 @@ public class Principal {
 		dao.modificarEquipo(eq);
 	}
 	
+	public static List<Equipo> buscarEquipos () {
+		return dao.buscarEquipos();
+	}
+	
 	public static void altaPartido(Partido par) {
 		dao.altaPartido(par);
 	}
@@ -91,8 +97,31 @@ public class Principal {
 	public static void modificarPartido(Partido par) {
 		dao.modificarPartido(par);
 	}
+
+	public static Object[][] devolverCompeticiones(Competicion comp) throws LoginException {
+		return dao.mostrarDatosCompeticion(comp);
+	}
+
+
+	public static Object[][] devolverPartidos(Partido part) throws LoginException{
+		return dao.mostrarDatosPartido(part);
+	}
+
+
+	public static Object[][] devolverJugadores(Jugador jug) throws LoginException{
+		return dao.mostrarDatosJugador(jug);
+	}
+
+
+	public static Object[][] devolverEquipos(Equipo eq) throws LoginException {
+		return dao.mostrarDatosEquipo(eq);
+	}
+
+
 	public static List<Competicion> devolverCompeticiones() {
 		return dao.devolverCompeticiones();
 	}
-	
+	public static List<Equipo> nuevosEquipos(Competicion comp) {
+		return dao.nuevosEquipos(comp);
+	}
 }

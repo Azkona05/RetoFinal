@@ -2,15 +2,11 @@ package vista;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Comparator;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.Calendar;
-import java.util.Date;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -25,16 +21,19 @@ import javax.swing.table.DefaultTableModel;
 import com.toedter.calendar.JCalendar;
 
 import controlador.Principal;
+import excepciones.LoginException;
 import modelo.Competicion;
 import modelo.Equipo;
 import modelo.Partido;
+
 import java.awt.BorderLayout;
 import javax.swing.JTable;
+
 import java.awt.GridLayout;
 import javax.swing.JComboBox;
 import javax.swing.SwingConstants;
 import java.awt.Toolkit;
-import excepciones.LoginException;
+import javax.swing.JCheckBox;
 
 public class VMenuPrincipal extends JFrame implements ActionListener, FocusListener {
 	private static final long serialVersionUID = 1L;
@@ -42,21 +41,21 @@ public class VMenuPrincipal extends JFrame implements ActionListener, FocusListe
 	private JCalendar calendario;
 	private JTable tablaClasi, tablaPart;
 	private JPanel panel_Derecho, panel_Izquierdo;
-	private JComboBox cbElegirLiga;
+	private JComboBox<Competicion> cbElegirLiga;
 	private JScrollPane jscroll, jscrollPartido;
 	private LocalDate fecha;
 
 	public VMenuPrincipal() throws LoginException {
-		//setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Users\\anazk\\3EBAL\\RetoFinal\\resources/icono.jpg"));
+		setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Users\\anazk\\3EBAL\\RetoFinal\\resources/icono.jpg"));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 705, 428);
-	
+
 		// Panel Superior
 		JPanel panel_Superior = new JPanel();
 		getContentPane().add(panel_Superior, BorderLayout.NORTH);
 		panel_Superior.setLayout(new GridLayout(1, 0, 0, 0));
 
-		cbElegirLiga = new JComboBox();
+		cbElegirLiga = new JComboBox<Competicion>();
 		panel_Superior.add(cbElegirLiga);
 		cbElegirLiga.addActionListener(this);
 
@@ -138,7 +137,7 @@ public class VMenuPrincipal extends JFrame implements ActionListener, FocusListe
 			fila[0] = part.getCod_comp();
 			fila[1] = part.getEquipo_local();
 			fila[2] = part.getEquipo_visitante();
-			if (part.getGanador()==null) {
+			if (part.getGanador() == null) {
 				part.setGanador("PSD");
 				fila[3] = part.getGanador();
 			} else {
@@ -225,7 +224,5 @@ public class VMenuPrincipal extends JFrame implements ActionListener, FocusListe
 	@Override
 	public void focusLost(FocusEvent e) {
 
-
 	}
-
 }
