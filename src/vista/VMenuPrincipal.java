@@ -27,6 +27,8 @@ import modelo.Competicion;
 import modelo.Partido;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+
 import javax.swing.JTable;
 
 import java.awt.GridLayout;
@@ -45,7 +47,8 @@ public class VMenuPrincipal extends JFrame implements ActionListener, FocusListe
 	private LocalDate fecha;
 
 	public VMenuPrincipal() throws LoginException {
-		setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Users\\anazk\\3EBAL\\RetoFinal\\resources/icono.jpg"));
+		setTitle("FUTBOL AMERICANO");
+		setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/resources/icono.jpg")));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 705, 428);
 	
@@ -65,10 +68,11 @@ public class VMenuPrincipal extends JFrame implements ActionListener, FocusListe
 		btnLogin = new JButton("Login");
 		panel_Superior.add(btnLogin);
 		btnLogin.addActionListener(this);
+		btnLogin.setBackground(Color.WHITE);
 
 		// Panel Izqu.
 		panel_Izquierdo = new JPanel();
-		getContentPane().add(panel_Izquierdo, BorderLayout.WEST);
+		getContentPane().add(panel_Izquierdo, BorderLayout.EAST);
 		jscrollPartido = new JScrollPane();
 		panel_Izquierdo.add(jscrollPartido);
 		if (fecha==null) {
@@ -85,10 +89,11 @@ public class VMenuPrincipal extends JFrame implements ActionListener, FocusListe
 		btnCalendario.setText("Actualizar Fecha");
 		panel_Central.add(btnCalendario);
 		btnCalendario.addActionListener(this);
+		btnCalendario.setBackground(Color.WHITE);
 
 		// Panel Derecho
 		panel_Derecho = new JPanel();
-		getContentPane().add(panel_Derecho, BorderLayout.EAST);
+		getContentPane().add(panel_Derecho, BorderLayout.WEST);
 		jscroll = new JScrollPane();
 		panel_Derecho.add(jscroll);
 

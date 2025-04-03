@@ -1,21 +1,24 @@
 package vista;
 
+import java.awt.Color;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 
 import controlador.Principal;
 import excepciones.LoginException;
 import modelo.Usuario;
+import javax.swing.ImageIcon;
+import java.awt.Font;
 
 public class VLogin extends JDialog implements ActionListener {
 
@@ -26,10 +29,13 @@ public class VLogin extends JDialog implements ActionListener {
 	private JPasswordField passwordField;
 	private JButton btnComprobar;
 	private JButton btnCancelar;
+	
+	
 	public VLogin(VMenuPrincipal padre, boolean modal) {
 		super(padre);
 		this.setModal(modal);
-		setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Users\\anazk\\3EBAL\\RetoFinal\\resources/icono.jpg"));
+		setTitle("Iniciar Sesion");
+		setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/resources/icono.jpg")));
 		setBounds(100, 100, 705, 428);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -38,31 +44,42 @@ public class VLogin extends JDialog implements ActionListener {
 		contentPane.setLayout(null);
 
 		lblUsuario = new JLabel("Usuario: ");
+		lblUsuario.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		lblUsuario.setBounds(119, 109, 147, 29);
 		contentPane.add(lblUsuario);
 
 		lblContra = new JLabel("Contraseña: ");
+		lblContra.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		lblContra.setBounds(119, 174, 147, 29);
 		contentPane.add(lblContra);
 
 		btnComprobar = new JButton("Comprobar");
 		btnComprobar.addActionListener(this);
-		btnComprobar.setBounds(159, 288, 112, 29);
+		btnComprobar.setBounds(413, 288, 122, 29);
 		contentPane.add(btnComprobar);
+		btnComprobar.setBackground(Color.WHITE);
+		btnComprobar.setBorder(new LineBorder(Color.GREEN));
 
 		btnCancelar = new JButton("Cancelar");
 		btnCancelar.addActionListener(this);
-		btnCancelar.setBounds(413, 288, 122, 29);
+		btnCancelar.setBounds(159, 288, 112, 29);
 		contentPane.add(btnCancelar);
+		btnCancelar.setBackground(Color.WHITE);
+		btnCancelar.setBorder(new LineBorder(Color.RED));
 
 		txtUsuario = new JTextField();
-		txtUsuario.setBounds(305, 109, 331, 29);
+		txtUsuario.setBounds(360, 109, 175, 29);
 		contentPane.add(txtUsuario);
 		txtUsuario.setColumns(10);
 
 		passwordField = new JPasswordField();
-		passwordField.setBounds(305, 174, 331, 29);
+		passwordField.setBounds(360, 174, 175, 29);
 		contentPane.add(passwordField);
+		
+		JLabel lblNewLabel = new JLabel("");
+		lblNewLabel.setIcon(new ImageIcon("C:\\Users\\anazk\\3EBAL\\RetoFinal\\src\\resources\\iconoPersonaEditado.png"));
+		lblNewLabel.setBounds(319, 11, 67, 87);
+		contentPane.add(lblNewLabel);
 	}
 
 	@Override
@@ -80,12 +97,12 @@ public class VLogin extends JDialog implements ActionListener {
 		usuario.setNombre(txtUsuario.getText());
 		usuario.setPassword(new String(passwordField.getPassword()));
 		// Comprobar login correcto
-//		try {
-			//Principal.login(usuario);
+		try {
+			Principal.login(usuario);
 			VMenuAdmin menu = new VMenuAdmin(this, true);
 			menu.setVisible(true);
-//		} catch (LoginException e) {
-//			e.visualizarMsg();
-//		}
+		} catch (LoginException e) {
+			e.visualizarMsg();
+		}
 	}
 }

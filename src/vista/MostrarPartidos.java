@@ -2,6 +2,7 @@ package vista;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.time.LocalDate;
@@ -46,7 +47,8 @@ public class MostrarPartidos extends JDialog {
 	public MostrarPartidos(VMenuAdmin padre, boolean modal) {
 		super(padre);
     	this.setModal(modal);
-        setTitle("Lista de Jugadores");
+        setTitle("Lista de Partidos");
+		setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/resources/icono.jpg")));
         setBounds(100, 100, 600, 400);
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         getContentPane().setLayout(new BorderLayout());

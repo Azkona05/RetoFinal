@@ -335,8 +335,8 @@ public class DaoImplementacion implements InterfazDao {
 		openConnection();
 		try {
 			stmt = con.prepareStatement(ALTA_EQUIPO);
-			stmt.setString(1, eq.getNombre_equipo());
-			stmt.setString(2, eq.getCod_equi());
+			stmt.setString(1, eq.getCod_equi());
+			stmt.setString(2, eq.getNombre_equipo());
 			stmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();

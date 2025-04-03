@@ -39,21 +39,21 @@ insert into equipo values ("EAG","Philadelphia Eagles"),("COM","Washington Comma
 							("COW","Dallas Cowboys"),("GIA","New York Giants"),
 							("BIL","Buffalo Bills"),("DOL","Miami Dolphins"),("JET","New York Jet"),
                             ("PAT","New England Patriots");
-insert into jugador values ("12345678Z","Jalen","Hurts","1","Quarterback","Eag"),
-							("87654321M","Leroy","Jenkins","84","Running","Eag"),
-                            ("34567890H","Quinyon","Mitchel","27","Guard","Eag");
-insert into jugador values ("90817263T","Deebo","Samuel","69","Tackle","Com"),
-							("74125896K","Jeremy","Chinn","11","Guard","Com"),
-                            ("15935728Q","Haggai","Ndubuisi","68","Tackle","Com");
-insert into jugador values ("2648391X","Brandin","Cooks","3","Running","Cow"),
-							("58741236M","Trevon","Diggs","7","Quarterback","Cow"),
-                            ("69874521L","Adam","Mukuamu","24","Quarterback","Cow");
+insert into jugador values ("12345678Z","Jalen","Hurts","1","Quarterback","EAG"),
+							("87654321M","Leroy","Jenkins","84","Running","EAG"),
+                            ("34567890H","Quinyon","Mitchel","27","Guard","EAG");
+insert into jugador values ("90817263T","Deebo","Samuel","69","Tackle","COM"),
+							("74125896K","Jeremy","Chinn","11","Guard","COM"),
+                            ("15935728Q","Haggai","Ndubuisi","68","Tackle","COM");
+insert into jugador values ("2648391X","Brandin","Cooks","3","Running","COW"),
+							("58741236M","Trevon","Diggs","7","Quarterback","COW"),
+                            ("69874521L","Adam","Mukuamu","24","Quarterback","COW");
 insert into jugador values ("3698524Y","Eric","Gray","3","Running","GIA"),
 							("89012345D","Nic","Jones","70","Guard","GIA"),
                             ("78901234F","Matthew","Adams","24","Guard","GIA");
-insert into jugador values ("67890123G","Shane","Buchele","6","Quarterback","Bil"),
-							("99088812M","Mike","White","14","Quarterback","Bil"),
-                            ("10393210Q","Larry","Ogunjobi","69","Tackle","Bil");
+insert into jugador values ("67890123G","Shane","Buchele","6","Quarterback","BIL"),
+							("99088812M","Mike","White","14","Quarterback","BIL"),
+                            ("10393210Q","Larry","Ogunjobi","69","Tackle","BIL");
 insert into jugador values ("55313730H","Andrew","Meyer","60","Guard","DOL"),
 							("28300703P","Isaiah","Wynn","77","Tackle","DOL"),
                             ("15185857S","Jordyn","Brooks","20","Guard","DOL");
@@ -130,10 +130,10 @@ BEGIN
     END IF;
 END //
 
-CALL MDIFICARJUGADOR("29015060P","Paquito","Rice","45","Running","PAT");
+CALL MODIFICARJUGADOR("29015060P","Paquito","Rice","45","Running","PAT");
 
 -- 5) Borrar jugador a través del DNI:
-CREATE PROCEDURE BORRAR JUGADOR (IN p_dni CHAR(9))
+CREATE PROCEDURE BORRARJUGADOR (IN p_dni CHAR(9))
 BEGIN 
     DECLARE CUANTOS INT;
     SELECT COUNT(*) INTO CUANTOS FROM jugador WHERE dni = p_dni;
@@ -144,7 +144,7 @@ BEGIN
     END IF;
 END // 
 
-CALL MODIFICARJUGADOR("66274056Q");
+CALL BORRARJUGADOR("66274056Q");
 
 -- 6)Buscar competición a través del código de la competición
 DELIMITER //

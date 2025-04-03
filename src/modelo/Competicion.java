@@ -33,7 +33,7 @@ public class Competicion {
 
 	@Override
 	public String toString() {
-		return "Competicion [cod_comp=" + cod_comp + ", nombre_competicion=" + nombre_competicion + "]";
+		return "Liga " +  nombre_competicion;
 	}
 
 }
