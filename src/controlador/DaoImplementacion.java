@@ -6,6 +6,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -33,12 +34,13 @@ public class DaoImplementacion implements InterfazDao {
 	private PreparedStatement stmt;
 	// Sentencias SQL
 	// SQL Login
-	final String LOGIN = "SELECT *FROM USUARIO WHERE NOM = ? AND CONTRASENIA = ?";
+	final String LOGIN = "SELECT * FROM USUARIO WHERE NOM = ? AND CONTRASENIA = ?";
 	// SQL Jugador
 	final String ALTA_JUGADOR = "INSERT INTO JUGADOR (dni, nombre, apellido, dorsal, posicion, cod_equi) VALUES (?, ?, ?, ?, ?, ?)";
 	final String BAJA_JUGADOR = "DELETE FROM JUGADOR WHERE dni = ?";
 	final String MODIFICAR_JUGADOR = "UPDATE jugador SET nombre = ?, apellido = ?, dorsal = ?, posicion = ?, cod_equi = ? WHERE dni = ?";
 	final String BUSCAR_JUGADOR = "SELECT * FROM JUGADOR";
+	final String MOSTRAR_DATOS_JUGADOR = "SELECT dni, nombre, apellido, dorsal, posicion, cod_equi FROM jugador";
 	// SQL Competicion
 	final String ALTA_COMPETICION = "INSERT INTO COMPETICICION (cod_comp, nombre_competicion) VALUES (?, ?)";
 	final String BAJA_COMPETICION = "DELETE FROM COMPETICION WHERE cod_comp = ?";
@@ -49,19 +51,22 @@ public class DaoImplementacion implements InterfazDao {
 			+ "    WHERE fecha between '2020-01-01' and current_date()  AND cod_comp like '%?%' "
 			+ "    order by victorias DESC;";
 	final String Metodo_Burro = "select * from partido where cod_comp=?";
+	final String MOSTRAR_DATOS_COMPETICION = "SELECT cod_comp, nombre_competicion FROM competicion";
 	// SQL Equipo
 	final String ALTA_EQUIPO = "INSERT INTO EQUIPO (cod_equi, nombre_equipo) VALUES (?, ?)";
 	final String BAJA_EQUIPO = "DELETE FROM EQUIPO WHERE cod_equi = ?";
 	final String MODIFICAR_EQUIPO = "UPDATE EQUIPO SET nombre_equipo = ? WHERE cod_equi = ?";
 	final String BUSCAR_EQUIPO = "SELECT * FROM EQUIPO";
 	final String BUSCAR_EQUIPO_LIGA = "SELECT cod_equi from equipo where cod_equi IN (SELECT equipo_local from partido where cod_comp=?) OR cod_equi IN (SELECT equipo_visitante from partido where cod_comp=?)";
+	final String MOSTRAR_DATOS_EQUIPO = "SELECT cod_equi, nombre_equipo FROM equipo";
 	// SQL Partido
 	final String ALTA_PARTIDO = "INSERT INTO PARTIDO (cod_part, equipo_local, equipo_visitante, ganador, fecha, cod_comp) VALUES (?, ?, ?, ?, ?)";
 	final String BAJA_PARTIDO = "DELETE FROM PARTIDO WHERE cod_part = ?";
 	final String MODIFICAR_PARTIDO = "UPDATE PAARTIDO SET equipo_local = ?, equipo_visitante = ?, ganador = ?, fecha = ?, cod_comp = ? WHERE cod_part = ?";
 	final String BUSCAR_PARTIDO = "SELECT * FROM PARTIDO";
-	final String PARTIDOS_DIA = "SELECT * FROM PARTIDO DATE(FECHA) = ? ORDER BY fecha ASC";
 
+	final String PARTIDOS_DIA = "SELECT * FROM PARTIDO WHERE DATE(FECHA) = ? ORDER BY fecha ASC";
+	final String MOSTRAR_DATOS_PARTIDO = "SELECT cod_part, equipo_local, equipo_visitante, ganador, fecha, cod_comp FROM partido";
 	public DaoImplementacion() {
 		this.configFile = ResourceBundle.getBundle("modelo.configClass");
 		this.urlDB = this.configFile.getString("Conn");
@@ -187,9 +192,9 @@ public class DaoImplementacion implements InterfazDao {
 	}
 
 	@Override
-	public Map<String, Jugador> listarJugadores() {
+	public List<Jugador> listarJugadores() {
 		Jugador jug;
-		Map<String, Jugador> jugadores = new TreeMap<>();
+		List<Jugador> jugadores = new ArrayList<>();
 		ResultSet rs = null;
 		openConnection();
 		try {
@@ -204,7 +209,7 @@ public class DaoImplementacion implements InterfazDao {
 				jug.setApellido(rs.getString("apellido"));
 				jug.setDorsal(rs.getInt("dorsal"));
 				jug.setPosicion(EnumPosicion.valueOf(rs.getString("posicion")));
-				jugadores.put(jug.getDni(), jug);
+				jugadores.add(jug);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -330,8 +335,8 @@ public class DaoImplementacion implements InterfazDao {
 		openConnection();
 		try {
 			stmt = con.prepareStatement(ALTA_EQUIPO);
-			stmt.setString(1, eq.getNombre_equipo());
-			stmt.setString(2, eq.getCod_equi());
+			stmt.setString(1, eq.getCod_equi());
+			stmt.setString(2, eq.getNombre_equipo());
 			stmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -394,7 +399,6 @@ public class DaoImplementacion implements InterfazDao {
 			while (rs.next()) {
 				equi = new Equipo();
 				equi.setCod_equi(rs.getString("Cod_equi"));
-				;
 				equi.setNombre_equipo(rs.getString("Nombre_equipo"));
 				equipos.put(equi.getCod_equi(), equi);
 			}
@@ -407,7 +411,6 @@ public class DaoImplementacion implements InterfazDao {
 				e.printStackTrace();
 			}
 		}
-
 		if (rs != null) {
 			try {
 				rs.close();
@@ -416,7 +419,6 @@ public class DaoImplementacion implements InterfazDao {
 			}
 		}
 		return equipos;
-
 	}
 
 	@Override
@@ -546,6 +548,7 @@ public class DaoImplementacion implements InterfazDao {
 	@Override
 	public List<Partido> buscarEquiLiga(Competicion liga) {
 		Partido part;
+		int cont = 1;
 		ResultSet rs = null;
 		List<Partido> partidos = new ArrayList<Partido>();
 		openConnection();
@@ -576,31 +579,220 @@ public class DaoImplementacion implements InterfazDao {
 		return partidos;
 	}
 
-//	public void partidosDia(Date fecha) {
-//		openConnection();
-//		try {
-//			stmt = con.prepareStatement(Metodo_Burro);
-//			stmt.setString(1, liga.getCod_comp());
-//			rs = stmt.executeQuery();
-//
-//			while (rs.next()) {
-//				part = new Partido();
-//				part.setEquipo_local(rs.getString(2));
-//				part.setEquipo_visitante(rs.getString(3));
-//				part.setGanador(rs.getString(4));
-//				partidos.add(part);
-//
-//			}
-//
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		} finally {
-//			try {
-//				rs.close();
-//				closeConnection();
-//			} catch (SQLException e) {
-//				e.printStackTrace();
-//			}
-//		}
-//	}
+	public List<Partido> devolverPartidos(LocalDate fecha) {
+		Partido part;
+		List<Partido> partidos = new ArrayList<Partido>();
+		ResultSet rs = null;
+		openConnection();
+		try {
+			stmt = con.prepareStatement(PARTIDOS_DIA);
+			stmt.setDate(1, Date.valueOf(fecha));
+			rs = stmt.executeQuery();
+			while (rs.next()) {
+				part = new Partido();
+				part.setCod_comp(rs.getString(6));
+				part.setEquipo_local(rs.getString(2));
+				part.setEquipo_visitante(rs.getString(3));
+				part.setGanador(rs.getString(4));
+				partidos.add(part);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				rs.close();
+				closeConnection();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return partidos;
+	}
+	
+	public Object[][]  mostrarDatosJugador(Jugador jug) throws LoginException {
+		List<Object[]> listaJugadores = new ArrayList<>();
+        ResultSet rs = null;
+
+        try {
+            openConnection();
+            stmt = con.prepareStatement(MOSTRAR_DATOS_JUGADOR);
+            rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Object[] fila = {
+                    rs.getString("dni"),
+                    rs.getString("nombre"),
+                    rs.getString("apellido"),
+                    rs.getInt("dorsal"),
+                    rs.getString("posicion"),
+                    rs.getString("cod_equi")
+                };
+                listaJugadores.add(fila);
+            }
+
+            return listaJugadores.toArray(new Object[0][0]);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new LoginException("Error al obtener datos de maquinistas.");
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                closeConnection();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+	
+	public Object[][]  mostrarDatosEquipo(Equipo eq) throws LoginException {
+		List<Object[]> listaEquipos = new ArrayList<>();
+        ResultSet rs = null;
+
+        try {
+            openConnection();
+            stmt = con.prepareStatement(MOSTRAR_DATOS_EQUIPO);
+            rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Object[] fila = {
+                    rs.getString("cod_equi"),
+                    rs.getString("nombre_equipo")
+                };
+                listaEquipos.add(fila);
+            }
+
+            return listaEquipos.toArray(new Object[0][0]);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new LoginException("Error al obtener datos de equipos.");
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                closeConnection();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+	public Object[][]  mostrarDatosCompeticion(Competicion comp) throws LoginException {
+		List<Object[]> listaCompeticion = new ArrayList<>();
+        ResultSet rs = null;
+
+        try {
+            openConnection();
+            stmt = con.prepareStatement(MOSTRAR_DATOS_COMPETICION);
+            rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Object[] fila = {
+                    rs.getString("cod_comp"),
+                    rs.getString("nombre_competicion")
+                };
+                listaCompeticion.add(fila);
+            }
+
+            return listaCompeticion.toArray(new Object[0][0]);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new LoginException("Error al obtener datos de competiciones.");
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                closeConnection();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+	public Object[][]  mostrarDatosPartido(Partido part) throws LoginException {
+		List<Object[]> listaPartidos = new ArrayList<>();
+        ResultSet rs = null;
+
+        try {
+            openConnection();
+            stmt = con.prepareStatement(MOSTRAR_DATOS_PARTIDO);
+            rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Object[] fila = {
+                    rs.getInt("cod_part"),
+                    rs.getString("equipo_local"),
+                    rs.getString("equipo_visitante"),
+                    rs.getString("ganador"),
+                    rs.getDate("fecha"),
+                    rs.getString("cod_comp")
+                };
+                listaPartidos.add(fila);
+            }
+
+            return listaPartidos.toArray(new Object[0][0]);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new LoginException("Error al obtener datos de maquinistas.");
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                closeConnection();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+	public List<Competicion> devolverCompeticiones() {
+		Competicion comp;
+		List<Competicion> competiciones = new ArrayList<Competicion>();
+		ResultSet rs = null;
+		openConnection();
+		try {
+			stmt = con.prepareStatement(BUSCAR_COMPETICION);
+			rs = stmt.executeQuery();
+			while (rs.next()) {
+				comp = new Competicion();
+				comp.setCod_comp(rs.getString(1));
+				comp.setNombre_competicion(rs.getString(2));
+				competiciones.add(comp);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				rs.close();
+				closeConnection();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return competiciones;
+	}
+	public List<Equipo> buscarEquipos() {
+		Equipo equi;
+		List<Equipo> equipos = new ArrayList<Equipo>();
+		ResultSet rs = null;
+		openConnection();
+		try {
+			stmt = con.prepareStatement(BUSCAR_EQUIPO);
+			rs = stmt.executeQuery();
+			while (rs.next()) {
+				equi = new Equipo();
+				equi.setCod_equi(rs.getString(1));
+				equi.setNombre_equipo(rs.getString(2));
+				equipos.add(equi);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				rs.close();
+				closeConnection();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return equipos;
+	}
 }

@@ -1,5 +1,6 @@
 package controlador;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -13,84 +14,112 @@ import vista.VMenuPrincipal;
 
 public class Principal {
 
-	private static InterfazDao di = new DaoImplementacion();
+	private static InterfazDao dao = new DaoImplementacion();
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws LoginException {
 		VMenuPrincipal vmp;
 			vmp = new VMenuPrincipal();
 			vmp.setVisible(true);
 		
-
 	}
 
+
 	public static void login(Usuario usuario) throws LoginException {
-		di.login(usuario);
+		dao.login(usuario);
+		}
+	public static List<Partido> buscarEquiLiga (Competicion liga) {
+		return dao.buscarEquiLiga(liga);
+	}
+
+	public static Map<String, Competicion> leerCompeticiones() {
+		return dao.listarCompeticiones();
+	}
+	public static List<String> devolverEquipos(Competicion liga) {
+		return dao.buscarDifEquipo(liga);
+	}
+	public static List<Partido> devolverPartidos(LocalDate fecha) {
+		return dao.devolverPartidos(fecha);
 	}
 
 	public static void EliminarJugador(Jugador j) {
-		di.bajaJugador(j);
+		dao.bajaJugador(j);
 	}
 
 	public static void modificarJugador(Jugador j) {
-		di.modificarJugador(j);
+		dao.modificarJugador(j);
 
 	}
 
 	public static void altaJugador(Jugador j) {
-		di.altaJugador(j);
+		dao.altaJugador(j);
 
-	}
-
-	public static List<Partido> buscarEquiLiga(Competicion liga) {
-		return di.buscarEquiLiga(liga);
-	}
-
-	public static Map<String, Competicion> leerCompeticiones() {
-		return di.listarCompeticiones();
-	}
-
-	public static List<String> devolverEquipos(Competicion liga) {
-		return di.buscarDifEquipo(liga);
 	}
 
 	public static void modificarCompeticion(Competicion comp) {
-		di.modificarCompeticion(comp);
+		dao.modificarCompeticion(comp);
 		
 	}
 
 	public static void eliminarCompeticion(Competicion comp) {
-		di.bajaCompeticion(comp);
+		dao.bajaCompeticion(comp);
 		
 	}
 
 	public static void altaCompeticion(Competicion comp) {
-		di.altaCompeticion(comp);
+		dao.altaCompeticion(comp);
 		
 	}
 	
 	public static void altaEquipo(Equipo eq) {
-		di.altaEquipo(eq);
+		dao.altaEquipo(eq);
 	}
 	
 	public static void bajaEquipo(Equipo eq) {
-		di.bajaEquipo(eq);
+		dao.bajaEquipo(eq);
 	}
 	
 	public static void modificarEquipo(Equipo eq) {
-		di.modificarEquipo(eq);
+		dao.modificarEquipo(eq);
+	}
+	
+	public static List<Equipo> buscarEquipos () {
+		return dao.buscarEquipos();
 	}
 	
 	public static void altaPartido(Partido par) {
-		di.altaPartido(par);
+		dao.altaPartido(par);
 	}
 	
 	public static void bajaPartido(Partido par) {
-		di.bajaPartido(par);
+		dao.bajaPartido(par);
 	}
 	
 	public static void modificarPartido(Partido par) {
-		di.modificarPartido(par);
+		dao.modificarPartido(par);
 	}
-	
+
+	public static Object[][] devolverCompeticiones(Competicion comp) throws LoginException {
+		return dao.mostrarDatosCompeticion(comp);
+	}
+
+
+	public static Object[][] devolverPartidos(Partido part) throws LoginException{
+		return dao.mostrarDatosPartido(part);
+	}
+
+
+	public static Object[][] devolverJugadores(Jugador jug) throws LoginException{
+		return dao.mostrarDatosJugador(jug);
+	}
+
+
+	public static Object[][] devolverEquipos(Equipo eq) throws LoginException {
+		return dao.mostrarDatosEquipo(eq);
+	}
+
+
+	public static List<Competicion> devolverCompeticiones() {
+		return dao.devolverCompeticiones();
+	}
 	
 }
