@@ -27,74 +27,74 @@ public class Principal {
 	public static void login(Usuario usuario) throws LoginException {
 		dao.login(usuario);
 		}
-	public static List<Partido> buscarEquiLiga (Competicion liga) {
+	public static List<Partido> buscarEquiLiga (Competicion liga) throws LoginException {
 		return dao.buscarEquiLiga(liga);
 	}
 
-	public static Map<String, Competicion> leerCompeticiones() {
+	public static Map<String, Competicion> leerCompeticiones() throws LoginException {
 		return dao.listarCompeticiones();
 	}
-	public static List<String> devolverEquipos(Competicion liga) {
+	public static List<String> devolverEquipos(Competicion liga) throws LoginException {
 		return dao.buscarDifEquipo(liga);
 	}
-	public static List<Partido> devolverPartidos(LocalDate fecha) {
+	public static List<Partido> devolverPartidos(LocalDate fecha) throws LoginException {
 		return dao.devolverPartidos(fecha);
 	}
 
-	public static void EliminarJugador(Jugador j) {
+	public static void EliminarJugador(Jugador j) throws LoginException {
 		dao.bajaJugador(j);
 	}
 
-	public static void modificarJugador(Jugador j) {
+	public static void modificarJugador(Jugador j) throws LoginException {
 		dao.modificarJugador(j);
 
 	}
 
-	public static void altaJugador(Jugador j) {
+	public static void altaJugador(Jugador j) throws LoginException {
 		dao.altaJugador(j);
 
 	}
 
-	public static void modificarCompeticion(Competicion comp) {
+	public static void modificarCompeticion(Competicion comp) throws LoginException {
 		dao.modificarCompeticion(comp);
 		
 	}
 
-	public static void eliminarCompeticion(Competicion comp) {
+	public static void eliminarCompeticion(Competicion comp) throws LoginException {
 		dao.bajaCompeticion(comp);
 		
 	}
 
-	public static void altaCompeticion(Competicion comp) {
+	public static void altaCompeticion(Competicion comp) throws LoginException {
 		dao.altaCompeticion(comp);
 		
 	}
 	
-	public static void altaEquipo(Equipo eq) {
+	public static void altaEquipo(Equipo eq) throws LoginException {
 		dao.altaEquipo(eq);
 	}
 	
-	public static void bajaEquipo(Equipo eq) {
+	public static void bajaEquipo(Equipo eq) throws LoginException {
 		dao.bajaEquipo(eq);
 	}
 	
-	public static void modificarEquipo(Equipo eq) {
+	public static void modificarEquipo(Equipo eq) throws LoginException {
 		dao.modificarEquipo(eq);
 	}
 	
-	public static List<Equipo> buscarEquipos () {
+	public static List<Equipo> buscarEquipos () throws LoginException {
 		return dao.buscarEquipos();
 	}
 	
-	public static void altaPartido(Partido par) {
+	public static void altaPartido(Partido par) throws LoginException {
 		dao.altaPartido(par);
 	}
 	
-	public static void bajaPartido(Partido par) {
+	public static void bajaPartido(Partido par) throws LoginException {
 		dao.bajaPartido(par);
 	}
 	
-	public static void modificarPartido(Partido par) {
+	public static void modificarPartido(Partido par) throws LoginException {
 		dao.modificarPartido(par);
 	}
 
@@ -118,7 +118,7 @@ public class Principal {
 	}
 
 
-	public static List<Competicion> devolverCompeticiones() {
+	public static List<Competicion> devolverCompeticiones() throws LoginException {
 		return dao.devolverCompeticiones();
 	}
 	

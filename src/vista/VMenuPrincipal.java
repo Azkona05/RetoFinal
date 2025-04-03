@@ -113,7 +113,12 @@ public class VMenuPrincipal extends JFrame implements ActionListener, FocusListe
 			VLogin vL = new VLogin(this, true);
 			vL.setVisible(true);
 		} else if (e.getSource().equals(cbElegirLiga)) {
-			presentarTabla((Competicion) cbElegirLiga.getSelectedItem());
+			try {
+				presentarTabla((Competicion) cbElegirLiga.getSelectedItem());
+			} catch (LoginException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		} else if (e.getSource().equals(btnCalendario)) {
 			Calendar calendar = calendario.getCalendar();
 			LocalDate fecha;
@@ -121,18 +126,23 @@ public class VMenuPrincipal extends JFrame implements ActionListener, FocusListe
 			int month = calendar.get(Calendar.MONTH) + 1;
 			int year = calendar.get(Calendar.YEAR);
 			fecha = LocalDate.of(year, month, day);
-			presentarTablaPartido(fecha);
+			try {
+				presentarTablaPartido(fecha);
+			} catch (LoginException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		} else {
 
 		}
 	}
 
-	private void presentarTablaPartido(LocalDate fecha) {
+	private void presentarTablaPartido(LocalDate fecha) throws LoginException {
 		tablaPart = this.cargarTablaPart(fecha);
 		jscrollPartido.setViewportView(tablaPart);
 	}
 
-	private JTable cargarTablaPart(LocalDate fecha) {
+	private JTable cargarTablaPart(LocalDate fecha) throws LoginException {
 		String[] columnasNombre = { "Liga", "Local", "Visitante", "Ganador" };
 		DefaultTableModel model = new DefaultTableModel(null, columnasNombre);
 		List<Partido> partidos = Principal.devolverPartidos(fecha);
@@ -152,7 +162,7 @@ public class VMenuPrincipal extends JFrame implements ActionListener, FocusListe
 		return new JTable(model);
 	}
 
-	private void presentarTabla(Competicion liga) {
+	private void presentarTabla(Competicion liga) throws LoginException {
 		// cargarTabla (prop);
 		// jscroll = new JScrollPane();
 		tablaClasi = this.cargarTabla(liga);
@@ -161,7 +171,7 @@ public class VMenuPrincipal extends JFrame implements ActionListener, FocusListe
 		// jscroll.setBounds(5, 5, 150, 150);
 	}
 
-	private JTable cargarTabla(Competicion liga) {
+	private JTable cargarTabla(Competicion liga) throws LoginException {
 		String[] coulumnasNombre = { "Posicion", "Nombre", "Victorias" };
 		String[] colum = new String[3];
 		DefaultTableModel model = new DefaultTableModel(null, coulumnasNombre);

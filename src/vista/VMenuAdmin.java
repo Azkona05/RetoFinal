@@ -19,6 +19,8 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 
 import controlador.Principal;
+import excepciones.DniException;
+import excepciones.LoginException;
 import modelo.Competicion;
 import modelo.EnumPosicion;
 import modelo.Equipo;
@@ -295,7 +297,12 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 		cbLiga = new JComboBox();
 		cbLiga.setBounds(128, 27, 130, 21);
 		panelPartidos.add(cbLiga);
-		List<Competicion> competiciones = Principal.devolverCompeticiones();
+		List<Competicion> competiciones = null;
+		try {
+			competiciones = Principal.devolverCompeticiones();
+		} catch (LoginException e) {
+			e.printStackTrace();
+		}
 		for (Competicion comp : competiciones) {
 			cbLiga.addItem(comp);
 		}
@@ -309,7 +316,12 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 		panelPartidos.add(cbLocal);
 		cbLocal.setEnabled(false);
 		cbLocal.addActionListener(this);
-		List<Equipo> equipos = Principal.buscarEquipos();
+		List<Equipo> equipos = null;
+		try {
+			equipos = Principal.buscarEquipos();
+		} catch (LoginException e) {
+			e.printStackTrace();
+		}
 
 		for (Equipo equ : equipos) {
 			cbLocal.addItem(equ.getCod_equi());
@@ -466,7 +478,11 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 	private void modComp() {
 		Competicion comp = new Competicion();
 		comp.setNombre_competicion(txtNombreComp.getText());
-		Principal.modificarCompeticion(comp);
+		try {
+			Principal.modificarCompeticion(comp);
+		} catch (LoginException e) {
+			e.printStackTrace();
+		}
 		JOptionPane.showMessageDialog(this, "MODIFICACION CORRECTA!!", "MENSAJE", JOptionPane.INFORMATION_MESSAGE);
 
 	}
@@ -474,7 +490,11 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 	private void bajaComp() {
 		Competicion comp = new Competicion();
 		comp.setCod_comp(txtCodComp.getText());
-		Principal.eliminarCompeticion(comp);
+		try {
+			Principal.eliminarCompeticion(comp);
+		} catch (LoginException e) {
+			e.printStackTrace();
+		}
 		JOptionPane.showMessageDialog(this, "BAJA CORRECTA!!", "MENSAJE", JOptionPane.INFORMATION_MESSAGE);
 		limpiarComp();
 
@@ -490,7 +510,11 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 		} else {
 			comp.setCod_comp(codComp);
 			comp.setNombre_competicion(txtNombreComp.getText());
-			Principal.altaCompeticion(comp);
+			try {
+				Principal.altaCompeticion(comp);
+			} catch (LoginException e) {
+				e.printStackTrace();
+			}
 			JOptionPane.showMessageDialog(this, "ALTA CORRECTA!!", "MENSAJE", JOptionPane.INFORMATION_MESSAGE);
 			limpiarComp();
 		}
@@ -520,7 +544,12 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 	private void modificarEq() {
 		Equipo eq = new Equipo();
 		eq.setNombre_equipo(txtNombreEq.getText());
-		Principal.modificarEquipo(eq);
+		try {
+			Principal.modificarEquipo(eq);
+		} catch (LoginException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		limpiarEq();
 
 	}
@@ -528,7 +557,11 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 	private void bajaEq() {
 		Equipo eq = new Equipo();
 		eq.setCod_equi(txtCodEquipo_Equipo.getText());
-		Principal.bajaEquipo(eq);
+		try {
+			Principal.bajaEquipo(eq);
+		} catch (LoginException e) {
+			e.printStackTrace();
+		}
 		JOptionPane.showMessageDialog(this, "BAJA CORRECTA!!", "MENSAJE", JOptionPane.INFORMATION_MESSAGE);
 		limpiarEq();
 
@@ -544,7 +577,11 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 		} else {
 			eq.setCod_equi(codEq);
 			eq.setNombre_equipo(txtNombreEq.getText());
-			Principal.altaEquipo(eq);
+			try {
+				Principal.altaEquipo(eq);
+			} catch (LoginException e) {
+				e.printStackTrace();
+			}
 			JOptionPane.showMessageDialog(this, "ALTA CORRECTA!!", "MENSAJE", JOptionPane.INFORMATION_MESSAGE);
 		}
 	}
@@ -553,9 +590,9 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 
 	private void altaJug() {
 			String dni = txtDni.getText();
+			try {
 			if (!validarDNI(dni)) {
-				JOptionPane.showMessageDialog(this, "ERROR! DNI no válido. Revíselo e inténtelo de nuevo.", "ERROR!",
-						JOptionPane.ERROR_MESSAGE);
+				throw new DniException("ERROR! DNI no válido. Revíselo e inténtelo de nuevo.");
 			} else {
 				Jugador j = new Jugador();
 				j.setDni(dni);
@@ -576,12 +613,22 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 				JOptionPane.showMessageDialog(this, "ALTA CORRECTA!!", "MENSAJE", JOptionPane.INFORMATION_MESSAGE);
 				limpiarJug();
 		}
+			} catch (DniException e) {
+				JOptionPane.showMessageDialog(this, e.getMessage(), "ERROR!",
+						JOptionPane.ERROR_MESSAGE);
+			} catch (LoginException e) {
+				e.printStackTrace();
+			}
 	}
 
 	private void bajaJug() {
 		Jugador j = new Jugador();
 		j.setDni(txtDni.getText());
-		Principal.EliminarJugador(j);
+		try {
+			Principal.EliminarJugador(j);
+		} catch (LoginException e) {
+			e.printStackTrace();
+		}
 		JOptionPane.showMessageDialog(this, "BAJA CORRECTA!!", "MENSAJE", JOptionPane.INFORMATION_MESSAGE);
 		limpiarJug();
 	}
@@ -601,7 +648,11 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 			j.setPosicion(EnumPosicion.GUARD);
 		}
 		j.setCod_equi(txtCodEquipo_Jugador.getText());
-		Principal.modificarJugador(j);
+		try {
+			Principal.modificarJugador(j);
+		} catch (LoginException e) {
+			e.printStackTrace();
+		}
 		JOptionPane.showMessageDialog(this, "MODIFICACION CORRECTA!!", "MENSAJE", JOptionPane.INFORMATION_MESSAGE);
 		limpiarJug();
 	}
