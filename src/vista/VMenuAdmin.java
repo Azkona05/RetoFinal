@@ -534,9 +534,20 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 	}
 
 	private void altaPart() {
+		int i;
 		Partido part = new Partido ();
-		
-
+		i=Principal.cantidadPartidos()+1;
+		part.setCod_part(i);
+		part.setEquipo_local(((Equipo) cbLocal.getSelectedItem()).getCod_equi());
+		part.setEquipo_visitante(((Equipo) cbVisitante.getSelectedItem()).getCod_equi());
+		if (cbGanador.getSelectedItem().equals("Local")) {
+			part.setGanador(((Equipo) cbLocal.getSelectedItem()).getCod_equi());
+		} else {
+			part.setGanador(((Equipo) cbVisitante.getSelectedItem()).getCod_equi());
+		}
+		part.setFecha(LocalDate.now());
+		part.setCod_comp(((Competicion) cbLiga.getSelectedItem()).getCod_comp());
+		Principal.altaPartido(part);
 	}
 
 	private void modificarEq() {

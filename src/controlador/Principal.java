@@ -101,8 +101,7 @@ public class Principal {
 	public static Object[][] devolverCompeticiones(Competicion comp) throws LoginException {
 		return dao.mostrarDatosCompeticion(comp);
 	}
-
-
+	
 	public static Object[][] devolverPartidos(Partido part) throws LoginException{
 		return dao.mostrarDatosPartido(part);
 	}
@@ -121,7 +120,12 @@ public class Principal {
 	public static List<Competicion> devolverCompeticiones() {
 		return dao.devolverCompeticiones();
 	}
+	
 	public static List<Equipo> nuevosEquipos(Competicion comp) {
 		return dao.nuevosEquipos(comp);
+	}
+	
+	public static int cantidadPartidos () {
+		return dao.cantidadPartidos();
 	}
 }

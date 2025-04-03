@@ -60,10 +60,11 @@ public class DaoImplementacion implements InterfazDao {
 	final String BUSCAR_EQUIPO_LIGA = "SELECT cod_equi, nombre_equipo from equipo where cod_equi IN (SELECT equipo_local from partido where cod_comp=?) OR cod_equi IN (SELECT equipo_visitante from partido where cod_comp=?)";
 	final String MOSTRAR_DATOS_EQUIPO = "SELECT cod_equi, nombre_equipo FROM equipo";
 	// SQL Partido
-	final String ALTA_PARTIDO = "INSERT INTO PARTIDO (cod_part, equipo_local, equipo_visitante, ganador, fecha, cod_comp) VALUES (?, ?, ?, ?, ?)";
+	final String ALTA_PARTIDO = "INSERT INTO PARTIDO (cod_part, equipo_local, equipo_visitante, ganador, fecha, cod_comp) VALUES (?, ?, ?, ?, ?, ?)";
 	final String BAJA_PARTIDO = "DELETE FROM PARTIDO WHERE cod_part = ?";
 	final String MODIFICAR_PARTIDO = "UPDATE PAARTIDO SET equipo_local = ?, equipo_visitante = ?, ganador = ?, fecha = ?, cod_comp = ? WHERE cod_part = ?";
 	final String BUSCAR_PARTIDO = "SELECT * FROM PARTIDO";
+	final String CANTIDAD_PARTIDOS ="SELECT COUNT(*) FROM PARTIDO";
 
 	final String PARTIDOS_DIA = "SELECT * FROM PARTIDO WHERE DATE(FECHA) = ? ORDER BY fecha ASC";
 	final String EQUIPOS_LIGA= "SELECT * FROM EQUIPO WHERE cod_equi in (select equipo_local from partido ";
@@ -431,12 +432,13 @@ public class DaoImplementacion implements InterfazDao {
 		openConnection();
 		try {
 			stmt = con.prepareStatement(ALTA_PARTIDO);
-			stmt.setInt(0, part.getCod_part());
-			stmt.setString(1, part.getEquipo_local());
-			stmt.setString(2, part.getEquipo_visitante());
-			stmt.setString(3, part.getGanadorString());
-			stmt.setDate(4, Date.valueOf(part.getFecha()));
-			stmt.setString(5, part.getCod_comp());
+			stmt.setInt(1, part.getCod_part());
+			stmt.setString(2, part.getEquipo_local());
+			stmt.setString(3, part.getEquipo_visitante());
+			stmt.setString(4, part.getGanadorString());
+			stmt.setDate(5, Date.valueOf(part.getFecha()));
+			stmt.setString(6, part.getCod_comp());
+			stmt.executeUpdate();
 		} catch (SQLException e) {
 		} finally {
 			try {
@@ -833,5 +835,28 @@ public class DaoImplementacion implements InterfazDao {
 			}
 		}
 		return equipos;
+	}
+	public int cantidadPartidos () {
+		int i = 0;
+		ResultSet rs = null;
+		openConnection();
+		try {
+			stmt = con.prepareStatement(CANTIDAD_PARTIDOS);
+			rs = stmt.executeQuery();
+			if (rs.next()) {  
+	            i = rs.getInt(1);  
+	        }
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				rs.close();
+				closeConnection();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return i;
 	}
 }
