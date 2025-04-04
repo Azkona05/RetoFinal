@@ -48,6 +48,7 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 	private JComboBox<Equipo> cbLocal, cbVisitante;
 	private JComboBox<String> cbGanador;
 	private Competicion comp;
+	private JTextField textField;
 
 	public VMenuAdmin(VLogin padre, boolean modal) {
 		super(padre);
@@ -257,11 +258,11 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 		tabbedPane.addTab("Partidos", panelPartidos);
 
 		JLabel lblLiga = new JLabel("Liga: ");
-		lblLiga.setBounds(33, 31, 85, 13);
+		lblLiga.setBounds(35, 71, 85, 13);
 		panelPartidos.add(lblLiga);
 
 		cbLiga = new JComboBox();
-		cbLiga.setBounds(128, 27, 130, 21);
+		cbLiga.setBounds(130, 67, 130, 21);
 		panelPartidos.add(cbLiga);
 		List<Competicion> competiciones = Principal.devolverCompeticiones();
 		for (Competicion comp : competiciones) {
@@ -272,29 +273,29 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 		cbLiga.addActionListener(this);
 
 		JLabel lblEquipoLocal = new JLabel("Local: ");
-		lblEquipoLocal.setBounds(33, 73, 85, 13);
+		lblEquipoLocal.setBounds(35, 113, 85, 13);
 		panelPartidos.add(lblEquipoLocal);
 
 		cbLocal = new JComboBox<Equipo>();
-		cbLocal.setBounds(128, 69, 130, 21);
+		cbLocal.setBounds(130, 109, 130, 21);
 		panelPartidos.add(cbLocal);
 		cbLocal.addActionListener(this);
 
 		JLabel lblVisitante = new JLabel("Visitante: ");
-		lblVisitante.setBounds(33, 111, 85, 13);
+		lblVisitante.setBounds(35, 151, 85, 13);
 		panelPartidos.add(lblVisitante);
 
 		cbVisitante = new JComboBox();
-		cbVisitante.setBounds(128, 107, 130, 21);
+		cbVisitante.setBounds(130, 147, 130, 21);
 		panelPartidos.add(cbVisitante);
 		cbVisitante.addActionListener(this);
 
 		JLabel lblGanador = new JLabel("Ganador: ");
-		lblGanador.setBounds(33, 152, 85, 13);
+		lblGanador.setBounds(35, 192, 85, 13);
 		panelPartidos.add(lblGanador);
 
 		cbGanador = new JComboBox<String>();
-		cbGanador.setBounds(128, 148, 130, 21);
+		cbGanador.setBounds(130, 188, 130, 21);
 		panelPartidos.add(cbGanador);
 		cbGanador.addItem("Local");
 		cbGanador.addItem("Visitante");
@@ -325,13 +326,25 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 		panelPartidos.add(btnLimpiarDatosEq);
 
 		rdbtnLocalNuevo = new JRadioButton("Local Nuevo");
-		rdbtnLocalNuevo.setBounds(271, 69, 103, 21);
+		rdbtnLocalNuevo.setBounds(273, 109, 123, 21);
 		panelPartidos.add(rdbtnLocalNuevo);
 		rdbtnLocalNuevo.addActionListener(this);
 
 		rdbtnVisitanteNuevo = new JRadioButton("Visitante Nuevo");
-		rdbtnVisitanteNuevo.setBounds(271, 107, 123, 21);
+		rdbtnVisitanteNuevo.setBounds(273, 147, 123, 21);
 		panelPartidos.add(rdbtnVisitanteNuevo);
+		
+		JLabel lblCodigo = new JLabel("Codigo: ");
+		lblCodigo.setEnabled(false);
+		lblCodigo.setBounds(35, 27, 85, 13);
+		panelPartidos.add(lblCodigo);
+		
+		textField = new JTextField();
+		textField.setEnabled(false);
+		textField.setEditable(false);
+		textField.setBounds(130, 24, 130, 19);
+		panelPartidos.add(textField);
+		textField.setColumns(10);
 		rdbtnVisitanteNuevo.addActionListener(this);
 		
 		btnLimpiarDatosEq.addActionListener(this);
