@@ -531,23 +531,25 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 				}
 				cbVisitante.setSelectedIndex(-1);
 			} else {
-				cbVisitante.removeAllItems();
-				comp = (Competicion) cbLiga.getSelectedItem();
-				List<Equipo> equipos = null;
-				try {
-					equipos = Principal.devolverEquipos(comp);
-				} catch (LoginException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				for (Equipo equ : equipos) {
-					cbVisitante.addItem(equ);
-				}
-				cbVisitante.setSelectedIndex(-1);
+				nuevosVisitante();
 			}
 		}
 	}
-
+	
+	private void nuevosVisitante() {
+		cbVisitante.removeAllItems();
+		comp = (Competicion) cbLiga.getSelectedItem();
+		List<Equipo> equipos = null;
+		try {
+			equipos = Principal.devolverEquipos(comp);
+		} catch (LoginException e1) {
+			e1.printStackTrace();
+		}
+		for (Equipo equ : equipos) {
+			cbVisitante.addItem(equ);
+		}
+		cbVisitante.setSelectedIndex(-1);
+	}
 	private void limpiarComp() {
 		txtCodComp.setText("");
 		txtNombreComp.setText("");
