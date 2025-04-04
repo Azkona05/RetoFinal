@@ -2,6 +2,7 @@ package vista;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -44,7 +45,8 @@ public class MostrarEquipos extends JDialog {
 	public MostrarEquipos(VMenuAdmin padre, boolean modal) {
 		super(padre);
     	this.setModal(modal);
-        setTitle("Lista de Jugadores");
+		setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/resources/icono.jpg")));
+        setTitle("Lista de Equipos");
         setBounds(100, 100, 600, 400);
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         getContentPane().setLayout(new BorderLayout());

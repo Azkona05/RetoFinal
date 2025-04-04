@@ -130,7 +130,7 @@ public class DaoImplementacion implements InterfazDao {
 	}
 
 	@Override
-	public void altaJugador(Jugador jug) {
+	public void altaJugador(Jugador jug) throws LoginException{
 		openConnection();
 		try {
 			stmt = con.prepareStatement(ALTA_JUGADOR);
@@ -140,9 +140,13 @@ public class DaoImplementacion implements InterfazDao {
 			stmt.setInt(4, jug.getDorsal());
 			stmt.setString(5, jug.getPosicion().name());
 			stmt.setString(6, jug.getCod_equi());
-			stmt.executeUpdate();
+			if(stmt.executeUpdate() != 1) {
+				String msg = "Problemas con el alta de juagdor";
+				throw new LoginException(msg);
+			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			String msg = "Problemas en la BDs";
+			throw new LoginException(msg);
 		} finally {
 			try {
 				closeConnection();
@@ -154,15 +158,18 @@ public class DaoImplementacion implements InterfazDao {
 	}
 
 	@Override
-	public void bajaJugador(Jugador jug) {
+	public void bajaJugador(Jugador jug) throws LoginException{
 
 		openConnection();
 		try {
 			stmt = con.prepareStatement(BAJA_JUGADOR);
 			stmt.setString(1, jug.getDni());
-			stmt.executeUpdate();
+			if (stmt.executeUpdate() != 1) {
+				
+			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			String msg = "Problemas en la BDs";
+			throw new LoginException(msg);
 		} finally {
 			try {
 				closeConnection();
@@ -174,7 +181,7 @@ public class DaoImplementacion implements InterfazDao {
 	}
 
 	@Override
-	public void modificarJugador(Jugador jug) {
+	public void modificarJugador(Jugador jug) throws LoginException {
 		openConnection();
 		try {
 			stmt = con.prepareStatement(MODIFICAR_JUGADOR);
@@ -186,7 +193,8 @@ public class DaoImplementacion implements InterfazDao {
 			stmt.setString(6, jug.getDni());
 			stmt.executeUpdate();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			String msg = "Problemas en la BDs";
+			throw new LoginException(msg);
 		} finally {
 			try {
 				closeConnection();
@@ -198,7 +206,7 @@ public class DaoImplementacion implements InterfazDao {
 	}
 
 	@Override
-	public List<Jugador> listarJugadores() {
+	public List<Jugador> listarJugadores() throws LoginException {
 		Jugador jug;
 		List<Jugador> jugadores = new ArrayList<>();
 		ResultSet rs = null;
@@ -218,7 +226,8 @@ public class DaoImplementacion implements InterfazDao {
 				jugadores.add(jug);
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			String msg = "Problemas en la BDs";
+			throw new LoginException(msg);
 		} finally {
 			try {
 				closeConnection();
@@ -238,7 +247,7 @@ public class DaoImplementacion implements InterfazDao {
 	}
 
 	@Override
-	public void altaCompeticion(Competicion comp) {
+	public void altaCompeticion(Competicion comp) throws LoginException {
 		openConnection();
 		try {
 			stmt = con.prepareStatement(ALTA_COMPETICION);
@@ -246,7 +255,8 @@ public class DaoImplementacion implements InterfazDao {
 			stmt.setString(2, comp.getNombre_competicion());
 			stmt.executeUpdate();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			String msg = "Problemas en la BDs";
+			throw new LoginException(msg);
 		} finally {
 			try {
 				closeConnection();
@@ -258,14 +268,15 @@ public class DaoImplementacion implements InterfazDao {
 	}
 
 	@Override
-	public void bajaCompeticion(Competicion comp) {
+	public void bajaCompeticion(Competicion comp) throws LoginException {
 		openConnection();
 		try {
 			stmt = con.prepareStatement(BAJA_COMPETICION);
 			stmt.setString(1, comp.getCod_comp());
 			stmt.executeUpdate();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			String msg = "Problemas en la BDs";
+			throw new LoginException(msg);
 		} finally {
 			try {
 				closeConnection();
@@ -277,7 +288,7 @@ public class DaoImplementacion implements InterfazDao {
 	}
 
 	@Override
-	public void modificarCompeticion(Competicion comp) {
+	public void modificarCompeticion(Competicion comp) throws LoginException {
 		openConnection();
 		try {
 			stmt = con.prepareStatement(MODIFICAR_COMPETICION);
@@ -285,7 +296,8 @@ public class DaoImplementacion implements InterfazDao {
 			stmt.setString(2, comp.getCod_comp());
 			stmt.executeUpdate();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			String msg = "Problemas en la BDs";
+			throw new LoginException(msg);
 		} finally {
 			try {
 				closeConnection();
@@ -297,7 +309,7 @@ public class DaoImplementacion implements InterfazDao {
 	}
 
 	@Override
-	public Map<String, Competicion> listarCompeticiones() {
+	public Map<String, Competicion> listarCompeticiones() throws LoginException {
 		Competicion comp;
 		String nombre;
 		String codigo;
@@ -317,7 +329,8 @@ public class DaoImplementacion implements InterfazDao {
 				competiciones.put(comp.getCod_comp(), comp);
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			String msg = "Problemas en la BDs";
+			throw new LoginException(msg);
 		} finally {
 			try {
 				closeConnection();
@@ -337,15 +350,16 @@ public class DaoImplementacion implements InterfazDao {
 	}
 
 	@Override
-	public void altaEquipo(Equipo eq) {
+	public void altaEquipo(Equipo eq) throws LoginException {
 		openConnection();
 		try {
 			stmt = con.prepareStatement(ALTA_EQUIPO);
-			stmt.setString(1, eq.getNombre_equipo());
-			stmt.setString(2, eq.getCod_equi());
+			stmt.setString(1, eq.getCod_equi());
+			stmt.setString(2, eq.getNombre_equipo());
 			stmt.executeUpdate();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			String msg = "Problemas en la BDs";
+			throw new LoginException(msg);
 		} finally {
 			try {
 				closeConnection();
@@ -356,14 +370,15 @@ public class DaoImplementacion implements InterfazDao {
 	}
 
 	@Override
-	public void bajaEquipo(Equipo eq) {
+	public void bajaEquipo(Equipo eq)  throws LoginException{
 		openConnection();
 		try {
 			stmt = con.prepareStatement(BAJA_EQUIPO);
 			stmt.setString(1, eq.getCod_equi());
 			stmt.executeUpdate();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			String msg = "Problemas en la BDs";
+			throw new LoginException(msg);
 		} finally {
 			try {
 				closeConnection();
@@ -374,7 +389,7 @@ public class DaoImplementacion implements InterfazDao {
 	}
 
 	@Override
-	public void modificarEquipo(Equipo eq) {
+	public void modificarEquipo(Equipo eq) throws LoginException {
 		openConnection();
 		try {
 			stmt = con.prepareStatement(MODIFICAR_EQUIPO);
@@ -382,7 +397,8 @@ public class DaoImplementacion implements InterfazDao {
 			stmt.setString(2, eq.getNombre_equipo());
 			stmt.executeUpdate();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			String msg = "Problemas en la BDs";
+			throw new LoginException(msg);
 		} finally {
 			try {
 				closeConnection();
@@ -393,7 +409,7 @@ public class DaoImplementacion implements InterfazDao {
 	}
 
 	@Override
-	public Map<String, Equipo> listarEquipos() {
+	public Map<String, Equipo> listarEquipos() throws LoginException {
 		Equipo equi;
 		Map<String, Equipo> equipos = new TreeMap<>();
 		ResultSet rs = null;
@@ -409,7 +425,8 @@ public class DaoImplementacion implements InterfazDao {
 				equipos.put(equi.getCod_equi(), equi);
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			String msg = "Problemas en la BDs";
+			throw new LoginException(msg);
 		} finally {
 			try {
 				closeConnection();
@@ -428,7 +445,7 @@ public class DaoImplementacion implements InterfazDao {
 	}
 
 	@Override
-	public void altaPartido(Partido part) {
+	public void altaPartido(Partido part) throws LoginException {
 		openConnection();
 		try {
 			stmt = con.prepareStatement(ALTA_PARTIDO);
@@ -440,6 +457,8 @@ public class DaoImplementacion implements InterfazDao {
 			stmt.setString(6, part.getCod_comp());
 			stmt.executeUpdate();
 		} catch (SQLException e) {
+			String msg = "Problemas en la BDs";
+			throw new LoginException(msg);
 		} finally {
 			try {
 				closeConnection();
@@ -450,14 +469,15 @@ public class DaoImplementacion implements InterfazDao {
 	}
 
 	@Override
-	public void bajaPartido(Partido part) {
+	public void bajaPartido(Partido part) throws LoginException {
 		openConnection();
 		try {
 			stmt = con.prepareStatement(BAJA_PARTIDO);
 			stmt.setInt(1, part.getCod_part());
 			stmt.executeUpdate();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			String msg = "Problemas en la BDs";
+			throw new LoginException(msg);
 		} finally {
 			try {
 				closeConnection();
@@ -469,7 +489,7 @@ public class DaoImplementacion implements InterfazDao {
 	}
 
 	@Override
-	public void modificarPartido(Partido part) {
+	public void modificarPartido(Partido part) throws LoginException {
 		openConnection();
 		try {
 			stmt = con.prepareStatement(MODIFICAR_PARTIDO);
@@ -481,7 +501,8 @@ public class DaoImplementacion implements InterfazDao {
 			stmt.setInt(6, part.getCod_part());
 			stmt.executeUpdate();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			String msg = "Problemas en la BDs";
+			throw new LoginException(msg);
 		} finally {
 			try {
 				closeConnection();
@@ -492,7 +513,7 @@ public class DaoImplementacion implements InterfazDao {
 	}
 
 	@Override
-	public Map<Integer, Partido> listarPartidos() {
+	public Map<Integer, Partido> listarPartidos() throws LoginException{
 		ResultSet rs = null;
 		Map<Integer, Partido> partidos = new HashMap<Integer, Partido>();
 		openConnection();
@@ -512,7 +533,8 @@ public class DaoImplementacion implements InterfazDao {
 			}
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			String msg = "Problemas en la BDs";
+			throw new LoginException(msg);
 		} finally {
 			try {
 				rs.close();
@@ -525,7 +547,7 @@ public class DaoImplementacion implements InterfazDao {
 	}
 
 	@Override
-	public List<Equipo> buscarDifEquipo(Competicion liga) {
+	public List<Equipo> buscarDifEquipo(Competicion liga) throws LoginException {
 		Equipo equi;
 		ResultSet rs = null;
 		List<Equipo> equipos = new ArrayList<Equipo>();
@@ -544,7 +566,8 @@ public class DaoImplementacion implements InterfazDao {
 			}
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			String msg = "Problemas en la BDs";
+			throw new LoginException(msg);
 		} finally {
 			try {
 				rs.close();
@@ -557,7 +580,7 @@ public class DaoImplementacion implements InterfazDao {
 	}
 
 	@Override
-	public List<Partido> buscarEquiLiga(Competicion liga) {
+	public List<Partido> buscarEquiLiga(Competicion liga) throws LoginException {
 		Partido part;
 		int cont = 1;
 		ResultSet rs = null;
@@ -578,7 +601,8 @@ public class DaoImplementacion implements InterfazDao {
 			}
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			String msg = "Problemas en la BDs";
+			throw new LoginException(msg);
 		} finally {
 			try {
 				rs.close();
@@ -590,7 +614,7 @@ public class DaoImplementacion implements InterfazDao {
 		return partidos;
 	}
 
-	public List<Partido> devolverPartidos(LocalDate fecha) {
+	public List<Partido> devolverPartidos(LocalDate fecha) throws LoginException {
 		Partido part;
 		List<Partido> partidos = new ArrayList<Partido>();
 		ResultSet rs = null;
@@ -608,7 +632,8 @@ public class DaoImplementacion implements InterfazDao {
 				partidos.add(part);
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			String msg = "Problemas en la BDs";
+			throw new LoginException(msg);
 		} finally {
 			try {
 				rs.close();
@@ -644,8 +669,8 @@ public class DaoImplementacion implements InterfazDao {
             return listaJugadores.toArray(new Object[0][0]);
 
         } catch (SQLException e) {
-            e.printStackTrace();
-            throw new LoginException("Error al obtener datos de maquinistas.");
+        	String msg = "Problemas en la BDs";
+			throw new LoginException(msg);
         } finally {
             try {
                 if (rs != null) rs.close();
@@ -676,8 +701,8 @@ public class DaoImplementacion implements InterfazDao {
             return listaEquipos.toArray(new Object[0][0]);
 
         } catch (SQLException e) {
-            e.printStackTrace();
-            throw new LoginException("Error al obtener datos de equipos.");
+        	String msg = "Problemas en la BDs";
+			throw new LoginException(msg);
         } finally {
             try {
                 if (rs != null) rs.close();
@@ -707,8 +732,8 @@ public class DaoImplementacion implements InterfazDao {
             return listaCompeticion.toArray(new Object[0][0]);
 
         } catch (SQLException e) {
-            e.printStackTrace();
-            throw new LoginException("Error al obtener datos de competiciones.");
+        	String msg = "Problemas en la BDs";
+			throw new LoginException(msg);
         } finally {
             try {
                 if (rs != null) rs.close();
@@ -742,8 +767,8 @@ public class DaoImplementacion implements InterfazDao {
             return listaPartidos.toArray(new Object[0][0]);
 
         } catch (SQLException e) {
-            e.printStackTrace();
-            throw new LoginException("Error al obtener datos de maquinistas.");
+        	String msg = "Problemas en la BDs";
+			throw new LoginException(msg);
         } finally {
             try {
                 if (rs != null) rs.close();
@@ -754,7 +779,7 @@ public class DaoImplementacion implements InterfazDao {
         }
     }
 
-	public List<Competicion> devolverCompeticiones() {
+	public List<Competicion> devolverCompeticiones() throws LoginException {
 		Competicion comp;
 		List<Competicion> competiciones = new ArrayList<Competicion>();
 		ResultSet rs = null;
@@ -769,7 +794,8 @@ public class DaoImplementacion implements InterfazDao {
 				competiciones.add(comp);
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			String msg = "Problemas en la BDs";
+			throw new LoginException(msg);
 		} finally {
 			try {
 				rs.close();
@@ -780,7 +806,7 @@ public class DaoImplementacion implements InterfazDao {
 		}
 		return competiciones;
 	}
-	public List<Equipo> buscarEquipos() {
+	public List<Equipo> buscarEquipos() throws LoginException {
 		Equipo equi;
 		List<Equipo> equipos = new ArrayList<Equipo>();
 		ResultSet rs = null;
@@ -795,7 +821,8 @@ public class DaoImplementacion implements InterfazDao {
 				equipos.add(equi);
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			String msg = "Problemas en la BDs";
+			throw new LoginException(msg);
 		} finally {
 			try {
 				rs.close();
