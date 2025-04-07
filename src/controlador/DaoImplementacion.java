@@ -42,7 +42,7 @@ public class DaoImplementacion implements InterfazDao {
 	final String BUSCAR_JUGADOR = "SELECT * FROM JUGADOR";
 	final String MOSTRAR_DATOS_JUGADOR = "SELECT dni, nombre, apellido, dorsal, posicion, cod_equi FROM jugador";
 	// SQL Competicion
-	final String ALTA_COMPETICION = "INSERT INTO COMPETICICION (cod_comp, nombre_competicion) VALUES (?, ?)";
+	final String ALTA_COMPETICION = "INSERT INTO COMPETICION (cod_comp, nombre_competicion) VALUES (?, ?)";
 	final String BAJA_COMPETICION = "DELETE FROM COMPETICION WHERE cod_comp = ?";
 	final String MODIFICAR_COMPETICION = "UPDATE COMPETICION SET nombre_competicion = ? WHERE cod_comp = ?";
 	final String BUSCAR_COMPETICION = "SELECT * FROM COMPETICION";
@@ -62,17 +62,17 @@ public class DaoImplementacion implements InterfazDao {
 	// SQL Partido
 	final String ALTA_PARTIDO = "INSERT INTO PARTIDO (cod_part, equipo_local, equipo_visitante, ganador, fecha, cod_comp) VALUES (?, ?, ?, ?, ?, ?)";
 	final String BAJA_PARTIDO = "DELETE FROM PARTIDO WHERE cod_part = ?";
-	final String MODIFICAR_PARTIDO = "UPDATE PAARTIDO SET equipo_local = ?, equipo_visitante = ?, ganador = ?, fecha = ?, cod_comp = ? WHERE cod_part = ?";
+	final String MODIFICAR_PARTIDO = "UPDATE PARTIDO SET equipo_local = ?, equipo_visitante = ?, ganador = ?, fecha = ?, cod_comp = ? WHERE cod_part = ?";
 	final String BUSCAR_PARTIDO = "SELECT * FROM PARTIDO";
-	final String CANTIDAD_PARTIDOS ="SELECT COUNT(*) FROM PARTIDO";
+	final String CANTIDAD_PARTIDOS = "SELECT COUNT(*) FROM PARTIDO";
+	final String MOSTRAR_PARTIDO = "SELECT * FROM PARTIDO";
 
 	final String PARTIDOS_DIA = "SELECT * FROM PARTIDO WHERE DATE(FECHA) = ? ORDER BY fecha ASC";
-	final String EQUIPOS_LIGA= "SELECT * FROM EQUIPO WHERE cod_equi in (select equipo_local from partido ";
-	
+	final String EQUIPOS_LIGA = "SELECT * FROM EQUIPO WHERE cod_equi in (select equipo_local from partido ";
+
 	final String MOSTRAR_DATOS_PARTIDO = "SELECT cod_part, equipo_local, equipo_visitante, ganador, fecha, cod_comp FROM partido";
-	final String NUEVOS_EQUIPOS="select * from equipo where cod_equi not in (select equipo_local from partido where cod_comp=?) and cod_equi not in (select equipo_visitante from partido where cod_comp=?)";
-	
-	
+	final String NUEVOS_EQUIPOS = "select * from equipo where cod_equi not in (select equipo_local from partido where cod_comp=?) and cod_equi not in (select equipo_visitante from partido where cod_comp=?)";
+
 	public DaoImplementacion() {
 		this.configFile = ResourceBundle.getBundle("modelo.configClass");
 		this.urlDB = this.configFile.getString("Conn");
@@ -130,7 +130,7 @@ public class DaoImplementacion implements InterfazDao {
 	}
 
 	@Override
-	public void altaJugador(Jugador jug) throws LoginException{
+	public void altaJugador(Jugador jug) throws LoginException {
 		openConnection();
 		try {
 			stmt = con.prepareStatement(ALTA_JUGADOR);
@@ -140,7 +140,7 @@ public class DaoImplementacion implements InterfazDao {
 			stmt.setInt(4, jug.getDorsal());
 			stmt.setString(5, jug.getPosicion().name());
 			stmt.setString(6, jug.getCod_equi());
-			if(stmt.executeUpdate() != 1) {
+			if (stmt.executeUpdate() != 1) {
 				String msg = "Problemas con el alta de juagdor";
 				throw new LoginException(msg);
 			}
@@ -158,14 +158,14 @@ public class DaoImplementacion implements InterfazDao {
 	}
 
 	@Override
-	public void bajaJugador(Jugador jug) throws LoginException{
+	public void bajaJugador(Jugador jug) throws LoginException {
 
 		openConnection();
 		try {
 			stmt = con.prepareStatement(BAJA_JUGADOR);
 			stmt.setString(1, jug.getDni());
 			if (stmt.executeUpdate() != 1) {
-				
+
 			}
 		} catch (SQLException e) {
 			String msg = "Problemas en la BDs";
@@ -370,7 +370,7 @@ public class DaoImplementacion implements InterfazDao {
 	}
 
 	@Override
-	public void bajaEquipo(Equipo eq)  throws LoginException{
+	public void bajaEquipo(Equipo eq) throws LoginException {
 		openConnection();
 		try {
 			stmt = con.prepareStatement(BAJA_EQUIPO);
@@ -513,7 +513,7 @@ public class DaoImplementacion implements InterfazDao {
 	}
 
 	@Override
-	public Map<Integer, Partido> listarPartidos() throws LoginException{
+	public Map<Integer, Partido> listarPartidos() throws LoginException {
 		ResultSet rs = null;
 		Map<Integer, Partido> partidos = new HashMap<Integer, Partido>();
 		openConnection();
@@ -548,18 +548,20 @@ public class DaoImplementacion implements InterfazDao {
 
 	@Override
 	public List<Equipo> buscarDifEquipo(Competicion liga) throws LoginException {
-		Equipo equi;
 		ResultSet rs = null;
-		List<Equipo> equipos = new ArrayList<Equipo>();
+		List<Equipo> equipos = new ArrayList<>();
+		Equipo equi;
 		openConnection();
 		try {
 			stmt = con.prepareStatement(BUSCAR_EQUIPO_LIGA);
 			stmt.setString(1, liga.getCod_comp());
 			stmt.setString(2, liga.getCod_comp());
+			System.out.println("Antes");
 			rs = stmt.executeQuery();
+			System.out.println("Despues");
 
 			while (rs.next()) {
-				equi = new Equipo ();
+				equi = new Equipo();
 				equi.setCod_equi(rs.getString(1));
 				equi.setNombre_equipo(rs.getString(2));
 				equipos.add(equi);
@@ -570,7 +572,9 @@ public class DaoImplementacion implements InterfazDao {
 			throw new LoginException(msg);
 		} finally {
 			try {
-				rs.close();
+				if (rs != null) {
+					rs.close();
+				}
 				closeConnection();
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -644,140 +648,135 @@ public class DaoImplementacion implements InterfazDao {
 		}
 		return partidos;
 	}
-	
-	public Object[][]  mostrarDatosJugador(Jugador jug) throws LoginException {
+
+	public Object[][] mostrarDatosJugador(Jugador jug) throws LoginException {
 		List<Object[]> listaJugadores = new ArrayList<>();
-        ResultSet rs = null;
+		ResultSet rs = null;
 
-        try {
-            openConnection();
-            stmt = con.prepareStatement(MOSTRAR_DATOS_JUGADOR);
-            rs = stmt.executeQuery();
+		try {
+			openConnection();
+			stmt = con.prepareStatement(MOSTRAR_DATOS_JUGADOR);
+			rs = stmt.executeQuery();
 
-            while (rs.next()) {
-                Object[] fila = {
-                    rs.getString("dni"),
-                    rs.getString("nombre"),
-                    rs.getString("apellido"),
-                    rs.getInt("dorsal"),
-                    rs.getString("posicion"),
-                    rs.getString("cod_equi")
-                };
-                listaJugadores.add(fila);
-            }
+			while (rs.next()) {
+				Object[] fila = { rs.getString("dni"), rs.getString("nombre"), rs.getString("apellido"),
+						rs.getInt("dorsal"), rs.getString("posicion"), rs.getString("cod_equi") };
+				listaJugadores.add(fila);
+			}
 
-            return listaJugadores.toArray(new Object[0][0]);
+			return listaJugadores.toArray(new Object[0][0]);
 
-        } catch (SQLException e) {
-        	String msg = "Problemas en la BDs";
+		} catch (SQLException e) {
+			String msg = "Problemas en la BDs";
 			throw new LoginException(msg);
-        } finally {
-            try {
-                if (rs != null) rs.close();
-                closeConnection();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-	
-	public Object[][]  mostrarDatosEquipo(Equipo eq) throws LoginException {
+		} finally {
+			try {
+				if (rs != null)
+					rs.close();
+				closeConnection();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public Object[][] mostrarDatosEquipo(Equipo eq) throws LoginException {
 		List<Object[]> listaEquipos = new ArrayList<>();
-        ResultSet rs = null;
+		ResultSet rs = null;
 
-        try {
-            openConnection();
-            stmt = con.prepareStatement(MOSTRAR_DATOS_EQUIPO);
-            rs = stmt.executeQuery();
+		try {
+			openConnection();
+			stmt = con.prepareStatement(MOSTRAR_DATOS_EQUIPO);
+			rs = stmt.executeQuery();
 
-            while (rs.next()) {
-                Object[] fila = {
-                    rs.getString("cod_equi"),
-                    rs.getString("nombre_equipo")
-                };
-                listaEquipos.add(fila);
-            }
+			while (rs.next()) {
+				Object[] fila = { rs.getString("cod_equi"), rs.getString("nombre_equipo") };
+				listaEquipos.add(fila);
+			}
 
-            return listaEquipos.toArray(new Object[0][0]);
+			return listaEquipos.toArray(new Object[0][0]);
 
-        } catch (SQLException e) {
-        	String msg = "Problemas en la BDs";
+		} catch (SQLException e) {
+			String msg = "Problemas en la BDs";
 			throw new LoginException(msg);
-        } finally {
-            try {
-                if (rs != null) rs.close();
-                closeConnection();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-	public Object[][]  mostrarDatosCompeticion(Competicion comp) throws LoginException {
+		} finally {
+			try {
+				if (rs != null)
+					rs.close();
+				closeConnection();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public Object[][] mostrarDatosCompeticion(Competicion comp) throws LoginException {
 		List<Object[]> listaCompeticion = new ArrayList<>();
-        ResultSet rs = null;
+		ResultSet rs = null;
 
-        try {
-            openConnection();
-            stmt = con.prepareStatement(MOSTRAR_DATOS_COMPETICION);
-            rs = stmt.executeQuery();
+		try {
+			openConnection();
+			stmt = con.prepareStatement(MOSTRAR_DATOS_COMPETICION);
+			rs = stmt.executeQuery();
 
-            while (rs.next()) {
-                Object[] fila = {
-                    rs.getString("cod_comp"),
-                    rs.getString("nombre_competicion")
-                };
-                listaCompeticion.add(fila);
-            }
+			while (rs.next()) {
+				Object[] fila = { rs.getString("cod_comp"), rs.getString("nombre_competicion") };
+				listaCompeticion.add(fila);
+			}
 
-            return listaCompeticion.toArray(new Object[0][0]);
+			return listaCompeticion.toArray(new Object[0][0]);
 
-        } catch (SQLException e) {
-        	String msg = "Problemas en la BDs";
+		} catch (SQLException e) {
+			String msg = "Problemas en la BDs";
 			throw new LoginException(msg);
-        } finally {
-            try {
-                if (rs != null) rs.close();
-                closeConnection();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-	public Object[][]  mostrarDatosPartido(Partido part) throws LoginException {
+		} finally {
+			try {
+				if (rs != null)
+					rs.close();
+				closeConnection();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public Object[][] mostrarDatosPartido(Partido part) throws LoginException {
 		List<Object[]> listaPartidos = new ArrayList<>();
-        ResultSet rs = null;
+		ResultSet rs = null;
 
-        try {
-            openConnection();
-            stmt = con.prepareStatement(MOSTRAR_DATOS_PARTIDO);
-            rs = stmt.executeQuery();
+		try {
+			openConnection();
+			stmt = con.prepareStatement(MOSTRAR_DATOS_PARTIDO);
+			rs = stmt.executeQuery();
 
-            while (rs.next()) {
-                Object[] fila = {
+			while (rs.next()) {
+
+				Object[] fila = {
                     rs.getInt("cod_part"),
                     rs.getString("equipo_local"),
                     rs.getString("equipo_visitante"),
                     rs.getString("ganador"),
-                    rs.getDate("fecha"),
+                    rs.getDate("fecha").toLocalDate(),
                     rs.getString("cod_comp")
-                };
-                listaPartidos.add(fila);
-            }
+				};
+				listaPartidos.add(fila);
+			}
 
-            return listaPartidos.toArray(new Object[0][0]);
+			return listaPartidos.toArray(new Object[0][0]);
 
-        } catch (SQLException e) {
-        	String msg = "Problemas en la BDs";
+		} catch (SQLException e) {
+			String msg = "Problemas en la BDs";
 			throw new LoginException(msg);
-        } finally {
-            try {
-                if (rs != null) rs.close();
-                closeConnection();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-    }
+		} finally {
+			try {
+				if (rs != null)
+					rs.close();
+				closeConnection();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 
 	public List<Competicion> devolverCompeticiones() throws LoginException {
 		Competicion comp;
@@ -806,6 +805,7 @@ public class DaoImplementacion implements InterfazDao {
 		}
 		return competiciones;
 	}
+
 	public List<Equipo> buscarEquipos() throws LoginException {
 		Equipo equi;
 		List<Equipo> equipos = new ArrayList<Equipo>();
@@ -863,16 +863,17 @@ public class DaoImplementacion implements InterfazDao {
 		}
 		return equipos;
 	}
-	public int cantidadPartidos () {
+
+	public int cantidadPartidos() {
 		int i = 0;
 		ResultSet rs = null;
 		openConnection();
 		try {
 			stmt = con.prepareStatement(CANTIDAD_PARTIDOS);
 			rs = stmt.executeQuery();
-			if (rs.next()) {  
-	            i = rs.getInt(1);  
-	        }
+			if (rs.next()) {
+				i = rs.getInt(1);
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -883,7 +884,37 @@ public class DaoImplementacion implements InterfazDao {
 				e.printStackTrace();
 			}
 		}
-		
+
 		return i;
+	}
+
+	public List<Partido> mostarPartidos(Partido part) {
+		Partido p;
+		ResultSet rs = null;
+		List<Partido> partidos = new ArrayList<Partido>();
+		openConnection();
+		try {
+			stmt = con.prepareStatement(MOSTRAR_PARTIDO);
+			rs = stmt.executeQuery();
+			while (rs.next()) {
+				p = new Partido();
+				p.setCod_part(rs.getInt(1));
+				p.setEquipo_local(rs.getString(2));
+				p.setEquipo_visitante(rs.getString(3));
+				p.setCod_part(rs.getInt(1));
+				p.setCod_part(rs.getInt(1));
+				partidos.add(p);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				rs.close();
+				closeConnection();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return partidos;
 	}
 }

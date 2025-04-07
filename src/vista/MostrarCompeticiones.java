@@ -101,6 +101,7 @@ public class MostrarCompeticiones extends JDialog {
         Competicion comp = new Competicion();
 		Object[][] datos = Principal.devolverCompeticiones(comp);
 		actualizarDatos(datos);
+		dispose();
     }
 
     private void actualizarDatos(Object[][] datos) {

@@ -1,13 +1,12 @@
 package vista;
 
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
 import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
-import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -17,8 +16,6 @@ import javax.swing.table.DefaultTableModel;
 
 import controlador.Principal;
 import excepciones.LoginException;
-import modelo.EnumPosicion;
-import modelo.Jugador;
 import modelo.Partido;
 
 public class MostrarPartidos extends JDialog {
@@ -73,16 +70,18 @@ public class MostrarPartidos extends JDialog {
         table.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
+            	LocalDate fecha;
                 if (e.getClickCount() == 2) {
                     int row = table.getSelectedRow();
                     if (row != -1) {
                         int cod = (Integer) model.getValueAt(row, 0);
                         String eqLocal = (String) model.getValueAt(row, 1);
                         String eqVisitante = (String) model.getValueAt(row, 2);
+                       
                         String ganador = (String) model.getValueAt(row, 3);
-                        LocalDate fecha = (LocalDate) model.getValueAt(row, 4);
+                        fecha = (LocalDate) model.getValueAt(row, 4);
                         String codComp = (String) model.getValueAt(row, 5);
-
+                        
                         VMenuAdmin vma = new VMenuAdmin(null, true);
                         vma.cargarDatosPart(cod, eqLocal, eqVisitante, ganador, fecha, codComp);
                         vma.setVisible(true);
@@ -95,7 +94,6 @@ public class MostrarPartidos extends JDialog {
         try {
 			cargarDatos();
 		} catch (LoginException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
     }

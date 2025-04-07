@@ -73,7 +73,6 @@ public class MostrarJugadores extends JDialog {
 						VMenuAdmin vma = new VMenuAdmin(null, true);
 						vma.cargarDatosJug(dni, nombre, apellido, dorsal, posicion, codEq);
 						vma.setVisible(true);
-						dispose();
 					}
 				}
 			}
@@ -91,6 +90,10 @@ public class MostrarJugadores extends JDialog {
 		Jugador jug = new Jugador();
 		Object[][] datos = Principal.devolverJugadores(jug);
 		actualizarDatos(datos);
+		dispose();
+		VMenuAdmin va = new VMenuAdmin(null, true);
+		va.setVisible(true);  
+		
 	}
 
 	private void actualizarDatos(Object[][] datos) {
