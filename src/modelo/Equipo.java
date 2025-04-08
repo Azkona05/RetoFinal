@@ -19,7 +19,7 @@ public class Equipo {
 	}
 	@Override
 	public String toString() {
-		return "Equipo [cod_equi=" + cod_equi + ", nombre_equipo=" + nombre_equipo + "]";
+		return nombre_equipo;
 	}
 	
 	

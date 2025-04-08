@@ -33,7 +33,7 @@ public class Competicion {
 
 	@Override
 	public String toString() {
-		return "Liga " +  nombre_competicion;
+		return nombre_competicion;
 	}
-
+	
 }

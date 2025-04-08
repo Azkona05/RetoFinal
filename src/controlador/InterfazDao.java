@@ -35,11 +35,13 @@ public interface InterfazDao {
 	public Map<String, Equipo> listarEquipos() throws LoginException;
 	public Object[][]  mostrarDatosEquipo(Equipo eq) throws LoginException; 
 	//PARTIDO
+	public int cantidadPartidos ();
+	public List<Equipo> nuevosEquipos(Competicion comp);
 	public void altaPartido (Partido part) throws LoginException;
 	public void bajaPartido (Partido part) throws LoginException;
 	public void modificarPartido (Partido part) throws LoginException;
 	public Map<Integer, Partido> listarPartidos() throws LoginException;
-	List<String> buscarDifEquipo(Competicion liga) throws LoginException;
+	List<Equipo> buscarDifEquipo(Competicion liga) throws LoginException;
 	List<Partido> devolverPartidos(LocalDate fecha) throws LoginException;
 	public Object[][]  mostrarDatosPartido(Partido part) throws LoginException;
 }

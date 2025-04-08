@@ -55,7 +55,7 @@ public class Partido {
 	@Override
 	public String toString() {
 		return "Partido [cod_part=" + cod_part + ", equipo_local=" + equipo_local + ", equipo_visitante="
-				+ equipo_visitante + ", ganador=" + ganador + ", fecha=" + fecha + "]";
+				+ equipo_visitante + ", ganador=" + ganador + ", fecha=" + fecha + ", cod_comp= "+ cod_comp +"]";
 	}
 	
 	

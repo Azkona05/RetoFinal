@@ -34,7 +34,7 @@ public class Principal {
 	public static Map<String, Competicion> leerCompeticiones() throws LoginException {
 		return dao.listarCompeticiones();
 	}
-	public static List<String> devolverEquipos(Competicion liga) throws LoginException {
+	public static List<Equipo> devolverEquipos(Competicion liga) throws LoginException {
 		return dao.buscarDifEquipo(liga);
 	}
 	public static List<Partido> devolverPartidos(LocalDate fecha) throws LoginException {
@@ -101,8 +101,7 @@ public class Principal {
 	public static Object[][] devolverCompeticiones(Competicion comp) throws LoginException {
 		return dao.mostrarDatosCompeticion(comp);
 	}
-
-
+	
 	public static Object[][] devolverPartidos(Partido part) throws LoginException{
 		return dao.mostrarDatosPartido(part);
 	}
@@ -122,4 +121,11 @@ public class Principal {
 		return dao.devolverCompeticiones();
 	}
 	
+	public static List<Equipo> nuevosEquipos(Competicion comp) {
+		return dao.nuevosEquipos(comp);
+	}
+	
+	public static int cantidadPartidos () {
+		return dao.cantidadPartidos();
+	}
 }

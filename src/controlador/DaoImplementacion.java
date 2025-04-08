@@ -57,16 +57,22 @@ public class DaoImplementacion implements InterfazDao {
 	final String BAJA_EQUIPO = "DELETE FROM EQUIPO WHERE cod_equi = ?";
 	final String MODIFICAR_EQUIPO = "UPDATE EQUIPO SET nombre_equipo = ? WHERE cod_equi = ?";
 	final String BUSCAR_EQUIPO = "SELECT * FROM EQUIPO";
-	final String BUSCAR_EQUIPO_LIGA = "SELECT cod_equi from equipo where cod_equi IN (SELECT equipo_local from partido where cod_comp=?) OR cod_equi IN (SELECT equipo_visitante from partido where cod_comp=?)";
+	final String BUSCAR_EQUIPO_LIGA = "SELECT cod_equi, nombre_equipo from equipo where cod_equi IN (SELECT equipo_local from partido where cod_comp=?) OR cod_equi IN (SELECT equipo_visitante from partido where cod_comp=?)";
 	final String MOSTRAR_DATOS_EQUIPO = "SELECT cod_equi, nombre_equipo FROM equipo";
 	// SQL Partido
-	final String ALTA_PARTIDO = "INSERT INTO PARTIDO (cod_part, equipo_local, equipo_visitante, ganador, fecha, cod_comp) VALUES (?, ?, ?, ?, ?)";
+	final String ALTA_PARTIDO = "INSERT INTO PARTIDO (cod_part, equipo_local, equipo_visitante, ganador, fecha, cod_comp) VALUES (?, ?, ?, ?, ?, ?)";
 	final String BAJA_PARTIDO = "DELETE FROM PARTIDO WHERE cod_part = ?";
 	final String MODIFICAR_PARTIDO = "UPDATE PAARTIDO SET equipo_local = ?, equipo_visitante = ?, ganador = ?, fecha = ?, cod_comp = ? WHERE cod_part = ?";
 	final String BUSCAR_PARTIDO = "SELECT * FROM PARTIDO";
+	final String CANTIDAD_PARTIDOS ="SELECT COUNT(*) FROM PARTIDO";
 
 	final String PARTIDOS_DIA = "SELECT * FROM PARTIDO WHERE DATE(FECHA) = ? ORDER BY fecha ASC";
+	final String EQUIPOS_LIGA= "SELECT * FROM EQUIPO WHERE cod_equi in (select equipo_local from partido ";
+	
 	final String MOSTRAR_DATOS_PARTIDO = "SELECT cod_part, equipo_local, equipo_visitante, ganador, fecha, cod_comp FROM partido";
+	final String NUEVOS_EQUIPOS="select * from equipo where cod_equi not in (select equipo_local from partido where cod_comp=?) and cod_equi not in (select equipo_visitante from partido where cod_comp=?)";
+	
+	
 	public DaoImplementacion() {
 		this.configFile = ResourceBundle.getBundle("modelo.configClass");
 		this.urlDB = this.configFile.getString("Conn");
@@ -430,12 +436,13 @@ public class DaoImplementacion implements InterfazDao {
 		openConnection();
 		try {
 			stmt = con.prepareStatement(ALTA_PARTIDO);
-			stmt.setInt(0, part.getCod_part());
-			stmt.setString(1, part.getEquipo_local());
-			stmt.setString(2, part.getEquipo_visitante());
-			stmt.setString(3, part.getGanadorString());
-			stmt.setDate(4, Date.valueOf(part.getFecha()));
-			stmt.setString(5, part.getCod_comp());
+			stmt.setInt(1, part.getCod_part());
+			stmt.setString(2, part.getEquipo_local());
+			stmt.setString(3, part.getEquipo_visitante());
+			stmt.setString(4, part.getGanadorString());
+			stmt.setDate(5, Date.valueOf(part.getFecha()));
+			stmt.setString(6, part.getCod_comp());
+			stmt.executeUpdate();
 		} catch (SQLException e) {
 			throw new LoginException("Problemas en la BDs");
 		} finally {
@@ -523,9 +530,10 @@ public class DaoImplementacion implements InterfazDao {
 	}
 
 	@Override
-	public List<String> buscarDifEquipo(Competicion liga) throws LoginException {
+	public List<Equipo> buscarDifEquipo(Competicion liga) throws LoginException {
+		Equipo equi;
 		ResultSet rs = null;
-		List<String> equipos = new ArrayList<String>();
+		List<Equipo> equipos = new ArrayList<Equipo>();
 		openConnection();
 		try {
 			stmt = con.prepareStatement(BUSCAR_EQUIPO_LIGA);
@@ -534,7 +542,10 @@ public class DaoImplementacion implements InterfazDao {
 			rs = stmt.executeQuery();
 
 			while (rs.next()) {
-				equipos.add(rs.getString(1));
+				equi = new Equipo ();
+				equi.setCod_equi(rs.getString(1));
+				equi.setNombre_equipo(rs.getString(2));
+				equipos.add(equi);
 			}
 
 		} catch (SQLException e) {
@@ -794,5 +805,58 @@ public class DaoImplementacion implements InterfazDao {
 			}
 		}
 		return equipos;
+	}
+
+	@Override
+	public List<Equipo> nuevosEquipos(Competicion comp) {
+		Equipo equi;
+		List<Equipo> equipos = new ArrayList<Equipo>();
+		ResultSet rs = null;
+		openConnection();
+		try {
+			stmt = con.prepareStatement(NUEVOS_EQUIPOS);
+			stmt.setString(1, comp.getCod_comp());
+			stmt.setString(2, comp.getCod_comp());
+			rs = stmt.executeQuery();
+			while (rs.next()) {
+				equi = new Equipo();
+				equi.setCod_equi(rs.getString(1));
+				equi.setNombre_equipo(rs.getString(2));
+				equipos.add(equi);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				rs.close();
+				closeConnection();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return equipos;
+	}
+	public int cantidadPartidos () {
+		int i = 0;
+		ResultSet rs = null;
+		openConnection();
+		try {
+			stmt = con.prepareStatement(CANTIDAD_PARTIDOS);
+			rs = stmt.executeQuery();
+			if (rs.next()) {  
+	            i = rs.getInt(1);  
+	        }
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				rs.close();
+				closeConnection();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return i;
 	}
 }
