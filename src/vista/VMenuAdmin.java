@@ -49,11 +49,11 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 	private JButton btnAltaComp, btnBajaComp, btnModificarComp, btnCargarComp, btnLimpiarDatosComp;
 	private JButton btnAltaEq, btnBajaEq, btnModificarEq, btnCargarEq, btnLimpiarDatosEq;
 	private JTextField txtDni, txtNombre, txtApellido, txtDorsal, txtNombreEq, txtCodComp, txtNombreComp,
-			txtCodEquipo_Jugador, txtCodEquipo_Equipo;
+			txtCodEquipo_Equipo;
 	private ButtonGroup grupoPosicion;
 	private JRadioButton rdbtnGuard, rdbtnQuarterback, rdbtnRunning, rdbtnTackle;
 	private JComboBox<Competicion> cbLiga;
-	private JComboBox<Equipo> cbLocal, cbVisitante;
+	private JComboBox<Equipo> cbLocal, cbVisitante, cbCodEqui_J;
 	private JComboBox<String> cbGanador;
 	private Competicion comp;
 	private JTextField txtCodPar;
@@ -151,10 +151,6 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 		lblCodEquipo.setBounds(50, 253, 100, 30);
 		panelJugador.add(lblCodEquipo);
 
-		txtCodEquipo_Jugador = new JTextField(10);
-		txtCodEquipo_Jugador.setBounds(200, 255, 150, 30);
-		panelJugador.add(txtCodEquipo_Jugador);
-
 		grupoPosicion = new ButtonGroup();
 
 		rdbtnGuard = new JRadioButton("Guard");
@@ -205,6 +201,10 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 		lblPosicion.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblPosicion.setBounds(50, 190, 100, 30);
 		panelJugador.add(lblPosicion);
+
+		JComboBox cbCodEqui_J = new JComboBox();
+		cbCodEqui_J.setBounds(200, 260, 145, 21);
+		panelJugador.add(cbCodEqui_J);
 
 		// Panel Equipo
 		panelEquipos = new JPanel();
@@ -462,7 +462,7 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 			limpiarPart();
 		} else if (e.getSource().equals(btnLimpiarDatosComp)) {
 			limpiarComp();
-		} 
+		}
 	}
 
 	private void limpiarComp() {
@@ -486,7 +486,7 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 		rdbtnQuarterback.setSelected(false);
 		rdbtnRunning.setSelected(false);
 		rdbtnTackle.setSelected(false);
-		txtCodEquipo_Jugador.setText("");
+		// limpiar cb
 
 	}
 
@@ -676,7 +676,15 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 				} else if (rdbtnGuard.isSelected()) {
 					j.setPosicion(EnumPosicion.GUARD);
 				}
-				j.setCod_equi(txtCodEquipo_Jugador.getText());
+
+				for (int i = 0; i < cbLocal.getItemCount(); i++) {
+					cbCodEqui_J.addItem(cbLocal.getItemAt(i));
+				}
+
+				// part.setEquipo_local(((Equipo) cbLocal.getSelectedItem()).getCod_equi());
+				// j.setCod_equi((Equipo) cbCodEqui_J.get);
+				// j.setCod_equi(txtCodEquipo_Jugador.getText());
+
 				Principal.altaJugador(j);
 				JOptionPane.showMessageDialog(this, "ALTA CORRECTA!!", "MENSAJE", JOptionPane.INFORMATION_MESSAGE);
 				limpiarJug();
@@ -714,7 +722,7 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 		} else if (rdbtnGuard.isSelected()) {
 			j.setPosicion(EnumPosicion.GUARD);
 		}
-		j.setCod_equi(txtCodEquipo_Jugador.getText());
+		// j.setCod_equi(txtCodEquipo_Jugador.getText());
 		try {
 			Principal.modificarJugador(j);
 		} catch (LoginException e) {
@@ -759,7 +767,7 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 		} catch (IllegalArgumentException e) {
 			System.err.println("Error: La posición '" + posicion + "' no es válida.");
 		}
-		txtCodEquipo_Jugador.setText(codEq);
+		// txtCodEquipo_Jugador.setText(codEq);
 
 	}
 
@@ -830,6 +838,6 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 		char letraCalculada = letras.charAt(numero % 23);
 
 		return letraDni == letraCalculada;
-	}
 
+	}
 }

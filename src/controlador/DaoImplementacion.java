@@ -41,6 +41,7 @@ public class DaoImplementacion implements InterfazDao {
 	final String MODIFICAR_JUGADOR = "UPDATE jugador SET nombre = ?, apellido = ?, dorsal = ?, posicion = ?, cod_equi = ? WHERE dni = ?";
 	final String BUSCAR_JUGADOR = "SELECT * FROM JUGADOR";
 	final String MOSTRAR_DATOS_JUGADOR = "SELECT dni, nombre, apellido, dorsal, posicion, cod_equi FROM jugador";
+	final String MOSTRAR_JUGADOR_EQUIPO ="SELECT * FROM JUGADOR WHERE cod_equi=?";
 	// SQL Competicion
 	final String ALTA_COMPETICION = "INSERT INTO COMPETICION (cod_comp, nombre_competicion) VALUES (?, ?)";
 	final String BAJA_COMPETICION = "DELETE FROM COMPETICION WHERE cod_comp = ?";
