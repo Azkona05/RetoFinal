@@ -80,7 +80,6 @@ public class MostrarEquipos extends JDialog {
                         VMenuAdmin vma = new VMenuAdmin(null, true);
                         vma.cargarDatosEq(codEq, nombre_equipo);
                         vma.setVisible(true);
-                        dispose();
                     }
                 }
             }
@@ -98,6 +97,7 @@ public class MostrarEquipos extends JDialog {
         Equipo eq = new Equipo();
 		Object[][] datos = Principal.devolverEquipos(eq);
 		actualizarDatos(datos);
+		dispose();
     }
 
     private void actualizarDatos(Object[][] datos) {

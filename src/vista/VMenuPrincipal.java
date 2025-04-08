@@ -4,6 +4,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Comparator;
@@ -37,7 +39,7 @@ import javax.swing.SwingConstants;
 import java.awt.Toolkit;
 import javax.swing.JCheckBox;
 
-public class VMenuPrincipal extends JFrame implements ActionListener, FocusListener {
+public class VMenuPrincipal extends JFrame implements ActionListener, FocusListener, MouseListener {
 	private static final long serialVersionUID = 1L;
 	private JButton btnLogin, btnCalendario;
 	private JCalendar calendario;
@@ -76,7 +78,7 @@ public class VMenuPrincipal extends JFrame implements ActionListener, FocusListe
 		getContentPane().add(panel_Izquierdo, BorderLayout.EAST);
 		jscrollPartido = new JScrollPane();
 		panel_Izquierdo.add(jscrollPartido);
-		if (fecha==null) {
+		if (fecha == null) {
 			presentarTablaPartido(LocalDate.now());
 		}
 
@@ -104,6 +106,7 @@ public class VMenuPrincipal extends JFrame implements ActionListener, FocusListe
 			cbElegirLiga.addItem(comp);
 		}
 		presentarTabla((Competicion) cbElegirLiga.getSelectedItem());
+
 	}
 
 	@Override
@@ -145,7 +148,17 @@ public class VMenuPrincipal extends JFrame implements ActionListener, FocusListe
 
 	private JTable cargarTablaPart(LocalDate fecha) throws LoginException {
 		String[] columnasNombre = { "Liga", "Local", "Visitante", "Ganador" };
-		DefaultTableModel model = new DefaultTableModel(null, columnasNombre);
+		DefaultTableModel model = new DefaultTableModel(null, columnasNombre) {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false; // Bloquea la edición de todas las celdas
+			}
+		};
 		List<Partido> partidos = Principal.devolverPartidos(fecha);
 		for (Partido part : partidos) {
 			String[] fila = new String[4];
@@ -164,18 +177,24 @@ public class VMenuPrincipal extends JFrame implements ActionListener, FocusListe
 	}
 
 	private void presentarTabla(Competicion liga) throws LoginException {
-		// cargarTabla (prop);
-		// jscroll = new JScrollPane();
 		tablaClasi = this.cargarTabla(liga);
+
+		tablaClasi.addMouseListener(this);
+
 		jscroll.setViewportView(tablaClasi);
-		// panel_2.add(jscroll);
-		// jscroll.setBounds(5, 5, 150, 150);
 	}
 
 	private JTable cargarTabla(Competicion liga) throws LoginException {
 		String[] coulumnasNombre = { "Posicion", "Nombre", "Victorias" };
 		String[] colum = new String[3];
-		DefaultTableModel model = new DefaultTableModel(null, coulumnasNombre);
+		DefaultTableModel model = new DefaultTableModel(null, coulumnasNombre) {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false; // Bloquea la edición de todas las celdas
+			}
+		};
 		List<Partido> partidos = Principal.buscarEquiLiga(liga);
 		List<Equipo> diferentesEquipos = Principal.devolverEquipos(liga);
 		Map<String, Equipo> orden = new TreeMap<>(Comparator.reverseOrder());
@@ -201,35 +220,6 @@ public class VMenuPrincipal extends JFrame implements ActionListener, FocusListe
 
 		return new JTable(model);
 	}
-//	private JTable cargarTabla(Competicion liga) {
-//		String[] coulumnasNombre = { "Posicion", "Nombre", "Victorias" };
-//		String[] colum = new String[3];
-//		DefaultTableModel model = new DefaultTableModel(null, coulumnasNombre);
-//		List<Partido> partidos = Principal.buscarEquiLiga(liga);
-//		List<String> diferentesEquipos = Principal.devolverEquipos(liga);
-//		Map<String, String> orden = new TreeMap<>(Comparator.reverseOrder());
-//		int cont = 0;
-//		for (String equipo : diferentesEquipos) {
-//			cont = 0;
-//			for (Partido p : partidos) {
-//				if (equipo.equals(p.getGanador())) {
-//					cont++;
-//				}
-//			}
-//			orden.put(cont + "-" + equipo, equipo);
-//		}
-//
-//		cont = 1;
-//		for (Map.Entry<String, String> entry : orden.entrySet()) {
-//			colum[0] = String.valueOf(cont);
-//			colum[2] = entry.getKey().split("-")[0];
-//			colum[1] = entry.getValue();
-//			model.addRow(colum);
-//			cont++;
-//		}
-//
-//		return new JTable(model);
-//	}
 
 	@Override
 	public void focusGained(FocusEvent e) {
@@ -238,6 +228,52 @@ public class VMenuPrincipal extends JFrame implements ActionListener, FocusListe
 
 	@Override
 	public void focusLost(FocusEvent e) {
+
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		if (e.getSource().equals(tablaClasi)) {
+			if (e.MOUSE_CLICKED == 2) {
+				int row = tablaClasi.getSelectedRow();
+				if (row != -1) {
+					String nombreEquipo = (String) tablaClasi.getValueAt(row, 1); // Columna del nombre
+					System.out.println("Equipo seleccionado: " + nombreEquipo);
+
+					// Suponiendo que VEquipo tiene constructor (Frame, boolean, String)
+					VEquipo ve = new VEquipo(this, true, nombreEquipo);
+					ve.setVisible(true);
+				}
+			}
+		}
+
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+	}
+
+	public boolean celdaEditable(int row, int colum) {
+		return false;
+
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
 
 	}
 }
