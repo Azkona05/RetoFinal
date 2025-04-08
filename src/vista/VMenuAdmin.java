@@ -462,9 +462,106 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 			limpiarPart();
 		} else if (e.getSource().equals(btnLimpiarDatosComp)) {
 			limpiarComp();
+
+		} else if (e.getSource().equals(cbLiga)) {
+			// actualizar equipos a la liga
+//			System.out.println(cbLiga);
+//			cbLocal.removeAllItems();
+//			
+//			comp = (Competicion) cbLiga.getSelectedItem();
+//			System.out.println(comp);
+//			if (rdbtnVisitanteNuevo.isSelected()) {
+//				System.out.println("jaja");
+//			} else {
+//				List<Equipo> equipos = Principal.devolverEquipos(comp);
+//				System.out.println(equipos);
+//				System.out.println(comp);
+//				for (Equipo equ : equipos) {
+//					System.out.println(equ);
+//					cbLocal.addItem(equ);
+//				}
+//			}
+//		}
+			cbLocal.removeAllItems();
+			cbVisitante.removeAllItems();
+			comp = (Competicion) cbLiga.getSelectedItem();
+			List<Equipo> equipos = null;
+			try {
+				equipos = Principal.devolverEquipos(comp);
+			} catch (LoginException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			for (Equipo equ : equipos) {
+				cbLocal.addItem(equ);
+			}
+			cbLocal.setSelectedIndex(-1);
+
+			try {
+				equipos = Principal.devolverEquipos(comp);
+			} catch (LoginException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			for (Equipo equ : equipos) {
+				cbVisitante.addItem(equ);
+			}
+			cbVisitante.setSelectedIndex(-1);
+			
+		} else if (e.getSource().equals(rdbtnLocalNuevo)) {
+			if (rdbtnLocalNuevo.isSelected()) {
+				cbLocal.removeAllItems();
+				comp = (Competicion) cbLiga.getSelectedItem();
+				List<Equipo> equipos = Principal.nuevosEquipos(comp);
+				for (Equipo equ : equipos) {
+					cbLocal.addItem(equ);
+				}
+				cbLocal.setSelectedIndex(-1);
+			} else {
+				cbLocal.removeAllItems();
+				comp = (Competicion) cbLiga.getSelectedItem();
+				List<Equipo> equipos = null;
+				try {
+					equipos = Principal.devolverEquipos(comp);
+				} catch (LoginException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				for (Equipo equ : equipos) {
+					cbLocal.addItem(equ);
+				}
+				cbLocal.setSelectedIndex(-1);
+			}
+		}
+		else if (e.getSource().equals(rdbtnVisitanteNuevo)) {
+			if (rdbtnVisitanteNuevo.isSelected()) {
+				cbVisitante.removeAllItems();
+				comp = (Competicion) cbLiga.getSelectedItem();
+				List<Equipo> equipos = Principal.nuevosEquipos(comp);
+				for (Equipo equ : equipos) {
+					cbVisitante.addItem(equ);
+				}
+				cbVisitante.setSelectedIndex(-1);
+			} else {
+				nuevosVisitante();
+			}
 		}
 	}
-
+	
+	private void nuevosVisitante() {
+		cbVisitante.removeAllItems();
+		comp = (Competicion) cbLiga.getSelectedItem();
+		List<Equipo> equipos = null;
+		try {
+			equipos = Principal.devolverEquipos(comp);
+		} catch (LoginException e1) {
+			e1.printStackTrace();
+		}
+		for (Equipo equ : equipos) {
+			cbVisitante.addItem(equ);
+		}
+		cbVisitante.setSelectedIndex(-1);
+	}
 	private void limpiarComp() {
 		txtCodComp.setText("");
 		txtNombreComp.setText("");

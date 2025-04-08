@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.text.SimpleDateFormat;
 
 import javax.swing.JDialog;
 import javax.swing.JPanel;
@@ -46,6 +45,11 @@ public class MostrarJugadores extends JDialog {
 
 		String[] columnNames = { "DNI", "Nombre", "Apellido", "Dorsal", "Posicion", "Codigo Equipo" };
 		model = new DefaultTableModel(columnNames, 0) {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			public boolean isCellEditable(int row, int column) {
 				return false;
@@ -81,7 +85,6 @@ public class MostrarJugadores extends JDialog {
 		try {
 			cargarDatos();
 		} catch (LoginException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 	}
@@ -97,7 +100,7 @@ public class MostrarJugadores extends JDialog {
 	}
 
 	private void actualizarDatos(Object[][] datos) {
-		model.setRowCount(0); // Limpiar tabla antes de agregar los nuevos datos
+		model.setRowCount(0); 
 		for (Object[] fila : datos) {
 			model.addRow(fila);
 		}
