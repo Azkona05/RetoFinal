@@ -92,6 +92,7 @@ public class Principal {
 	
 	public static void bajaPartido(Partido par) throws LoginException {
 		dao.bajaPartido(par);
+		
 	}
 	
 	public static void modificarPartido(Partido par) throws LoginException {

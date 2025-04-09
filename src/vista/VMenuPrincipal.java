@@ -48,13 +48,17 @@ public class VMenuPrincipal extends JFrame implements ActionListener, FocusListe
 	private LocalDate fecha;
 
 	public VMenuPrincipal() throws LoginException {
+		getContentPane().setForeground(new Color(0, 0, 160));
+		setForeground(new Color(0, 0, 64));
 		setTitle("FUTBOL AMERICANO");
 		setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/resources/icono.jpg")));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 705, 428);
+		setBounds(100, 100, 855, 524);
 
 		// Panel Superior
 		JPanel panel_Superior = new JPanel();
+		panel_Superior.setToolTipText("");
+		panel_Superior.setForeground(new Color(255, 255, 255));
 		getContentPane().add(panel_Superior, BorderLayout.NORTH);
 		panel_Superior.setLayout(new GridLayout(1, 0, 0, 0));
 

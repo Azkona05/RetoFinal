@@ -42,7 +42,7 @@ public class DaoImplementacion implements InterfazDao {
 	final String BUSCAR_JUGADOR = "SELECT * FROM JUGADOR";
 	final String MOSTRAR_DATOS_JUGADOR = "SELECT dni, nombre, apellido, dorsal, posicion, cod_equi FROM jugador";
 	// SQL Competicion
-	final String ALTA_COMPETICION = "INSERT INTO COMPETICICION (cod_comp, nombre_competicion) VALUES (?, ?)";
+	final String ALTA_COMPETICION = "INSERT INTO COMPETICION (cod_comp, nombre_competicion) VALUES (?, ?)";
 	final String BAJA_COMPETICION = "DELETE FROM COMPETICION WHERE cod_comp = ?";
 	final String MODIFICAR_COMPETICION = "UPDATE COMPETICION SET nombre_competicion = ? WHERE cod_comp = ?";
 	final String BUSCAR_COMPETICION = "SELECT * FROM COMPETICION";
@@ -863,6 +863,7 @@ public class DaoImplementacion implements InterfazDao {
 		}
 		return equipos;
 	}
+	
 	public int cantidadPartidos () {
 		int i = 0;
 		ResultSet rs = null;
