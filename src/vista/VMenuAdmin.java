@@ -229,6 +229,9 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 		lblPosicion.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblPosicion.setBounds(50, 190, 100, 30);
 		panelJugador.add(lblPosicion);
+		
+		btnBajaJug.setEnabled(false);
+		btnModificarJug.setEnabled(false);
 
 		JComboBox cbCodEqui_J = new JComboBox();
 		cbCodEqui_J.setBounds(200, 260, 145, 21);
@@ -280,8 +283,12 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 		panelEquipos.add(btnLimpiarDatosEq);
 		btnLimpiarDatosEq.addActionListener(this);
 		btnLimpiarDatosEq.setBackground(Color.WHITE);
+		
+		btnBajaEq.setEnabled(false);
+		btnModificarEq.setEnabled(false);
 
 		// Panel Competiciones
+		
 		panelCompeticion = new JPanel();
 		panelCompeticion.setLayout(null);
 		tabbedPane.addTab("Competiciones", panelCompeticion);
@@ -327,6 +334,9 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 		panelCompeticion.add(btnLimpiarDatosComp);
 		btnLimpiarDatosComp.addActionListener(this);
 		btnLimpiarDatosComp.setBackground(Color.WHITE);
+			
+		btnBajaComp.setEnabled(false);
+		btnModificarComp.setEnabled(false);
 
 		// Panel Partidos
 		panelPartidos = new JPanel();
@@ -513,24 +523,6 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 			limpiarComp();
 
 		} else if (e.getSource().equals(cbLiga)) {
-			// actualizar equipos a la liga
-//			System.out.println(cbLiga);
-//			cbLocal.removeAllItems();
-//			
-//			comp = (Competicion) cbLiga.getSelectedItem();
-//			System.out.println(comp);
-//			if (rdbtnVisitanteNuevo.isSelected()) {
-//				System.out.println("jaja");
-//			} else {
-//				List<Equipo> equipos = Principal.devolverEquipos(comp);
-//				System.out.println(equipos);
-//				System.out.println(comp);
-//				for (Equipo equ : equipos) {
-//					System.out.println(equ);
-//					cbLocal.addItem(equ);
-//				}
-//			}
-//		}
 			cbLocal.removeAllItems();
 			cbVisitante.removeAllItems();
 			comp = (Competicion) cbLiga.getSelectedItem();
@@ -615,7 +607,12 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 	 */
 	private void limpiarComp() {
 		txtCodComp.setText("");
-		txtNombreComp.setText("");
+	    txtCodComp.setEditable(true);
+	    txtNombreComp.setText("");
+	    
+	    btnAltaComp.setEnabled(true);
+	    btnBajaComp.setEnabled(false);
+	    btnModificarComp.setEnabled(false);
 
 	}
 
@@ -636,15 +633,16 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 	 */
 	private void limpiarJug() {
 		txtDni.setText("");
+		txtDni.setEditable(true);
 		txtNombre.setText("");
 		txtApellido.setText("");
 		txtDorsal.setText("");
 		grupoPosicion.clearSelection();
-		rdbtnGuard.setSelected(false);
-		rdbtnQuarterback.setSelected(false);
-		rdbtnRunning.setSelected(false);
-		rdbtnTackle.setSelected(false);
-		// limpiar cb
+		txtCodEquipo_Jugador.setText("");
+		
+		btnAltaJug.setEnabled(true);
+		btnBajaJug.setEnabled(false);
+		btnModificarJug.setEnabled(false);
 
 	}
 
@@ -653,7 +651,12 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 	 */
 	private void limpiarEq() {
 		txtCodEquipo_Equipo.setText("");
-		txtNombreEq.setText("");
+	    txtCodEquipo_Equipo.setEditable(true);
+	    txtNombreEq.setText("");
+
+	    btnAltaEq.setEnabled(true);
+	    btnBajaEq.setEnabled(false);
+	    btnModificarEq.setEnabled(false);
 
 	}
 
@@ -664,7 +667,9 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 	 */
 	private void cargarPart() {
 		MostrarPartidos mP = new MostrarPartidos(this, true);
+		dispose();
 		mP.setVisible(true);
+		
 	}
 
 	/**
@@ -672,6 +677,7 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 	 */
 	private void cargarComp() {
 		MostrarCompeticiones mC = new MostrarCompeticiones(this, true);
+		dispose();
 		mC.setVisible(true);
 	}
 
@@ -680,6 +686,7 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 	 */
 	private void cargarEq() {
 		MostrarEquipos mE = new MostrarEquipos(this, true);
+		dispose();
 		mE.setVisible(true);
 
 	}
@@ -690,6 +697,7 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 
 	private void cargarJug() {
 		MostrarJugadores venJug = new MostrarJugadores(this, true);
+		dispose();
 		venJug.setVisible(true);
 
 	}
@@ -1019,7 +1027,11 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 		} catch (IllegalArgumentException e) {
 			System.err.println("Error: La posición '" + posicion + "' no es válida.");
 		}
-		// txtCodEquipo_Jugador.setText(codEq);
+		txtCodEquipo_Jugador.setText(codEq);
+		
+		 btnAltaJug.setEnabled(false);
+		 btnBajaJug.setEnabled(true);
+		 btnModificarJug.setEnabled(true);
 
 	}
 
@@ -1082,8 +1094,13 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 	 */
 	public void cargarDatosComp(String codCompeticion, String nombreCompeticion) {
 		tabbedPane.setSelectedComponent(panelCompeticion);
-		txtCodComp.setText(codCompeticion);
-		txtNombreComp.setText(nombreCompeticion);
+	    txtCodComp.setText(codCompeticion);
+	    txtCodComp.setEditable(false);
+	    txtNombreComp.setText(nombreCompeticion);
+
+	    btnAltaComp.setEnabled(false);
+	    btnBajaComp.setEnabled(true);
+	    btnModificarComp.setEnabled(true);
 
 	}
 
@@ -1094,9 +1111,14 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 	 * @param nombreEquipo Nombre de equipo
 	 */
 	public void cargarDatosEq(String codEquipo, String nombreEquipo) {
-		tabbedPane.setSelectedComponent(panelEquipos);
-		txtCodEquipo_Equipo.setText(codEquipo);
-		txtNombreEq.setText(nombreEquipo);
+		   tabbedPane.setSelectedComponent(panelEquipos);
+		    txtCodEquipo_Equipo.setText(codEquipo);
+		    txtCodEquipo_Equipo.setEditable(false);
+		    txtNombreEq.setText(nombreEquipo);
+		    
+		    btnAltaEq.setEnabled(false);
+		    btnBajaEq.setEnabled(true);
+		    btnModificarEq.setEnabled(true);
 
 	}
 
