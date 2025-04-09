@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -34,6 +35,8 @@ import java.awt.Color;
 import javax.swing.JTable;
 
 import java.awt.GridLayout;
+import java.awt.Image;
+
 import javax.swing.JComboBox;
 import javax.swing.SwingConstants;
 import java.awt.Toolkit;
@@ -51,7 +54,7 @@ public class VMenuPrincipal extends JFrame implements ActionListener, FocusListe
 	private JButton btnLogin, btnCalendario;
 	private JCalendar calendario;
 	private JTable tablaClasi, tablaPart;
-	private JPanel panel_Derecho, panel_Izquierdo;
+	private JPanel panel_Derecho, panel_Izquierdo, panel_Central;
 	private JComboBox<Competicion> cbElegirLiga;
 	private JScrollPane jscroll, jscrollPartido;
 	private LocalDate fecha;
@@ -67,60 +70,69 @@ public class VMenuPrincipal extends JFrame implements ActionListener, FocusListe
 		setTitle("FUTBOL AMERICANO");
 		setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/resources/icono.jpg")));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 705, 428);
+		setBounds(100, 100, 1140, 462);
+		getContentPane().setLayout(null);
+		
 
-		// Panel Superior
-		JPanel panel_Superior = new JPanel();
-		getContentPane().add(panel_Superior, BorderLayout.NORTH);
-		panel_Superior.setLayout(new GridLayout(1, 0, 0, 0));
-
+		// ComboBox de Ligas
 		cbElegirLiga = new JComboBox<Competicion>();
-		panel_Superior.add(cbElegirLiga);
+		cbElegirLiga.setBounds(10, 10, 400, 30);
 		cbElegirLiga.addActionListener(this);
+		getContentPane().add(cbElegirLiga);
 
+		// Label de equipos
 		JLabel lblEquipo = new JLabel("Equipos");
 		lblEquipo.setHorizontalAlignment(SwingConstants.CENTER);
-		panel_Superior.add(lblEquipo);
+		lblEquipo.setBounds(418, 10, 400, 30);
+		getContentPane().add(lblEquipo);
 
+		// Botón Login
 		btnLogin = new JButton("Login");
-		panel_Superior.add(btnLogin);
+		btnLogin.setBounds(828, 10, 288, 30);
 		btnLogin.addActionListener(this);
 		btnLogin.setBackground(Color.WHITE);
+		getContentPane().add(btnLogin);
 
-		// Panel Izqu.
-		panel_Izquierdo = new JPanel();
-		getContentPane().add(panel_Izquierdo, BorderLayout.EAST);
+		// Calendario
+		calendario = new JCalendar();
+		calendario.setDecorationBackgroundColor(new Color(255, 255, 255));
+		calendario.getMonthChooser().getSpinner().setBackground(new Color(255, 255, 255));
+		calendario.setNullDateButtonText("");
+		calendario.getDayChooser().setWeekOfYearVisible(false);
+		calendario.getDayChooser().getDayPanel().setBackground(new Color(255, 255, 255));
+		calendario.getDayChooser().setForeground(new Color(0, 128, 128));
+		calendario.getDayChooser().setWeekdayForeground(new Color(0, 128, 128));
+		calendario.getDayChooser().setBackground(new Color(0, 128, 128));
+		calendario.getDayChooser().setDecorationBackgroundColor(new Color(255, 255, 128));
+		calendario.setBounds(500, 60, 400, 225);
+		getContentPane().add(calendario);
+
+		// Botón actualizar fecha
+		btnCalendario = new JButton("Actualizar Fecha");
+		btnCalendario.setBounds(910, 255, 203, 30);
+		btnCalendario.addActionListener(this);
+		btnCalendario.setBackground(Color.WHITE);
+		getContentPane().add(btnCalendario);
+
+		// Scroll de partidos
 		jscrollPartido = new JScrollPane();
-		panel_Izquierdo.add(jscrollPartido);
+		jscrollPartido.setBounds(497, 306, 460, 101); // Derecha
+		getContentPane().add(jscrollPartido);
 		if (fecha == null) {
 			presentarTablaPartido(LocalDate.now());
 		}
 
-		// Panel Central
-		JPanel panel_Central = new JPanel();
-		getContentPane().add(panel_Central, BorderLayout.CENTER);
-		calendario = new JCalendar();
-		panel_Central.add(calendario);
-
-		btnCalendario = new JButton();
-		btnCalendario.setText("Actualizar Fecha");
-		panel_Central.add(btnCalendario);
-		btnCalendario.addActionListener(this);
-		btnCalendario.setBackground(Color.WHITE);
-
-		// Panel Derecho
-		panel_Derecho = new JPanel();
-		getContentPane().add(panel_Derecho, BorderLayout.WEST);
+		// Scroll de clasificación
 		jscroll = new JScrollPane();
-		panel_Derecho.add(jscroll);
+		jscroll.setBounds(10, 60, 400, 347); // Izquierda
+		getContentPane().add(jscroll);
 
-		Map<String, Competicion> competiciones;
-		competiciones = Principal.leerCompeticiones();
+		// Cargar datos iniciales
+		Map<String, Competicion> competiciones = Principal.leerCompeticiones();
 		for (Competicion comp : competiciones.values()) {
 			cbElegirLiga.addItem(comp);
 		}
 		presentarTabla((Competicion) cbElegirLiga.getSelectedItem());
-
 	}
 
 	/**
@@ -164,6 +176,7 @@ public class VMenuPrincipal extends JFrame implements ActionListener, FocusListe
 	 */
 	private void presentarTablaPartido(LocalDate fecha) throws LoginException {
 		tablaPart = this.cargarTablaPart(fecha);
+		tablaPart.setBounds(0, 0, 15, 15);
 		jscrollPartido.setViewportView(tablaPart);
 	}
 
@@ -190,7 +203,7 @@ public class VMenuPrincipal extends JFrame implements ActionListener, FocusListe
 		List<Partido> partidos = Principal.devolverPartidos(fecha);
 		for (Partido part : partidos) {
 			String[] fila = new String[4];
-			fila[0] = part.getCod_comp();
+			fila[0] = part.getCod_comp().toUpperCase();
 			fila[1] = part.getEquipo_local();
 			fila[2] = part.getEquipo_visitante();
 			if (part.getGanador() == null) {
@@ -212,7 +225,7 @@ public class VMenuPrincipal extends JFrame implements ActionListener, FocusListe
 	 */
 	private void presentarTabla(Competicion liga) throws LoginException {
 		tablaClasi = this.cargarTabla(liga);
-
+		tablaClasi.setBounds(0, 10, 75, 75);
 		tablaClasi.addMouseListener(this);
 
 		jscroll.setViewportView(tablaClasi);
@@ -319,4 +332,5 @@ public class VMenuPrincipal extends JFrame implements ActionListener, FocusListe
 		// TODO Auto-generated method stub
 
 	}
+	
 }
