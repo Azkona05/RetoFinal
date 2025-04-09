@@ -1027,7 +1027,10 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 		} catch (IllegalArgumentException e) {
 			System.err.println("Error: La posición '" + posicion + "' no es válida.");
 		}
-		txtCodEquipo_Jugador.setText(codEq);
+		
+		
+		//txtCodEquipo_Jugador.setText(codEq);
+		
 		
 		 btnAltaJug.setEnabled(false);
 		 btnBajaJug.setEnabled(true);
