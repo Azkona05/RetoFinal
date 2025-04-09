@@ -35,6 +35,7 @@ public class MostrarPartidos extends JDialog {
     /**
      * Constructor que crea el diálogo para mostrar los partidos.
      * 
+     * @author An Azkona, Ander Arilla, Nora Yakoubi, Maleck Benigno
      * @param padre El JFrame padre de este diálogo
      * @param modal Indica si el diálogo debe ser modal (true) o no (false)
      */
