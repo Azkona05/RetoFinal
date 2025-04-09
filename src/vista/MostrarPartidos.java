@@ -18,34 +18,31 @@ import controlador.Principal;
 import excepciones.LoginException;
 import modelo.Partido;
 
+/**
+ * Diálogo que muestra una lista de partidos y permite seleccionarlos para ver más detalles.
+ * Permite la interacción mediante doble clic sobre un partido para abrir su vista detallada.
+ * 
+ * @author [Incluir autores]
+ * @version 1.0
+ */
 public class MostrarPartidos extends JDialog {
 
-	private static final long serialVersionUID = 1L;
-	private final JPanel contentPanel = new JPanel();
+    private static final long serialVersionUID = 1L;
+    private final JPanel contentPanel = new JPanel();
     private JTable table;
     private DefaultTableModel model;
 
-	/**
-	 * Launch the application.
-	 */
-//	public static void main(String[] args) {
-//		try {
-//			MostrarPartidos dialog = new MostrarPartidos();
-//			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-//			dialog.setVisible(true);
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//	}
-
-	/**
-	 * Create the dialog.
-	 */
-	public MostrarPartidos(VMenuAdmin padre, boolean modal) {
-		super(padre);
-    	this.setModal(modal);
+    /**
+     * Constructor que crea el diálogo para mostrar los partidos.
+     * 
+     * @param padre El JFrame padre de este diálogo
+     * @param modal Indica si el diálogo debe ser modal (true) o no (false)
+     */
+    public MostrarPartidos(VMenuAdmin padre, boolean modal) {
+        super(padre);
+        this.setModal(modal);
         setTitle("Lista de Partidos");
-		setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/resources/icono.jpg")));
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/resources/icono.jpg")));
         setBounds(100, 100, 600, 400);
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         getContentPane().setLayout(new BorderLayout());
@@ -56,7 +53,12 @@ public class MostrarPartidos extends JDialog {
 
         String[] columnNames = { "Codigo", "Local", "Visitante", "Ganador", "Fecha", "Codigo de competicion" };
         model = new DefaultTableModel(columnNames, 0) {
-            @Override
+            /**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
             public boolean isCellEditable(int row, int column) {
                 return false; 
             }
@@ -66,7 +68,7 @@ public class MostrarPartidos extends JDialog {
         JScrollPane scrollPane = new JScrollPane(table);
         contentPanel.add(scrollPane, BorderLayout.CENTER);
 
-        // Doble clic para pasar los datos
+        // Configura el listener para doble clic
         table.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -92,23 +94,32 @@ public class MostrarPartidos extends JDialog {
         });
 
         try {
-			cargarDatos();
-		} catch (LoginException e1) {
-			e1.printStackTrace();
-		}
+            cargarDatos();
+        } catch (LoginException e1) {
+            e1.printStackTrace();
+        }
     }
 
+    /**
+     * Carga los datos de los partidos desde la capa de controlador.
+     * 
+     * @throws LoginException Si ocurre un error relacionado con la autenticación
+     */
     private void cargarDatos() throws LoginException {
         Partido part = new Partido();
-		Object[][] datos = Principal.devolverPartidos(part);
-		actualizarDatos(datos);
+        Object[][] datos = Principal.devolverPartidos(part);
+        actualizarDatos(datos);
     }
 
+    /**
+     * Actualiza la tabla con los datos proporcionados.
+     * 
+     * @param datos Matriz de objetos que contiene los datos de los partidos a mostrar
+     */
     private void actualizarDatos(Object[][] datos) {
         model.setRowCount(0); // Limpiar tabla antes de agregar los nuevos datos
         for (Object[] fila : datos) {
             model.addRow(fila);
         }
     }
-
 }
