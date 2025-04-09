@@ -42,9 +42,8 @@ import java.awt.event.MouseEvent;
  * Proporciona funcionalidades para gestionar jugadores, equipos, competiciones
  * y partidos.
  * 
- * @author [Tu Nombre]
+ * @author An Azkona, Ander Arilla, Nora Yakoubi, Maleck Benigno
  * @version 1.0
- * @since [Fecha]
  */
 public class VMenuAdmin extends JDialog implements ActionListener {
 	
