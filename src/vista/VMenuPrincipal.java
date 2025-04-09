@@ -46,7 +46,7 @@ import java.awt.Toolkit;
  * @author An Azkona, Ander Arilla, Nora Yakoubi, Maleck Benigno
  * @version 1.0
  */
-public class VMenuPrincipal extends JFrame implements ActionListener, FocusListener {
+public class VMenuPrincipal extends JFrame implements ActionListener, FocusListener, MouseListener {
 	private static final long serialVersionUID = 1L;
 	private JButton btnLogin, btnCalendario;
 	private JCalendar calendario;

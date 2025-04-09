@@ -1078,7 +1078,7 @@ public class DaoImplementacion implements InterfazDao {
 		List<Partido> partidos = new ArrayList<Partido>();
 		openConnection();
 		try {
-			stmt = con.prepareStatement(MOSTRAR_PARTIDO);
+			stmt = con.prepareStatement(BUSCAR_PARTIDO);
 			rs = stmt.executeQuery();
 			while (rs.next()) {
 				p = new Partido();
