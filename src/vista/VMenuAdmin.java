@@ -38,6 +38,7 @@ import javax.swing.JRadioButton;
 import javax.swing.ImageIcon;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.Date;
 
 public class VMenuAdmin extends JDialog implements ActionListener {
 
@@ -387,9 +388,9 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 		btnModificarPart.addActionListener(this);
 		btnModificarPart.setBackground(Color.WHITE);
 
-		btnLimpiarDatosEq = new JButton("Limpiar");
-		btnLimpiarDatosEq.setBounds(432, 77, 85, 21);
-		panelPartidos.add(btnLimpiarDatosEq);
+		btnLimpiarDatosPart = new JButton("Limpiar");
+		btnLimpiarDatosPart.setBounds(432, 77, 85, 21);
+		panelPartidos.add(btnLimpiarDatosPart);
 
 		JLabel lblCodigo = new JLabel("Codigo: ");
 		lblCodigo.setEnabled(false);
@@ -472,8 +473,12 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 	}
 
 	private void limpiarPart() {
-		// TODO Auto-generated method stub
-
+		txtCodPar.setText("");
+		cbLiga.setSelectedIndex(-1);
+		cbLocal.setSelectedIndex(-1);
+		cbVisitante.setSelectedIndex(-1);
+		cbGanador.setSelectedIndex(-1);
+		txtFecha.setText("");
 	}
 
 	private void limpiarJug() {
@@ -578,14 +583,39 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 
 	private void modPart() {
 		Partido part = new Partido();
-		part.setCod_comp(getName());
+		part.setCod_part(Integer.valueOf(txtCodPar.getText()));
+		part.setCod_comp(((Competicion)cbLiga.getSelectedItem()).getCod_comp());
+		part.setEquipo_local(((Equipo) cbLocal.getSelectedItem()).getCod_equi());
+		part.setEquipo_visitante(((Equipo) cbVisitante.getSelectedItem()).getCod_equi());
+		part.setFecha(Date.valueOf(txtFecha.getText()).toLocalDate());
+		if (cbGanador.getSelectedItem().equals("Local")) {
+			part.setGanador(((Equipo) cbLocal.getSelectedItem()).getCod_equi());
+		} else if (cbGanador.getSelectedItem().equals("Visitante")) {
+			part.setGanador(((Equipo) cbVisitante.getSelectedItem()).getCod_equi());
+		} else {
+			part.setGanador(null);
+		}
+		try {
+			System.out.println(part);
+			Principal.modificarPartido(part);
+		} catch (LoginException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		JOptionPane.showMessageDialog(this, "MODIFICACION CORRECTA!!", "MENSAJE", JOptionPane.INFORMATION_MESSAGE);
 		limpiarPart();
 	}
 
 	private void bajaPart() {
-		// TODO Auto-generated method stub
-
+		Partido part = new Partido();
+		part.setCod_part(Integer.parseInt(txtCodPar.getText()));
+		try {
+			Principal.bajaPartido(part);
+		} catch (LoginException e) {
+			e.printStackTrace();
+		}
+		JOptionPane.showMessageDialog(this, "BAJA CORRECTA!!", "MENSAJE", JOptionPane.INFORMATION_MESSAGE);
+		limpiarPart();
 	}
 
 	private void altaPart() throws LoginException {
@@ -605,6 +635,8 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 		part.setFecha(LocalDate.parse(txtFecha.getText()));
 		part.setCod_comp(((Competicion) cbLiga.getSelectedItem()).getCod_comp());
 		Principal.altaPartido(part);
+		JOptionPane.showMessageDialog(this, "ALTA CORRECTA!!", "MENSAJE", JOptionPane.INFORMATION_MESSAGE);
+		limpiarPart();
 	}
 
 	// GESTION EQUIPOS

@@ -498,7 +498,7 @@ public class DaoImplementacion implements InterfazDao {
 			stmt.setString(2, part.getEquipo_visitante());
 			stmt.setObject(3, part.getGanador());
 			stmt.setDate(4, Date.valueOf(part.getFecha()));
-			stmt.setString(5, part.getCod_comp());
+			stmt.setString(5, part.getCod_comp().toUpperCase());
 			stmt.setInt(6, part.getCod_part());
 			stmt.executeUpdate();
 		} catch (SQLException e) {
