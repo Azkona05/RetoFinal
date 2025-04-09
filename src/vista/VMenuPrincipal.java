@@ -67,6 +67,8 @@ public class VMenuPrincipal extends JFrame implements ActionListener, FocusListe
 	 *                        relacionado con el login
 	 */
 	public VMenuPrincipal() throws LoginException {
+		getContentPane().setForeground(new Color(0, 0, 160));
+		setForeground(new Color(0, 0, 64));
 		setTitle("FUTBOL AMERICANO");
 		setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/resources/icono.jpg")));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
