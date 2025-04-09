@@ -46,32 +46,32 @@ import java.awt.event.MouseEvent;
  * @version 1.0
  */
 public class VMenuAdmin extends JDialog implements ActionListener {
-	
+
 	// Componentes de la interfaz
 	private static final long serialVersionUID = 1L;
 
 	/** Panel con pestañas que contiene todos los paneles de gestión */
 	private JTabbedPane tabbedPane;
-	
+
 	/** Paneles de gestión */
 	private JPanel panelJugador, panelCompeticion, panelEquipos, panelPartidos, panelCargar;
-	
+
 	// Botones de gestión.
 	private JButton btnAltaJug, btnBajaJug, btnModificarJug, btnCargarJug, btnLimpiarDatosJug;
 	private JButton btnAltaPart, btnBajaPart, btnModificarPart, btnCargarPart, btnLimpiarDatosPart;
 	private JButton btnAltaComp, btnBajaComp, btnModificarComp, btnCargarComp, btnLimpiarDatosComp;
 	private JButton btnAltaEq, btnBajaEq, btnModificarEq, btnCargarEq, btnLimpiarDatosEq;
-	
+
 	// Campos de texto
 	private JTextField txtDni, txtNombre, txtApellido, txtDorsal, txtNombreEq, txtCodComp, txtNombreComp,
 			txtCodEquipo_Jugador, txtCodEquipo_Equipo;
-	
+
 	// Grupo de botones
 	private ButtonGroup grupoPosicion;
-	
+
 	// Radio botones
 	private JRadioButton rdbtnGuard, rdbtnQuarterback, rdbtnRunning, rdbtnTackle, rdbtnLocalNuevo, rdbtnVisitanteNuevo;
-	
+
 	// Combo box
 	private JComboBox<Competicion> cbLiga;
 	private JComboBox<Equipo> cbLocal, cbVisitante, cbCodEqui_J;
@@ -384,14 +384,11 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 		lblVisitante.setBounds(35, 151, 85, 13);
 		panelPartidos.add(lblVisitante);
 
-<<<<<<< HEAD
-=======
 		cbVisitante = new JComboBox<Equipo>();
 		cbVisitante.setBounds(130, 147, 130, 21);
 		panelPartidos.add(cbVisitante);
 		cbVisitante.addActionListener(this);
 
->>>>>>> An
 		JLabel lblGanador = new JLabel("Ganador: ");
 		lblGanador.setBounds(35, 192, 85, 13);
 		panelPartidos.add(lblGanador);
@@ -426,8 +423,6 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 		btnLimpiarDatosEq.setBounds(432, 77, 85, 21);
 		panelPartidos.add(btnLimpiarDatosEq);
 
-<<<<<<< HEAD
-=======
 		rdbtnLocalNuevo = new JRadioButton("Local Nuevo");
 		rdbtnLocalNuevo.setBounds(273, 109, 123, 21);
 		panelPartidos.add(rdbtnLocalNuevo);
@@ -437,28 +432,19 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 		rdbtnVisitanteNuevo.setBounds(273, 147, 123, 21);
 		panelPartidos.add(rdbtnVisitanteNuevo);
 
->>>>>>> An
+
 		JLabel lblCodigo = new JLabel("Codigo: ");
 		lblCodigo.setEnabled(false);
 		lblCodigo.setBounds(35, 27, 85, 13);
 		panelPartidos.add(lblCodigo);
 
-<<<<<<< HEAD
+
 		txtCodPar = new JTextField();
 		txtCodPar.setEnabled(false);
 		txtCodPar.setEditable(false);
 		txtCodPar.setBounds(130, 24, 130, 19);
 		panelPartidos.add(txtCodPar);
 		txtCodPar.setColumns(10);
-=======
-		textField = new JTextField();
-		textField.setEnabled(false);
-		textField.setEditable(false);
-		textField.setBounds(130, 24, 130, 19);
-		panelPartidos.add(textField);
-		textField.setColumns(10);
-		rdbtnVisitanteNuevo.addActionListener(this);
->>>>>>> An
 
 		btnLimpiarDatosEq.addActionListener(this);
 		btnLimpiarDatosEq.setBackground(Color.WHITE);
@@ -620,8 +606,8 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 		}
 		cbVisitante.setSelectedIndex(-1);
 	}
-	
-	//LIMPIAR DATOS
+
+	// LIMPIAR DATOS
 
 	/**
 	 * Limpia los campos del formulario de competición.
@@ -664,14 +650,9 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 		txtNombreEq.setText("");
 
 	}
-<<<<<<< HEAD
 
 	// CARGAR VENTANAS CON LAS TABLAS RECARGADAS
-=======
->>>>>>> An
 
-	// CARGAR VENTANAS CON LAS TABLAS RECARGADAS
-	
 	/**
 	 * Abre la ventana para consultar partidos.
 	 */
@@ -697,12 +678,10 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 
 	}
 
-<<<<<<< HEAD
-=======
 	/**
 	 * Abre la ventana para consultar jugadores.
 	 */
->>>>>>> An
+
 	private void cargarJug() {
 		MostrarJugadores venJug = new MostrarJugadores(this, true);
 		venJug.setVisible(true);
@@ -710,14 +689,11 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 	}
 
 	// GESTION COMPETICIONES
-<<<<<<< HEAD
 
-=======
-	
 	/**
 	 * Modifica los datos de una competición existente.
 	 */
->>>>>>> An
+
 	private void modComp() {
 		Competicion comp = new Competicion();
 		comp.setNombre_competicion(txtNombreComp.getText());
@@ -776,14 +752,9 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 			limpiarComp();
 		}
 	}
-<<<<<<< HEAD
 
 	// GESTION PARTIDOS
-=======
->>>>>>> An
 
-	// GESTION PARTIDOS
-	
 	/**
 	 * Modifica los datos de un partido existente.
 	 */
@@ -827,14 +798,11 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 	}
 
 	// GESTION EQUIPOS
-<<<<<<< HEAD
 
-=======
-	
 	/**
 	 * Modifica los datos de un equipo existente.
 	 */
->>>>>>> An
+
 	private void modificarEq() {
 		Equipo eq = new Equipo();
 		eq.setNombre_equipo(txtNombreEq.getText());
@@ -885,11 +853,6 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 			JOptionPane.showMessageDialog(this, "ALTA CORRECTA!!", "MENSAJE", JOptionPane.INFORMATION_MESSAGE);
 		}
 	}
-<<<<<<< HEAD
-
-	// GESTION JUGADORES
-=======
->>>>>>> An
 
 	// GESTION JUGADORES
 
@@ -980,12 +943,9 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 	}
 
 	// Métodos auxiliares
+
 	// CARGAR DATOS
 
-<<<<<<< HEAD
-	// CARGAR DATOS
-
-=======
 	/**
 	 * Carga los datos de un jugador en el formulario para su modificación.
 	 * 
@@ -996,7 +956,7 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 	 * @param posicion Posición del jugador
 	 * @param codEq    Código del equipo
 	 */
->>>>>>> An
+
 	public void cargarDatosJug(String dni, String nombre, String apellido, int dorsal, EnumPosicion posicion,
 			String codEq) {
 		tabbedPane.setSelectedComponent(panelJugador);
@@ -1042,7 +1002,6 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 	 */
 	public void cargarDatosPart(int codPart, String eqLocal, String eqVisitante, String ganador, LocalDate fecha,
 			String codComp) {
-<<<<<<< HEAD
 		tabbedPane.setSelectedComponent(panelPartidos);
 		txtCodPar.setText(String.valueOf(codPart));
 		Equipo equiL = null, equiV = null, eq;
@@ -1062,8 +1021,6 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 				equiL = eq;
 			}
 		}
-=======
->>>>>>> An
 
 		for (int i = 0; i < cbVisitante.getItemCount(); i++) {
 			eq = cbVisitante.getItemAt(i);
