@@ -9,9 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -34,9 +32,6 @@ import modelo.Partido;
 import javax.swing.JComboBox;
 import javax.swing.JRadioButton;
 import javax.swing.ImageIcon;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.sql.Date;
 
 /**
  * Diálogo de administración para un sistema de competiciones deportivas.
@@ -65,7 +60,7 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 
 	// Campos de texto
 	private JTextField txtDni, txtNombre, txtApellido, txtDorsal, txtNombreEq, txtCodComp, txtNombreComp,
-			txtCodEquipo_Jugador, txtCodEquipo_Equipo;
+			txtCodEquipo_Equipo, txtCodEquipo_Jugador;
 
 	// Grupo de botones
 	private ButtonGroup grupoPosicion;
@@ -233,7 +228,7 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 		btnBajaJug.setEnabled(false);
 		btnModificarJug.setEnabled(false);
 
-		JComboBox cbCodEqui_J = new JComboBox();
+		JComboBox<Object> cbCodEqui_J = new JComboBox<Object>();
 		cbCodEqui_J.setBounds(200, 260, 145, 21);
 		panelJugador.add(cbCodEqui_J);
 
@@ -372,7 +367,7 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 		panelPartidos.add(cbLocal);
 		cbLocal.addActionListener(this);
 
-		cbVisitante = new JComboBox();
+		cbVisitante = new JComboBox<Equipo>();
 		cbVisitante.setBounds(130, 147, 130, 21);
 		panelPartidos.add(cbVisitante);
 		cbVisitante.addActionListener(this);
@@ -707,7 +702,6 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 	/**
 	 * Modifica los datos de una competición existente.
 	 */
-
 	private void modComp() {
 		Competicion comp = new Competicion();
 		comp.setNombre_competicion(txtNombreComp.getText());
@@ -843,7 +837,6 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 	/**
 	 * Modifica los datos de un equipo existente.
 	 */
-
 	private void modificarEq() {
 		Equipo eq = new Equipo();
 		eq.setNombre_equipo(txtNombreEq.getText());
