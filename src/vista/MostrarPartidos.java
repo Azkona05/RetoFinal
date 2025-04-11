@@ -85,9 +85,8 @@ public class MostrarPartidos extends JDialog {
                         fecha = (LocalDate) model.getValueAt(row, 4);
                         String codComp = (String) model.getValueAt(row, 5);
                         
-                        VMenuAdmin vma = new VMenuAdmin(null, true);
-                        vma.cargarDatosPart(cod, eqLocal, eqVisitante, ganador, fecha, codComp);
-                        vma.setVisible(true);
+                        padre.cargarDatosPart(cod, eqLocal, eqVisitante, ganador, fecha, codComp);
+                        padre.setVisible(true);
                         dispose();
                     }
                 }
