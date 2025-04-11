@@ -5,7 +5,6 @@ import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 import javax.swing.JDialog;
 import javax.swing.JPanel;
@@ -84,10 +83,10 @@ public class MostrarPartidos extends JDialog {
                         String ganador = (String) model.getValueAt(row, 3);
                         fecha = (LocalDate) model.getValueAt(row, 4);
                         String codComp = (String) model.getValueAt(row, 5);
-                        
+                        dispose();
                         padre.cargarDatosPart(cod, eqLocal, eqVisitante, ganador, fecha, codComp);
                         padre.setVisible(true);
-                        dispose();
+                       // dispose();
                     }
                 }
             }

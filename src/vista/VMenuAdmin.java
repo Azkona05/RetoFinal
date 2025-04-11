@@ -7,6 +7,7 @@ import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +35,7 @@ import javax.swing.JRadioButton;
 import javax.swing.ImageIcon;
 
 /**
- * Diálogo de administración para un sistema de competiciones deportivas.
+ * Diálogo de administración para un sistema de futbol americano.
  * Proporciona funcionalidades para gestionar jugadores, equipos, competiciones
  * y partidos.
  * 

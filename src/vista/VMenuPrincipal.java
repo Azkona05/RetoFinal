@@ -13,11 +13,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -29,13 +27,9 @@ import modelo.Competicion;
 import modelo.Equipo;
 import modelo.Partido;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 
 import javax.swing.JTable;
-
-import java.awt.GridLayout;
-import java.awt.Image;
 
 import javax.swing.JComboBox;
 import javax.swing.SwingConstants;
@@ -54,7 +48,6 @@ public class VMenuPrincipal extends JFrame implements ActionListener, FocusListe
 	private JButton btnLogin, btnCalendario;
 	private JCalendar calendario;
 	private JTable tablaClasi, tablaPart;
-	private JPanel panel_Derecho, panel_Izquierdo, panel_Central;
 	private JComboBox<Competicion> cbElegirLiga;
 	private JScrollPane jscroll, jscrollPartido;
 	private LocalDate fecha;

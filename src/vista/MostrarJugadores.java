@@ -75,9 +75,10 @@ public class MostrarJugadores extends JDialog {
 						EnumPosicion posicion = EnumPosicion
 								.valueOf((model.getValueAt(row, 4).toString().toUpperCase()));
 						String codEq = (String) model.getValueAt(row, 5);
-						
+						dispose();
 						padre.cargarDatosJug(dni, nombre, apellido, dorsal, posicion, codEq);
 						padre.setVisible(true);
+						//dispose();
 					}
 				}
 			}
