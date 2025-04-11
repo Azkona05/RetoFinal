@@ -70,9 +70,8 @@ public class MostrarEquipos extends JDialog {
                         String codEq = (String) model.getValueAt(row, 0);
                         String nombre_equipo = (String) model.getValueAt(row, 1);
 
-                        VMenuAdmin vma = new VMenuAdmin(null, true);
-                        vma.cargarDatosEq(codEq, nombre_equipo);
-                        vma.setVisible(true);
+                        padre.cargarDatosEq(codEq, nombre_equipo);
+                        padre.setVisible(true);
                     }
                 }
             }

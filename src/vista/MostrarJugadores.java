@@ -75,9 +75,9 @@ public class MostrarJugadores extends JDialog {
 						EnumPosicion posicion = EnumPosicion
 								.valueOf((model.getValueAt(row, 4).toString().toUpperCase()));
 						String codEq = (String) model.getValueAt(row, 5);
-						VMenuAdmin vma = new VMenuAdmin(null, true);
-						vma.cargarDatosJug(dni, nombre, apellido, dorsal, posicion, codEq);
-						vma.setVisible(true);
+						
+						padre.cargarDatosJug(dni, nombre, apellido, dorsal, posicion, codEq);
+						padre.setVisible(true);
 					}
 				}
 			}
@@ -97,10 +97,8 @@ public class MostrarJugadores extends JDialog {
 	private void cargarDatos() throws LoginException {
 		Jugador jug = new Jugador();
 		Object[][] datos = Principal.devolverJugadores(jug);
-		actualizarDatos(datos);
+		actualizarDatos(datos);  
 		dispose();
-		VMenuAdmin va = new VMenuAdmin(null, true);
-		va.setVisible(true);  
 		
 	}
 	/**

@@ -24,21 +24,18 @@ import modelo.Partido;
 import modelo.Usuario;
 
 /**
- * Implementación concreta de la interfaz DAO para el sistema de gestión de
+ * Implementación de la interfaz DAO para el sistema de gestión de
  * fútbol americano. Proporciona todos los métodos CRUD (Crear, Leer,
  * Actualizar, Eliminar) para las entidades: Usuario, Jugador, Competición,
  * Equipo y Partido, interactuando con una base de datos MySQL.
  * 
- * <p>
  * Esta clase maneja todas las operaciones de persistencia utilizando JDBC y
  * sigue el patrón Data Access Object para separar la lógica de acceso a datos
  * del resto de la aplicación.
- * </p>
  * 
  * @author An Azkona, Ander Arilla, Nora Yakoubi, Maleck Benigno
  * @version 1.0
  * @see InterfazDao
- * @since 1.0
  */
 public class DaoImplementacion implements InterfazDao {
 	// Atributos
@@ -58,7 +55,6 @@ public class DaoImplementacion implements InterfazDao {
 	final String BAJA_JUGADOR = "DELETE FROM JUGADOR WHERE dni = ?";
 	final String MODIFICAR_JUGADOR = "UPDATE jugador SET nombre = ?, apellido = ?, dorsal = ?, posicion = ?, cod_equi = ? WHERE dni = ?";
 	final String BUSCAR_JUGADOR = "SELECT * FROM JUGADOR";
-	final String MOSTRAR_DATOS_JUGADOR = "SELECT dni, nombre, apellido, dorsal, posicion, cod_equi FROM jugador";
 	final String MOSTRAR_JUGADOR_EQUIPO ="SELECT * FROM JUGADOR WHERE cod_equi=?";
 	// SQL Competicion
 	final String ALTA_COMPETICION = "INSERT INTO COMPETICION (cod_comp, nombre_competicion) VALUES (?, ?)";
@@ -70,14 +66,12 @@ public class DaoImplementacion implements InterfazDao {
 			+ "    WHERE fecha between '2020-01-01' and current_date()  AND cod_comp like '%?%' "
 			+ "    order by victorias DESC;";
 	final String Metodo_Burro = "select * from partido where cod_comp=?";
-	final String MOSTRAR_DATOS_COMPETICION = "SELECT cod_comp, nombre_competicion FROM competicion";
 	// SQL Equipo
 	final String ALTA_EQUIPO = "INSERT INTO EQUIPO (cod_equi, nombre_equipo) VALUES (?, ?)";
 	final String BAJA_EQUIPO = "DELETE FROM EQUIPO WHERE cod_equi = ?";
 	final String MODIFICAR_EQUIPO = "UPDATE EQUIPO SET nombre_equipo = ? WHERE cod_equi = ?";
 	final String BUSCAR_EQUIPO = "SELECT * FROM EQUIPO";
 	final String BUSCAR_EQUIPO_LIGA = "SELECT cod_equi, nombre_equipo from equipo where cod_equi IN (SELECT equipo_local from partido where cod_comp=?) OR cod_equi IN (SELECT equipo_visitante from partido where cod_comp=?)";
-	final String MOSTRAR_DATOS_EQUIPO = "SELECT cod_equi, nombre_equipo FROM equipo";
 	// SQL Partido
 	final String ALTA_PARTIDO = "INSERT INTO PARTIDO (cod_part, equipo_local, equipo_visitante, ganador, fecha, cod_comp) VALUES (?, ?, ?, ?, ?, ?)";
 	final String BAJA_PARTIDO = "DELETE FROM PARTIDO WHERE cod_part = ?";
@@ -88,7 +82,6 @@ public class DaoImplementacion implements InterfazDao {
 	final String PARTIDOS_DIA = "SELECT * FROM PARTIDO WHERE DATE(FECHA) = ? ORDER BY fecha ASC";
 	final String EQUIPOS_LIGA = "SELECT * FROM EQUIPO WHERE cod_equi in (select equipo_local from partido ";
 
-	final String MOSTRAR_DATOS_PARTIDO = "SELECT cod_part, equipo_local, equipo_visitante, ganador, fecha, cod_comp FROM partido";
 	final String NUEVOS_EQUIPOS = "select * from equipo where cod_equi not in (select equipo_local from partido where cod_comp=?) and cod_equi not in (select equipo_visitante from partido where cod_comp=?)";
 
 	/**
@@ -804,7 +797,7 @@ public class DaoImplementacion implements InterfazDao {
 
 		try {
 			openConnection();
-			stmt = con.prepareStatement(MOSTRAR_DATOS_JUGADOR);
+			stmt = con.prepareStatement(BUSCAR_JUGADOR);
 			rs = stmt.executeQuery();
 
 			while (rs.next()) {
@@ -842,7 +835,7 @@ public class DaoImplementacion implements InterfazDao {
 
 		try {
 			openConnection();
-			stmt = con.prepareStatement(MOSTRAR_DATOS_EQUIPO);
+			stmt = con.prepareStatement(BUSCAR_EQUIPO);
 			rs = stmt.executeQuery();
 
 			while (rs.next()) {
@@ -880,7 +873,7 @@ public class DaoImplementacion implements InterfazDao {
 
 		try {
 			openConnection();
-			stmt = con.prepareStatement(MOSTRAR_DATOS_COMPETICION);
+			stmt = con.prepareStatement(BUSCAR_COMPETICION);
 			rs = stmt.executeQuery();
 
 			while (rs.next()) {
@@ -917,7 +910,7 @@ public class DaoImplementacion implements InterfazDao {
 
 		try {
 			openConnection();
-			stmt = con.prepareStatement(MOSTRAR_DATOS_PARTIDO);
+			stmt = con.prepareStatement(BUSCAR_PARTIDO);
 			rs = stmt.executeQuery();
 
 			while (rs.next()) {
