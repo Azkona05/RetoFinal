@@ -69,9 +69,8 @@ public class MostrarCompeticiones extends JDialog {
                         String codComp = (String) model.getValueAt(row, 0);
                         String nombre = (String) model.getValueAt(row, 1);
 
-                        VMenuAdmin vma = new VMenuAdmin(null, true);
-                        vma.cargarDatosComp(codComp, nombre);
-                        vma.setVisible(true);
+                        padre.cargarDatosComp(codComp, nombre);
+                        padre.setVisible(true);
                         dispose();
                     }
                 }
