@@ -68,10 +68,10 @@ public class MostrarCompeticiones extends JDialog {
                     if (row != -1) {
                         String codComp = (String) model.getValueAt(row, 0);
                         String nombre = (String) model.getValueAt(row, 1);
-
+                        dispose();
                         padre.cargarDatosComp(codComp, nombre);
                         padre.setVisible(true);
-                        dispose();
+                        //dispose();
                     }
                 }
             }

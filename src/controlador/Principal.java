@@ -13,7 +13,7 @@ import modelo.Usuario;
 import vista.VMenuPrincipal;
 
 /**
- * Clase principal que contiene la lógica de negocio para gestionar operaciones
+ * Clase principal que contiene la lógica para gestionar operaciones
  * relacionadas con el login, jugadores, competiciones, equipos y partidos.
  * Utiliza la implementación de la interfaz {@link InterfazDao} para realizar
  * operaciones sobre los datos.

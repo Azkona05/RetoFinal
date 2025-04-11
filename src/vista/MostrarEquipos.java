@@ -69,9 +69,10 @@ public class MostrarEquipos extends JDialog {
                     if (row != -1) {
                         String codEq = (String) model.getValueAt(row, 0);
                         String nombre_equipo = (String) model.getValueAt(row, 1);
-
+                        dispose();
                         padre.cargarDatosEq(codEq, nombre_equipo);
                         padre.setVisible(true);
+                        //dispose();
                     }
                 }
             }

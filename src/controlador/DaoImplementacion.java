@@ -29,7 +29,7 @@ import modelo.Usuario;
  * Actualizar, Eliminar) para las entidades: Usuario, Jugador, Competición,
  * Equipo y Partido, interactuando con una base de datos MySQL.
  * 
- * Esta clase maneja todas las operaciones de persistencia utilizando JDBC y
+ * Esta clase maneja todas las operaciones utilizando JDBC y
  * sigue el patrón Data Access Object para separar la lógica de acceso a datos
  * del resto de la aplicación.
  * 
@@ -155,7 +155,6 @@ public class DaoImplementacion implements InterfazDao {
 				rs.close();
 				closeConnection();
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
