@@ -24,14 +24,14 @@ import modelo.Partido;
 import modelo.Usuario;
 
 /**
- * Implementación de la interfaz DAO para el sistema de gestión de
- * fútbol americano. Proporciona todos los métodos CRUD (Crear, Leer,
- * Actualizar, Eliminar) para las entidades: Usuario, Jugador, Competición,
- * Equipo y Partido, interactuando con una base de datos MySQL.
+ * Implementación de la interfaz DAO para el sistema de gestión de fútbol
+ * americano. Proporciona todos los métodos CRUD (Crear, Leer, Actualizar,
+ * Eliminar) para las entidades: Usuario, Jugador, Competición, Equipo y
+ * Partido, interactuando con una base de datos MySQL.
  * 
- * Esta clase maneja todas las operaciones utilizando JDBC y
- * sigue el patrón Data Access Object para separar la lógica de acceso a datos
- * del resto de la aplicación.
+ * Esta clase maneja todas las operaciones utilizando JDBC y sigue el patrón
+ * Data Access Object para separar la lógica de acceso a datos del resto de la
+ * aplicación.
  * 
  * @author An Azkona, Ander Arilla, Nora Yakoubi, Maleck Benigno
  * @version 1.0
@@ -55,7 +55,7 @@ public class DaoImplementacion implements InterfazDao {
 	final String BAJA_JUGADOR = "DELETE FROM JUGADOR WHERE dni = ?";
 	final String MODIFICAR_JUGADOR = "UPDATE jugador SET nombre = ?, apellido = ?, dorsal = ?, posicion = ?, cod_equi = ? WHERE dni = ?";
 	final String BUSCAR_JUGADOR = "SELECT * FROM JUGADOR";
-	final String MOSTRAR_JUGADOR_EQUIPO ="SELECT * FROM JUGADOR WHERE cod_equi=?";
+	final String MOSTRAR_JUGADOR_EQUIPO = "SELECT * FROM JUGADOR WHERE cod_equi=?";
 	// SQL Competicion
 	final String ALTA_COMPETICION = "INSERT INTO COMPETICION (cod_comp, nombre_competicion) VALUES (?, ?)";
 	final String BAJA_COMPETICION = "DELETE FROM COMPETICION WHERE cod_comp = ?";
@@ -273,8 +273,11 @@ public class DaoImplementacion implements InterfazDao {
 				jug.setNombre(rs.getString("nombre"));
 				jug.setApellido(rs.getString("apellido"));
 				jug.setDorsal(rs.getInt("dorsal"));
-				jug.setPosicion(EnumPosicion.valueOf(rs.getString("posicion")));
-				jugadores.add(jug);
+				String posicionStr = rs.getString("posicion");
+				if (posicionStr != null) {
+					jug.setPosicion(EnumPosicion.valueOf(posicionStr.trim().toUpperCase())); // Asegurarse de mayúsculas
+					jugadores.add(jug);
+				}
 			}
 		} catch (SQLException e) {
 			throw new LoginException("Problemas en la BDs");
@@ -544,122 +547,128 @@ public class DaoImplementacion implements InterfazDao {
 	/**
 	 * Método que inserta un nuevo partido en la base de datos.
 	 * 
-	 * @param part El objeto Partido que contiene la información del partido a insertar.
-	 * @throws LoginException Si ocurre un error durante la inserción en la base de datos.
+	 * @param part El objeto Partido que contiene la información del partido a
+	 *             insertar.
+	 * @throws LoginException Si ocurre un error durante la inserción en la base de
+	 *                        datos.
 	 */
 	@Override
 	public void altaPartido(Partido part) throws LoginException {
-	    openConnection();
-	    try {
-	        stmt = con.prepareStatement(ALTA_PARTIDO);
-	        stmt.setInt(1, part.getCod_part());
-	        stmt.setString(2, part.getEquipo_local());
-	        stmt.setString(3, part.getEquipo_visitante());
-	        stmt.setString(4, part.getGanadorString());
-	        stmt.setDate(5, Date.valueOf(part.getFecha()));
-	        stmt.setString(6, part.getCod_comp());
-	        stmt.executeUpdate();
-	    } catch (SQLException e) {
-	        throw new LoginException("Problemas en la BDs");
-	    } finally {
-	        try {
-	            closeConnection();
-	        } catch (SQLException e) {
-	            e.printStackTrace();
-	        }
-	    }
+		openConnection();
+		try {
+			stmt = con.prepareStatement(ALTA_PARTIDO);
+			stmt.setInt(1, part.getCod_part());
+			stmt.setString(2, part.getEquipo_local());
+			stmt.setString(3, part.getEquipo_visitante());
+			stmt.setString(4, part.getGanadorString());
+			stmt.setDate(5, Date.valueOf(part.getFecha()));
+			stmt.setString(6, part.getCod_comp());
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+			throw new LoginException("Problemas en la BDs");
+		} finally {
+			try {
+				closeConnection();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	/**
 	 * Método que elimina un partido de la base de datos.
 	 * 
 	 * @param part El objeto Partido que se desea eliminar.
-	 * @throws LoginException Si ocurre un error durante la eliminación en la base de datos.
+	 * @throws LoginException Si ocurre un error durante la eliminación en la base
+	 *                        de datos.
 	 */
 	@Override
 	public void bajaPartido(Partido part) throws LoginException {
-	    openConnection();
-	    try {
-	        stmt = con.prepareStatement(BAJA_PARTIDO);
-	        stmt.setInt(1, part.getCod_part());
-	        stmt.executeUpdate();
-	    } catch (SQLException e) {
-	        throw new LoginException("Problemas en la BDs");
-	    } finally {
-	        try {
-	            closeConnection();
-	        } catch (SQLException e) {
-	            e.printStackTrace();
-	        }
-	    }
+		openConnection();
+		try {
+			stmt = con.prepareStatement(BAJA_PARTIDO);
+			stmt.setInt(1, part.getCod_part());
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+			throw new LoginException("Problemas en la BDs");
+		} finally {
+			try {
+				closeConnection();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	/**
 	 * Método que modifica los detalles de un partido en la base de datos.
 	 * 
 	 * @param part El objeto Partido que contiene la información actualizada.
-	 * @throws LoginException Si ocurre un error durante la modificación en la base de datos.
+	 * @throws LoginException Si ocurre un error durante la modificación en la base
+	 *                        de datos.
 	 */
 	@Override
 	public void modificarPartido(Partido part) throws LoginException {
-	    openConnection();
-	    try {
-	        stmt = con.prepareStatement(MODIFICAR_PARTIDO);
-	        stmt.setString(1, part.getEquipo_local());
-	        stmt.setString(2, part.getEquipo_visitante());
-	        stmt.setObject(3, part.getGanador());
-	        stmt.setDate(4, Date.valueOf(part.getFecha()));
-	        stmt.setString(5, part.getCod_comp());
-	        stmt.setInt(6, part.getCod_part());
-	        stmt.executeUpdate();
-	    } catch (SQLException e) {
-	        throw new LoginException("Problemas en la BDs");
-	    } finally {
-	        try {
-	            closeConnection();
-	        } catch (SQLException e) {
-	            e.printStackTrace();
-	        }
-	    }
+		openConnection();
+		try {
+			stmt = con.prepareStatement(MODIFICAR_PARTIDO);
+			stmt.setString(1, part.getEquipo_local());
+			stmt.setString(2, part.getEquipo_visitante());
+			stmt.setObject(3, part.getGanador());
+			stmt.setDate(4, Date.valueOf(part.getFecha()));
+			stmt.setString(5, part.getCod_comp());
+			stmt.setInt(6, part.getCod_part());
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+			throw new LoginException("Problemas en la BDs");
+		} finally {
+			try {
+				closeConnection();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	/**
 	 * Método que obtiene todos los partidos registrados en la base de datos.
 	 * 
-	 * @return Un mapa de partidos, donde la clave es el código del partido y el valor es el objeto Partido correspondiente.
-	 * @throws LoginException Si ocurre un error durante la obtención de partidos de la base de datos.
+	 * @return Un mapa de partidos, donde la clave es el código del partido y el
+	 *         valor es el objeto Partido correspondiente.
+	 * @throws LoginException Si ocurre un error durante la obtención de partidos de
+	 *                        la base de datos.
 	 */
 	@Override
 	public Map<Integer, Partido> listarPartidos() throws LoginException {
-	    ResultSet rs = null;
-	    Map<Integer, Partido> partidos = new HashMap<Integer, Partido>();
-	    openConnection();
-	    try {
-	        stmt = con.prepareStatement(BUSCAR_PARTIDO);
-	        rs = stmt.executeQuery();
+		ResultSet rs = null;
+		Map<Integer, Partido> partidos = new HashMap<Integer, Partido>();
+		openConnection();
+		try {
+			stmt = con.prepareStatement(BUSCAR_PARTIDO);
+			rs = stmt.executeQuery();
 
-	        while (rs.next()) {
-	            Partido part = new Partido();
-	            part.setCod_part(rs.getInt(1));
-	            part.setEquipo_local(rs.getString(2));
-	            part.setEquipo_visitante(rs.getString(3));
-	            part.setGanador(rs.getString(4));
-	            part.setFecha(rs.getDate(5).toLocalDate());
-	            part.setCod_comp(rs.getString(6));
-	            partidos.put(part.getCod_part(), part);
-	        }
+			while (rs.next()) {
+				Partido part = new Partido();
+				part.setCod_part(rs.getInt(1));
+				part.setEquipo_local(rs.getString(2));
+				part.setEquipo_visitante(rs.getString(3));
+				part.setGanador(rs.getString(4));
+				part.setFecha(rs.getDate(5).toLocalDate());
+				part.setCod_comp(rs.getString(6));
+				partidos.put(part.getCod_part(), part);
+			}
 
-	    } catch (SQLException e) {
-	        throw new LoginException("Problemas en la BDs");
-	    } finally {
-	        try {
-	            rs.close();
-	            closeConnection();
-	        } catch (SQLException e) {
-	            e.printStackTrace();
-	        }
-	    }
-	    return partidos;
+		} catch (SQLException e) {
+			throw new LoginException("Problemas en la BDs");
+		} finally {
+			try {
+				rs.close();
+				closeConnection();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return partidos;
 	}
 
 	/**
@@ -679,9 +688,7 @@ public class DaoImplementacion implements InterfazDao {
 			stmt = con.prepareStatement(BUSCAR_EQUIPO_LIGA);
 			stmt.setString(1, liga.getCod_comp());
 			stmt.setString(2, liga.getCod_comp());
-			System.out.println("Antes");
 			rs = stmt.executeQuery();
-			System.out.println("Despues");
 
 			while (rs.next()) {
 				equi = new Equipo();

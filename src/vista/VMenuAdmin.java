@@ -9,7 +9,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Date;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.ButtonGroup;
@@ -35,9 +34,8 @@ import javax.swing.JRadioButton;
 import javax.swing.ImageIcon;
 
 /**
- * Diálogo de administración para un sistema de futbol americano.
- * Proporciona funcionalidades para gestionar jugadores, equipos, competiciones
- * y partidos.
+ * Diálogo de administración para un sistema de futbol americano. Proporciona
+ * funcionalidades para gestionar jugadores, equipos, competiciones y partidos.
  * 
  * @author An Azkona, Ander Arilla, Nora Yakoubi, Maleck Benigno
  * @version 1.0
@@ -74,6 +72,7 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 	private JComboBox<Equipo> cbLocal, cbVisitante, cbCodEqui_J;
 	private JComboBox<String> cbGanador;
 	private Competicion comp;
+	private Equipo equi;
 	private JTextField txtCodPar;
 	private JLabel lblPosicion;
 	private JLabel lblFecha;
@@ -225,13 +224,25 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 		lblPosicion.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblPosicion.setBounds(50, 190, 100, 30);
 		panelJugador.add(lblPosicion);
-		
+
 		btnBajaJug.setEnabled(false);
 		btnModificarJug.setEnabled(false);
 
-		JComboBox<Object> cbCodEqui_J = new JComboBox<Object>();
+		cbCodEqui_J = new JComboBox<Equipo>();
 		cbCodEqui_J.setBounds(200, 260, 145, 21);
 		panelJugador.add(cbCodEqui_J);
+		List<Equipo> equipos = null;
+		try {
+			equipos = Principal.devolverEquipos();
+		} catch (LoginException e) {
+			e.printStackTrace();
+		}
+		for (Equipo e : equipos) {
+			cbCodEqui_J.addItem(e);
+		}
+		equi = (Equipo) cbCodEqui_J.getSelectedItem();
+		cbCodEqui_J.setSelectedIndex(-1);
+		cbCodEqui_J.addActionListener(this);
 
 		// Panel Equipo
 		panelEquipos = new JPanel();
@@ -279,12 +290,12 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 		panelEquipos.add(btnLimpiarDatosEq);
 		btnLimpiarDatosEq.addActionListener(this);
 		btnLimpiarDatosEq.setBackground(Color.WHITE);
-		
+
 		btnBajaEq.setEnabled(false);
 		btnModificarEq.setEnabled(false);
 
 		// Panel Competiciones
-		
+
 		panelCompeticion = new JPanel();
 		panelCompeticion.setLayout(null);
 		tabbedPane.addTab("Competiciones", panelCompeticion);
@@ -330,7 +341,7 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 		panelCompeticion.add(btnLimpiarDatosComp);
 		btnLimpiarDatosComp.addActionListener(this);
 		btnLimpiarDatosComp.setBackground(Color.WHITE);
-			
+
 		btnBajaComp.setEnabled(false);
 		btnModificarComp.setEnabled(false);
 
@@ -373,14 +384,14 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 		panelPartidos.add(cbVisitante);
 		cbVisitante.addActionListener(this);
 
-		List<Equipo> equipos = null;
+		List<Equipo> equiposCods = null;
 		try {
-			equipos = Principal.buscarEquipos();
+			equiposCods = Principal.buscarEquipos();
 		} catch (LoginException e) {
 			e.printStackTrace();
 		}
 
-		for (Equipo equ : equipos) {
+		for (Equipo equ : equiposCods) {
 			cbLocal.addItem(equ);
 			cbVisitante.addItem(equ);
 		}
@@ -439,12 +450,10 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 		rdbtnVisitanteNuevo.setBounds(273, 147, 123, 21);
 		panelPartidos.add(rdbtnVisitanteNuevo);
 
-
 		JLabel lblCodigo = new JLabel("Codigo: ");
 		lblCodigo.setEnabled(false);
 		lblCodigo.setBounds(35, 27, 85, 13);
 		panelPartidos.add(lblCodigo);
-
 
 		txtCodPar = new JTextField();
 		txtCodPar.setEnabled(false);
@@ -603,12 +612,12 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 	 */
 	private void limpiarComp() {
 		txtCodComp.setText("");
-	    txtCodComp.setEditable(true);
-	    txtNombreComp.setText("");
-	    
-	    btnAltaComp.setEnabled(true);
-	    btnBajaComp.setEnabled(false);
-	    btnModificarComp.setEnabled(false);
+		txtCodComp.setEditable(true);
+		txtNombreComp.setText("");
+
+		btnAltaComp.setEnabled(true);
+		btnBajaComp.setEnabled(false);
+		btnModificarComp.setEnabled(false);
 
 	}
 
@@ -635,7 +644,7 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 		txtDorsal.setText("");
 		grupoPosicion.clearSelection();
 		txtCodEquipo_Jugador.setText("");
-		
+
 		btnAltaJug.setEnabled(true);
 		btnBajaJug.setEnabled(false);
 		btnModificarJug.setEnabled(false);
@@ -647,12 +656,12 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 	 */
 	private void limpiarEq() {
 		txtCodEquipo_Equipo.setText("");
-	    txtCodEquipo_Equipo.setEditable(true);
-	    txtNombreEq.setText("");
+		txtCodEquipo_Equipo.setEditable(true);
+		txtNombreEq.setText("");
 
-	    btnAltaEq.setEnabled(true);
-	    btnBajaEq.setEnabled(false);
-	    btnModificarEq.setEnabled(false);
+		btnAltaEq.setEnabled(true);
+		btnBajaEq.setEnabled(false);
+		btnModificarEq.setEnabled(false);
 
 	}
 
@@ -665,7 +674,7 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 		MostrarPartidos mP = new MostrarPartidos(this, true);
 		dispose();
 		mP.setVisible(true);
-		
+
 	}
 
 	/**
@@ -690,7 +699,6 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 	/**
 	 * Abre la ventana para consultar jugadores.
 	 */
-
 	private void cargarJug() {
 		MostrarJugadores venJug = new MostrarJugadores(this, true);
 		dispose();
@@ -733,32 +741,48 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 
 	/**
 	 * Da de alta una nueva competición en el sistema. Valida que el código tenga
-	 * exactamente 3 letras.
+	 * exactamente 3 letras, tambien hace la comprobacion de que no hay ninguna
+	 * competicion con el mismo codigo.
 	 */
 	private void altaComp() {
 		Competicion comp = new Competicion();
-		String codComp;
-		codComp = txtCodComp.getText();
-		if (codComp.length() != 3 || !codComp.matches("^[a-zA-Z]{3}$")) {
-			JOptionPane.showMessageDialog(this, "ERROR! El codigo no es correcto, debe de tener 3 letras! ", "ERROR",
+		String codComp = txtCodComp.getText().toUpperCase(); // por si alguien lo mete en minúsculas
+
+		if (codComp.length() != 3 || !codComp.matches("^[A-Z]{3}$")) {
+			JOptionPane.showMessageDialog(this, "ERROR! El código no es correcto, debe tener 3 letras.", "ERROR",
 					JOptionPane.ERROR_MESSAGE);
-		} else {
-			System.out.println("Holaaaa");
+		}
+
+		try {
+			// Verificar si ya existe una competición con ese código
+			List<Competicion> competiciones = Principal.devolverCompeticiones();
+			for (Competicion existente : competiciones) {
+				if (existente.getCod_comp().equalsIgnoreCase(codComp)) {
+					JOptionPane.showMessageDialog(this, "ERROR! Ya existe una competición con ese código.", "ERROR",
+							JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+			}
+
+			// Si no existe, se puede crear
 			comp.setCod_comp(codComp);
 			comp.setNombre_competicion(txtNombreComp.getText());
-			try {
-				Principal.altaCompeticion(comp);
-				cbLiga.removeAllItems();
-				List<Competicion> competiciones = new ArrayList<>();
-				competiciones = Principal.devolverCompeticiones();
-				for (Competicion compe : competiciones) {
-					cbLiga.addItem(compe);
-				}
-			} catch (LoginException e) {
-				e.printStackTrace();
+
+			Principal.altaCompeticion(comp);
+
+			cbLiga.removeAllItems();
+			competiciones = Principal.devolverCompeticiones();
+			for (Competicion compe : competiciones) {
+				cbLiga.addItem(compe);
 			}
+
 			JOptionPane.showMessageDialog(this, "ALTA CORRECTA!!", "MENSAJE", JOptionPane.INFORMATION_MESSAGE);
 			limpiarComp();
+
+		} catch (LoginException e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(this, "Error al acceder al sistema: " + e.getMessage(), "ERROR",
+					JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
@@ -770,7 +794,7 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 	private void modPart() {
 		Partido part = new Partido();
 		part.setCod_part(Integer.valueOf(txtCodPar.getText()));
-		part.setCod_comp(((Competicion)cbLiga.getSelectedItem()).getCod_comp());
+		part.setCod_comp(((Competicion) cbLiga.getSelectedItem()).getCod_comp());
 		part.setEquipo_local(((Equipo) cbLocal.getSelectedItem()).getCod_equi());
 		part.setEquipo_visitante(((Equipo) cbVisitante.getSelectedItem()).getCod_equi());
 		part.setFecha(Date.valueOf(txtFecha.getText()).toLocalDate());
@@ -782,7 +806,6 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 			part.setGanador(null);
 		}
 		try {
-			System.out.println(part);
 			Principal.modificarPartido(part);
 		} catch (LoginException e) {
 			// TODO Auto-generated catch block
@@ -868,24 +891,42 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 
 	/**
 	 * Da de alta un nuevo equipo en el sistema. Valida que el código tenga
-	 * exactamente 3 letras.
+	 * exactamente 3 letras y que no se haya introducido con anterioridad o que
+	 * exista.
 	 */
 	private void altaEq() {
 		Equipo eq = new Equipo();
-		String codEq;
-		codEq = txtCodEquipo_Equipo.getText();
-		if (codEq.length() != 3 || !codEq.matches("^[a-zA-Z]{3}$")) {
-			JOptionPane.showMessageDialog(this, "ERROR! El codigo no es correcto, debe de tener 3 letras! ", "ERROR",
+		String codEq = txtCodEquipo_Equipo.getText().toUpperCase();
+
+		if (codEq.length() != 3 || !codEq.matches("^[A-Z]{3}$")) {
+			JOptionPane.showMessageDialog(this, "ERROR! El código no es correcto, debe tener 3 letras.", "ERROR",
 					JOptionPane.ERROR_MESSAGE);
-		} else {
+		}
+
+		try {
+			// Verificar si ya existe un equipo con ese código
+			List<Equipo> equipos = Principal.buscarEquipos(); // Este método debe devolverte la lista de equipos
+																// existentes
+			for (Equipo existente : equipos) {
+				if (existente.getCod_equi().equalsIgnoreCase(codEq)) {
+					JOptionPane.showMessageDialog(this, "ERROR! Ya existe un equipo con ese código.", "ERROR",
+							JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+			}
+
+			// Si no existe, se puede crear
 			eq.setCod_equi(codEq);
 			eq.setNombre_equipo(txtNombreEq.getText());
-			try {
-				Principal.altaEquipo(eq);
-			} catch (LoginException e) {
-				e.printStackTrace();
-			}
+			Principal.altaEquipo(eq);
+
 			JOptionPane.showMessageDialog(this, "ALTA CORRECTA!!", "MENSAJE", JOptionPane.INFORMATION_MESSAGE);
+			limpiarEq(); // Si tienes un método para limpiar los campos
+
+		} catch (LoginException e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(this, "Error al dar de alta el equipo: " + e.getMessage(), "ERROR",
+					JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
@@ -896,42 +937,62 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 	 * alta.
 	 */
 	private void altaJug() {
-		String dni = txtDni.getText();
+		String dni = txtDni.getText().toUpperCase().trim(); // Mejora: eliminar espacios y asegurar mayúsculas
+
 		try {
 			if (!validarDNI(dni)) {
 				throw new DniException("ERROR! DNI no válido. Revíselo e inténtelo de nuevo.");
-			} else {
-				Jugador j = new Jugador();
-				j.setDni(dni);
-				j.setNombre(txtNombre.getText());
-				j.setApellido(txtApellido.getText());
-				j.setDorsal(Integer.parseInt(txtDorsal.getText()));
-				if (rdbtnQuarterback.isSelected()) {
-					j.setPosicion(EnumPosicion.QUARTERBACK);
-				} else if (rdbtnRunning.isSelected()) {
-					j.setPosicion(EnumPosicion.RUNNING);
-				} else if (rdbtnTackle.isSelected()) {
-					j.setPosicion(EnumPosicion.TACKLE);
-				} else if (rdbtnGuard.isSelected()) {
-					j.setPosicion(EnumPosicion.GUARD);
-				}
-
-				for (int i = 0; i < cbLocal.getItemCount(); i++) {
-					cbCodEqui_J.addItem(cbLocal.getItemAt(i));
-				}
-
-				// part.setEquipo_local(((Equipo) cbLocal.getSelectedItem()).getCod_equi());
-				// j.setCod_equi((Equipo) cbCodEqui_J.get);
-				// j.setCod_equi(txtCodEquipo_Jugador.getText());
-
-				Principal.altaJugador(j);
-				JOptionPane.showMessageDialog(this, "ALTA CORRECTA!!", "MENSAJE", JOptionPane.INFORMATION_MESSAGE);
-				limpiarJug();
 			}
+
+			// Verificar si ya existe un jugador con el mismo DNI
+			List<Jugador> jugadores = Principal.devolverJugadores(); // Este método debe existir en Principal
+			for (Jugador existente : jugadores) {
+				if (existente.getDni().equalsIgnoreCase(dni)) {
+					JOptionPane.showMessageDialog(this, "ERROR! Ya existe un jugador con ese DNI.", "ERROR",
+							JOptionPane.ERROR_MESSAGE);
+				}
+			}
+			Jugador j = new Jugador();
+			j.setDni(dni);
+			j.setNombre(txtNombre.getText());
+			j.setApellido(txtApellido.getText());
+
+			try {
+				j.setDorsal(Integer.parseInt(txtDorsal.getText()));
+			} catch (NumberFormatException ex) {
+				JOptionPane.showMessageDialog(this, "ERROR! El dorsal debe ser un número entero.", "ERROR",
+						JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+
+			if (rdbtnQuarterback.isSelected()) {
+				j.setPosicion(EnumPosicion.QUARTERBACK);
+			} else if (rdbtnRunning.isSelected()) {
+				j.setPosicion(EnumPosicion.RUNNING);
+			} else if (rdbtnTackle.isSelected()) {
+				j.setPosicion(EnumPosicion.TACKLE);
+			} else if (rdbtnGuard.isSelected()) {
+				j.setPosicion(EnumPosicion.GUARD);
+			}
+
+			// Establecer el equipo seleccionado desde el combo
+			if (cbCodEqui_J.getSelectedItem() != null) {
+				Equipo equipoSeleccionado = (Equipo) cbCodEqui_J.getSelectedItem();
+				j.setCod_equi(equipoSeleccionado.getCod_equi());
+			} else {
+				JOptionPane.showMessageDialog(this, "ERROR! Debe seleccionar un equipo.", "ERROR",
+						JOptionPane.ERROR_MESSAGE);
+			}
+			Principal.altaJugador(j);
+			JOptionPane.showMessageDialog(this, "ALTA CORRECTA!!", "MENSAJE", JOptionPane.INFORMATION_MESSAGE);
+			limpiarJug();
+
 		} catch (DniException e) {
 			JOptionPane.showMessageDialog(this, e.getMessage(), "ERROR!", JOptionPane.ERROR_MESSAGE);
 		} catch (LoginException e) {
 			e.printStackTrace();
+			JOptionPane.showMessageDialog(this, "Error al registrar jugador: " + e.getMessage(), "ERROR!",
+					JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
@@ -1021,15 +1082,16 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 		} catch (IllegalArgumentException e) {
 			System.err.println("Error: La posición '" + posicion + "' no es válida.");
 		}
-		
-		
-		//txtCodEquipo_Jugador.setText(codEq);
-		
-		
-		 btnAltaJug.setEnabled(false);
-		 btnBajaJug.setEnabled(true);
-		 btnModificarJug.setEnabled(true);
+		for (int i = 0; i < cbCodEqui_J.getItemCount(); i++) {
+			equi = cbCodEqui_J.getItemAt(i);
+			if (codEq.equalsIgnoreCase(equi.getCod_equi())) {
+				cbCodEqui_J.setSelectedIndex(i);
 
+			}
+		}
+		btnAltaJug.setEnabled(false);
+		btnBajaJug.setEnabled(true);
+		btnModificarJug.setEnabled(true);
 	}
 
 	/**
@@ -1048,14 +1110,12 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 		txtCodPar.setText(String.valueOf(codPart));
 		Equipo equiL = null, equiV = null, eq;
 		Competicion comp;
-		System.out.println(codComp);
 		for (int i = 0; i < cbLiga.getItemCount(); i++) {
 			comp = cbLiga.getItemAt(i);
 			if (codComp.equalsIgnoreCase(comp.getCod_comp())) {
 				cbLiga.setSelectedIndex(i);
 			}
 		}
-		System.out.println(codComp);
 		for (int i = 0; i < cbLocal.getItemCount(); i++) {
 			eq = cbLocal.getItemAt(i);
 			if (eq.getCod_equi().equals(eqLocal)) {
@@ -1063,7 +1123,7 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 				equiL = eq;
 			}
 		}
-
+		System.out.println(eqVisitante);
 		for (int i = 0; i < cbVisitante.getItemCount(); i++) {
 			eq = cbVisitante.getItemAt(i);
 			if (eq.getCod_equi().equals(eqVisitante)) {
@@ -1081,6 +1141,10 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 		}
 
 		txtFecha.setText(fecha.toString());
+		
+		btnAltaPart.setEnabled(false);
+		btnBajaPart.setEnabled(true);
+		btnModificarPart.setEnabled(true);
 	}
 
 	/**
@@ -1091,13 +1155,13 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 	 */
 	public void cargarDatosComp(String codCompeticion, String nombreCompeticion) {
 		tabbedPane.setSelectedComponent(panelCompeticion);
-	    txtCodComp.setText(codCompeticion);
-	    txtCodComp.setEditable(false);
-	    txtNombreComp.setText(nombreCompeticion);
+		txtCodComp.setText(codCompeticion);
+		txtCodComp.setEditable(false);
+		txtNombreComp.setText(nombreCompeticion);
 
-	    btnAltaComp.setEnabled(false);
-	    btnBajaComp.setEnabled(true);
-	    btnModificarComp.setEnabled(true);
+		btnAltaComp.setEnabled(false);
+		btnBajaComp.setEnabled(true);
+		btnModificarComp.setEnabled(true);
 
 	}
 
@@ -1108,14 +1172,14 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 	 * @param nombreEquipo Nombre de equipo
 	 */
 	public void cargarDatosEq(String codEquipo, String nombreEquipo) {
-		   tabbedPane.setSelectedComponent(panelEquipos);
-		    txtCodEquipo_Equipo.setText(codEquipo);
-		    txtCodEquipo_Equipo.setEditable(false);
-		    txtNombreEq.setText(nombreEquipo);
-		    
-		    btnAltaEq.setEnabled(false);
-		    btnBajaEq.setEnabled(true);
-		    btnModificarEq.setEnabled(true);
+		tabbedPane.setSelectedComponent(panelEquipos);
+		txtCodEquipo_Equipo.setText(codEquipo);
+		txtCodEquipo_Equipo.setEditable(false);
+		txtNombreEq.setText(nombreEquipo);
+
+		btnAltaEq.setEnabled(false);
+		btnBajaEq.setEnabled(true);
+		btnModificarEq.setEnabled(true);
 
 	}
 
