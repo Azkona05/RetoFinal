@@ -72,16 +72,14 @@ public class MostrarPartidos extends JDialog {
         table.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-            	LocalDate fecha;
                 if (e.getClickCount() == 2) {
                     int row = table.getSelectedRow();
                     if (row != -1) {
                         int cod = (Integer) model.getValueAt(row, 0);
                         String eqLocal = (String) model.getValueAt(row, 1);
                         String eqVisitante = (String) model.getValueAt(row, 2);
-                       
                         String ganador = (String) model.getValueAt(row, 3);
-                        fecha = (LocalDate) model.getValueAt(row, 4);
+                        LocalDate fecha = ((java.sql.Date) model.getValueAt(row, 4)).toLocalDate();
                         String codComp = (String) model.getValueAt(row, 5);
                         dispose();
                         padre.cargarDatosPart(cod, eqLocal, eqVisitante, ganador, fecha, codComp);
