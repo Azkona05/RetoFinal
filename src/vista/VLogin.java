@@ -11,6 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
@@ -19,6 +20,10 @@ import excepciones.LoginException;
 import modelo.Usuario;
 import javax.swing.ImageIcon;
 import java.awt.Font;
+import javax.swing.AbstractAction;
+import javax.swing.JComponent;
+import javax.swing.InputMap;
+import javax.swing.ActionMap;
 
 public class VLogin extends JDialog implements ActionListener {
 
@@ -32,11 +37,6 @@ public class VLogin extends JDialog implements ActionListener {
 
 	/**
 	 * Constructor de la ventana de login.
-	 * Inicializa los componentes gráficos y define la configuración inicial de la ventana.
-	 * 
-	 * @author An Azkona, Ander Arilla, Nora Yakoubi, Maleck Benigno
-	 * @param padre Ventana principal que invoca el login.
-	 * @param modal Indica si la ventana será modal o no.
 	 */
 	public VLogin(VMenuPrincipal padre, boolean modal) {
 		super(padre);
@@ -46,7 +46,6 @@ public class VLogin extends JDialog implements ActionListener {
 		setBounds(100, 100, 705, 428);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
@@ -82,21 +81,34 @@ public class VLogin extends JDialog implements ActionListener {
 		passwordField = new JPasswordField();
 		passwordField.setBounds(360, 174, 175, 29);
 		contentPane.add(passwordField);
-		
+
 		JLabel lblImagen = new JLabel("");
 		lblImagen.setIcon(new ImageIcon("src\\resources\\iconoPersonaEditado.png"));
 		lblImagen.setBounds(319, 11, 67, 87);
 		contentPane.add(lblImagen);
+
+		// ✅ Enter activa btnComprobar
+		getRootPane().setDefaultButton(btnComprobar);
+
+		// ✅ Escape cierra el diálogo (como btnCancelar)
+		InputMap im = getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+		ActionMap am = getRootPane().getActionMap();
+
+		im.put(KeyStroke.getKeyStroke("ESCAPE"), "cancelar");
+		am.put("cancelar", new AbstractAction() {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			public void actionPerformed(ActionEvent e) {
+				dispose(); // Cierra el diálogo
+			}
+		});
 	}
 
-	/**
-	 * Método que maneja los eventos de los botones en la ventana de login.
-	 * 
-	 * @param e El evento que se genera al hacer clic en uno de los botones.
-	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// Crear objeto para manejar los datos del usuario
 		if (e.getSource().equals(btnComprobar)) {
 			comprobar();
 		} else if (e.getSource().equals(btnCancelar)) {
@@ -104,19 +116,10 @@ public class VLogin extends JDialog implements ActionListener {
 		}
 	}
 
-	/**
-	 * Método para verificar las credenciales de inicio de sesión.
-	 * Obtiene el nombre de usuario y la contraseña del formulario,
-	 * y llama al método login de la clase Principal para verificar el usuario.
-	 * 
-	 * Si las credenciales son correctas, se muestra el menú de administración.
-	 * Si hay un error, se muestra un mensaje de error.
-	 */
 	public void comprobar() {
 		Usuario usuario = new Usuario();
 		usuario.setNombre(txtUsuario.getText());
 		usuario.setPassword(new String(passwordField.getPassword()));
-		// Comprobar login correcto
 		try {
 			Principal.login(usuario);
 			VMenuAdmin menu = new VMenuAdmin(this, true);
