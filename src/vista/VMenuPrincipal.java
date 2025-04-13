@@ -67,7 +67,9 @@ public class VMenuPrincipal extends JFrame implements ActionListener, FocusListe
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1140, 462);
 		getContentPane().setLayout(null);
-		
+		getContentPane().setBackground(new Color(245, 245, 245)); // Gris claro
+
+
 
 		// ComboBox de Ligas
 		cbElegirLiga = new JComboBox<Competicion>();
@@ -129,6 +131,8 @@ public class VMenuPrincipal extends JFrame implements ActionListener, FocusListe
 		}
 		presentarTabla((Competicion) cbElegirLiga.getSelectedItem());
 	}
+	
+	
 
 	/**
 	 * Maneja los eventos de acción de los componentes de la interfaz.
@@ -285,20 +289,19 @@ public class VMenuPrincipal extends JFrame implements ActionListener, FocusListe
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if (e.getSource().equals(tablaClasi)) {
-			if (e.MOUSE_CLICKED == 2) {
+			if (e.getClickCount() == 2) {
 				int row = tablaClasi.getSelectedRow();
 				if (row != -1) {
 					String nombreEquipo = (String) tablaClasi.getValueAt(row, 1); // Columna del nombre
 					System.out.println("Equipo seleccionado: " + nombreEquipo);
 
-					// Suponiendo que VEquipo tiene constructor (Frame, boolean, String)
 					VEquipo ve = new VEquipo(this, true, nombreEquipo);
 					ve.setVisible(true);
 				}
 			}
 		}
-
 	}
+
 
 	@Override
 	public void mousePressed(MouseEvent e) {
