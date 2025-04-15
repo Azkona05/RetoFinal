@@ -256,4 +256,8 @@ public interface InterfazDao {
      * @throws LoginException Si ocurre un error al mostrar los datos.
      */
     public Object[][] mostrarDatosPartido(Partido part) throws LoginException;
+
+	public List<Jugador> jugadoresEquipo(Equipo equi);
+
+	public Equipo devolverEquiNombre(String nombre);
 }

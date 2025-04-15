@@ -129,14 +129,17 @@ public class Principal {
 		dao.altaJugador(j);
 	}
 
-	/*
-	 * @return Lista de jugadores. 
-	 * Este metodo lista todos los jugadores.
-	 *  
-	**/ 
-	public static List<Jugador> devolverJugadores() throws LoginException {
-		return dao.listarJugadores();
+    /**
+     * Da de alta un nuevo jugador en el sistema.
+     * 
+     * @param equi El equipo a buscar sus jugadores.
+     * @throws LoginException Si ocurre un error durante la busqueda del equipo.
+     */
+    public static List <Jugador> jugadorEquipo (Equipo equi)  {
+		return dao.jugadoresEquipo(equi);
 	}
+
+    // COMPETICION
 
 	// COMPETICION
 
@@ -172,17 +175,38 @@ public class Principal {
 		dao.altaCompeticion(comp);
 	}
 
-	// EQUIPO
+    /**
+     * Da de alta un nuevo equipo en el sistema.
+     * 
+     * @param eq El equipo a dar de alta.
+     * @throws LoginException Si ocurre un error durante el alta del equipo.
+     */
+    public static void altaEquipo(Equipo eq) throws LoginException {
+        dao.altaEquipo(eq);
+    }
+	
+    
+	
 
-	/**
-	 * Da de alta un nuevo equipo en el sistema.
-	 * 
-	 * @param eq El equipo a dar de alta.
-	 * @throws LoginException Si ocurre un error durante el alta del equipo.
-	 */
-	public static void altaEquipo(Equipo eq) throws LoginException {
-		dao.altaEquipo(eq);
+    /**
+     * Da de alta un nuevo equipo en el sistema.
+     * 
+     * @param nombre del equipo a buscar.
+     * @throws LoginException Si ocurre un error durante la busqueda del equipo.
+     */
+	public static Equipo devolverEquiNombre(String nombre) {
+		return dao.devolverEquiNombre(nombre);
 	}
+	
+    /**
+     * Da de baja un equipo en el sistema.
+     * 
+     * @param eq El equipo a dar de baja.
+     * @throws LoginException Si ocurre un error durante la baja del equipo.
+     */
+    public static void bajaEquipo(Equipo eq) throws LoginException {
+        dao.bajaEquipo(eq);
+    }
 
 	/**
 	 * Da de baja un equipo en el sistema.

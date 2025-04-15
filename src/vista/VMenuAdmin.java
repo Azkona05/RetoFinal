@@ -402,11 +402,6 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 		lblVisitante.setBounds(35, 151, 85, 13);
 		panelPartidos.add(lblVisitante);
 
-		cbVisitante = new JComboBox<Equipo>();
-		cbVisitante.setBounds(130, 147, 130, 21);
-		panelPartidos.add(cbVisitante);
-		cbVisitante.addActionListener(this);
-
 		JLabel lblGanador = new JLabel("Ganador: ");
 		lblGanador.setBounds(35, 192, 85, 13);
 		panelPartidos.add(lblGanador);
@@ -440,15 +435,6 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 		btnLimpiarDatosPart = new JButton("Limpiar");
 		btnLimpiarDatosPart.setBounds(432, 77, 85, 21);
 		panelPartidos.add(btnLimpiarDatosPart);
-
-		rdbtnLocalNuevo = new JRadioButton("Local Nuevo");
-		rdbtnLocalNuevo.setBounds(273, 109, 123, 21);
-		panelPartidos.add(rdbtnLocalNuevo);
-		rdbtnLocalNuevo.addActionListener(this);
-
-		rdbtnVisitanteNuevo = new JRadioButton("Visitante Nuevo");
-		rdbtnVisitanteNuevo.setBounds(273, 147, 123, 21);
-		panelPartidos.add(rdbtnVisitanteNuevo);
 
 		JLabel lblCodigo = new JLabel("Codigo: ");
 		lblCodigo.setEnabled(false);
@@ -528,81 +514,8 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 			limpiarComp();
 
 		} else if (e.getSource().equals(cbLiga)) {
-			cbLocal.removeAllItems();
-			cbVisitante.removeAllItems();
-			comp = (Competicion) cbLiga.getSelectedItem();
-			List<Equipo> equipos = null;
-			try {
-				equipos = Principal.devolverEquipos(comp);
-			} catch (LoginException e1) {
-				e1.printStackTrace();
-			}
-			for (Equipo equ : equipos) {
-				cbLocal.addItem(equ);
-			}
-			cbLocal.setSelectedIndex(-1);
 
-			try {
-				equipos = Principal.devolverEquipos(comp);
-			} catch (LoginException e1) {
-				e1.printStackTrace();
-			}
-			for (Equipo equ : equipos) {
-				cbVisitante.addItem(equ);
-			}
-			cbVisitante.setSelectedIndex(-1);
-
-		} else if (e.getSource().equals(rdbtnLocalNuevo)) {
-			if (rdbtnLocalNuevo.isSelected()) {
-				cbLocal.removeAllItems();
-				comp = (Competicion) cbLiga.getSelectedItem();
-				List<Equipo> equipos = Principal.nuevosEquipos(comp);
-				for (Equipo equ : equipos) {
-					cbLocal.addItem(equ);
-				}
-				cbLocal.setSelectedIndex(-1);
-			} else {
-				cbLocal.removeAllItems();
-				comp = (Competicion) cbLiga.getSelectedItem();
-				List<Equipo> equipos = null;
-				try {
-					equipos = Principal.devolverEquipos(comp);
-				} catch (LoginException e1) {
-					e1.printStackTrace();
-				}
-				for (Equipo equ : equipos) {
-					cbLocal.addItem(equ);
-				}
-				cbLocal.setSelectedIndex(-1);
-			}
-		} else if (e.getSource().equals(rdbtnVisitanteNuevo)) {
-			if (rdbtnVisitanteNuevo.isSelected()) {
-				cbVisitante.removeAllItems();
-				comp = (Competicion) cbLiga.getSelectedItem();
-				List<Equipo> equipos = Principal.nuevosEquipos(comp);
-				for (Equipo equ : equipos) {
-					cbVisitante.addItem(equ);
-				}
-				cbVisitante.setSelectedIndex(-1);
-			} else {
-				nuevosVisitante();
-			}
 		}
-	}
-
-	private void nuevosVisitante() {
-		cbVisitante.removeAllItems();
-		comp = (Competicion) cbLiga.getSelectedItem();
-		List<Equipo> equipos = null;
-		try {
-			equipos = Principal.devolverEquipos(comp);
-		} catch (LoginException e1) {
-			e1.printStackTrace();
-		}
-		for (Equipo equ : equipos) {
-			cbVisitante.addItem(equ);
-		}
-		cbVisitante.setSelectedIndex(-1);
 	}
 
 	// LIMPIAR DATOS
@@ -751,20 +664,7 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 		if (codComp.length() != 3 || !codComp.matches("^[A-Z]{3}$")) {
 			JOptionPane.showMessageDialog(this, "ERROR! El código no es correcto, debe tener 3 letras.", "ERROR",
 					JOptionPane.ERROR_MESSAGE);
-		}
-
-		try {
-			// Verificar si ya existe una competición con ese código
-			List<Competicion> competiciones = Principal.devolverCompeticiones();
-			for (Competicion existente : competiciones) {
-				if (existente.getCod_comp().equalsIgnoreCase(codComp)) {
-					JOptionPane.showMessageDialog(this, "ERROR! Ya existe una competición con ese código.", "ERROR",
-							JOptionPane.ERROR_MESSAGE);
-					return;
-				}
-			}
-
-			// Si no existe, se puede crear
+		} else {
 			comp.setCod_comp(codComp);
 			comp.setNombre_competicion(txtNombreComp.getText());
 
@@ -792,23 +692,35 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 	 * Modifica los datos de un partido existente.
 	 */
 	private void modPart() {
+		this.dispose();
 		Partido part = new Partido();
 		part.setCod_part(Integer.valueOf(txtCodPar.getText()));
 		part.setCod_comp(((Competicion) cbLiga.getSelectedItem()).getCod_comp());
-		part.setEquipo_local(((Equipo) cbLocal.getSelectedItem()).getCod_equi());
-		part.setEquipo_visitante(((Equipo) cbVisitante.getSelectedItem()).getCod_equi());
-		part.setFecha(Date.valueOf(txtFecha.getText()).toLocalDate());
-		if (cbGanador.getSelectedItem().equals("Local")) {
-			part.setGanador(((Equipo) cbLocal.getSelectedItem()).getCod_equi());
-		} else if (cbGanador.getSelectedItem().equals("Visitante")) {
-			part.setGanador(((Equipo) cbVisitante.getSelectedItem()).getCod_equi());
+		Equipo local = (Equipo) cbLocal.getSelectedItem();
+		Equipo visi = (Equipo) cbVisitante.getSelectedItem();
+		if (local.equals(visi)) {
+			JOptionPane.showMessageDialog(this, "El equipo local y visitante no pueden ser el mismo.", 
+                    "Error", JOptionPane.ERROR_MESSAGE);
+			return;
 		} else {
-			part.setGanador(null);
+			part.setEquipo_local(((Equipo) cbLocal.getSelectedItem()).getCod_equi());
+			part.setEquipo_visitante(((Equipo) cbVisitante.getSelectedItem()).getCod_equi());
 		}
+		part.setFecha(Date.valueOf(txtFecha.getText()).toLocalDate());
+		if (part.getFecha().isAfter(LocalDate.now())) {
+			JOptionPane.showMessageDialog(this, "La fecha es superior a la fecha actual por lo tanto no se sabe quien es el ganador", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+			part.setGanador(null);
+		} else {
+			if (cbGanador.getSelectedItem().equals("Local")) {
+				part.setGanador(((Equipo) cbLocal.getSelectedItem()).getCod_equi());
+			} else {
+				part.setGanador(((Equipo) cbVisitante.getSelectedItem()).getCod_equi());
+			} 
+		}
+		
 		try {
 			Principal.modificarPartido(part);
 		} catch (LoginException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		JOptionPane.showMessageDialog(this, "MODIFICACION CORRECTA!!", "MENSAJE", JOptionPane.INFORMATION_MESSAGE);
@@ -840,8 +752,16 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 		Partido part = new Partido();
 		i = Principal.cantidadPartidos() + 1;
 		part.setCod_part(i);
-		part.setEquipo_local(((Equipo) cbLocal.getSelectedItem()).getCod_equi());
-		part.setEquipo_visitante(((Equipo) cbVisitante.getSelectedItem()).getCod_equi());
+		Equipo local = (Equipo) cbLocal.getSelectedItem();
+		Equipo visi = (Equipo) cbVisitante.getSelectedItem();
+		if (local.equals(visi)) {
+			JOptionPane.showMessageDialog(this, "El equipo local y visitante no pueden ser el mismo.", 
+                    "Error", JOptionPane.ERROR_MESSAGE);
+			return;
+		} else {
+			part.setEquipo_local(((Equipo) cbLocal.getSelectedItem()).getCod_equi());
+			part.setEquipo_visitante(((Equipo) cbVisitante.getSelectedItem()).getCod_equi());
+		}
 		if (cbGanador.getSelectedItem().equals("Local")) {
 			part.setGanador(((Equipo) cbLocal.getSelectedItem()).getCod_equi());
 		} else if (cbGanador.getSelectedItem().equals("Visitante")) {
@@ -849,7 +769,13 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 		} else {
 			part.setGanador("PSD");
 		}
-		part.setFecha(LocalDate.parse(txtFecha.getText()));
+		String input = txtFecha.getText();
+		if (!input.matches("\\d{4}-\\d{2}-\\d{2}")) {
+			JOptionPane.showMessageDialog(null, "Formato incorrecto. Use aaaa-MM-dd");
+			return;
+		} else {
+			part.setFecha(LocalDate.parse(txtFecha.getText()));
+		}
 		part.setCod_comp(((Competicion) cbLiga.getSelectedItem()).getCod_comp());
 		Principal.altaPartido(part);
 		JOptionPane.showMessageDialog(this, "ALTA CORRECTA!!", "MENSAJE", JOptionPane.INFORMATION_MESSAGE);
@@ -1132,12 +1058,12 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 			}
 		}
 
-		if (ganador.equalsIgnoreCase(equiL.getCod_equi())) {
-			cbGanador.setSelectedIndex(0);
-		} else if (ganador.equalsIgnoreCase(equiV.getCod_equi())) {
-			cbGanador.setSelectedIndex(1);
-		} else {
+		if (ganador == null) {
 			cbGanador.setSelectedIndex(2);
+		} else if (ganador.equalsIgnoreCase(equiL.getCod_equi())) {
+			cbGanador.setSelectedIndex(0);
+		} else {
+			cbGanador.setSelectedIndex(1);
 		}
 
 		txtFecha.setText(fecha.toString());
