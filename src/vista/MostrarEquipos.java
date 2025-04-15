@@ -1,12 +1,10 @@
 package vista;
 
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
 import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -16,7 +14,6 @@ import javax.swing.table.DefaultTableModel;
 
 import controlador.Principal;
 import excepciones.LoginException;
-import modelo.Competicion;
 import modelo.Equipo;
 
 public class MostrarEquipos extends JDialog {
@@ -25,23 +22,14 @@ public class MostrarEquipos extends JDialog {
 	private final JPanel contentPanel = new JPanel();
     private JTable table;
     private DefaultTableModel model;
-
-	/**
-	 * Launch the application.
-	 */
-//	public static void main(String[] args) {
-//		try {
-//			MostrarEquipos dialog = new MostrarEquipos();
-//			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-//			dialog.setVisible(true);
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//	}
-
-	/**
-	 * Create the dialog.
-	 */
+    
+    /**
+     * Constructor que crea el diálogo para mostrar los equipos.
+     * 
+     * @author An Azkona, Ander Arilla, Nora Yakoubi, Maleck Benigno
+     * @param padre El JFrame padre de este diálogo
+     * @param modal Indica si el diálogo debe ser modal (true) o no (false)
+     */
 	public MostrarEquipos(VMenuAdmin padre, boolean modal) {
 		super(padre);
     	this.setModal(modal);
@@ -57,7 +45,12 @@ public class MostrarEquipos extends JDialog {
 
         String[] columnNames = { "Codigo", "Nombre" };
         model = new DefaultTableModel(columnNames, 0) {
-            @Override
+            /**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
             public boolean isCellEditable(int row, int column) {
                 return false; 
             }
@@ -67,7 +60,7 @@ public class MostrarEquipos extends JDialog {
         JScrollPane scrollPane = new JScrollPane(table);
         contentPanel.add(scrollPane, BorderLayout.CENTER);
 
-        // Doble clic para pasar los datos
+        // Configura el listener para doble clic
         table.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -92,6 +85,11 @@ public class MostrarEquipos extends JDialog {
 			e1.printStackTrace();
 		}
     }
+	  /**
+     * Carga los datos de los partidos desde la capa de controlador.
+     * 
+     * @throws LoginException Si ocurre un error relacionado con la autenticación
+     */
 
     private void cargarDatos() throws LoginException {
         Equipo eq = new Equipo();
@@ -100,6 +98,11 @@ public class MostrarEquipos extends JDialog {
 		dispose();
     }
 
+    /**
+     * Actualiza la tabla con los datos proporcionados.
+     * 
+     * @param datos Matriz de objetos que contiene los datos de los partidos a mostrar
+     */
     private void actualizarDatos(Object[][] datos) {
         model.setRowCount(0); // Limpiar tabla antes de agregar los nuevos datos
         for (Object[] fila : datos) {

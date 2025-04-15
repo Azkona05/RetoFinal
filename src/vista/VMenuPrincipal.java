@@ -6,7 +6,6 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.net.URL;
 import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Comparator;
@@ -18,7 +17,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -30,14 +28,9 @@ import modelo.Competicion;
 import modelo.Equipo;
 import modelo.Partido;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Graphics;
 
 import javax.swing.JTable;
-
-import java.awt.GridLayout;
-import java.awt.Image;
 
 import javax.swing.JComboBox;
 import javax.swing.SwingConstants;
@@ -45,6 +38,14 @@ import javax.swing.SwingConstants;
 import java.awt.Toolkit;
 import java.awt.Font;
 
+/**
+ * Clase que representa la ventana principal del menú de la aplicación de fútbol
+ * americano. Muestra un calendario, tablas de clasificación y partidos, y
+ * permite la navegación entre diferentes competiciones.
+ * 
+ * @author An Azkona, Ander Arilla, Nora Yakoubi, Maleck Benigno
+ * @version 1.0
+ */
 public class VMenuPrincipal extends JFrame implements ActionListener, FocusListener, MouseListener {
 	private static final long serialVersionUID = 1L;
 	private JButton btnLogin, btnCalendario;
@@ -54,7 +55,13 @@ public class VMenuPrincipal extends JFrame implements ActionListener, FocusListe
 	private JScrollPane jscrollClasi, jscrollPartido;
 	private LocalDate fecha;
 
-
+	/**
+	 * Constructor de la ventana principal. Inicializa los componentes y configura
+	 * la interfaz gráfica.
+	 * 
+	 * @throws LoginException Si ocurre un error durante la inicialización
+	 *                        relacionado con el login
+	 */
 	public VMenuPrincipal() throws LoginException {
 		setResizable(false);
 		setTitle("FUTBOL AMERICANO");
@@ -132,7 +139,11 @@ public class VMenuPrincipal extends JFrame implements ActionListener, FocusListe
 		getContentPane().add(lblFondo);
 	}
 
-
+	/**
+	 * Maneja los eventos de acción de los componentes de la interfaz.
+	 * 
+	 * @param e El evento de acción que se ha producido
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource().equals(calendario)) {
@@ -144,7 +155,6 @@ public class VMenuPrincipal extends JFrame implements ActionListener, FocusListe
 			try {
 				presentarTabla((Competicion) cbElegirLiga.getSelectedItem());
 			} catch (LoginException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 		} else if (e.getSource().equals(btnCalendario)) {
@@ -157,20 +167,30 @@ public class VMenuPrincipal extends JFrame implements ActionListener, FocusListe
 			try {
 				presentarTablaPartido(fecha);
 			} catch (LoginException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-		} else {
-
 		}
 	}
 
+	/**
+	 * Muestra la tabla de partidos para una fecha específica.
+	 * 
+	 * @param fecha La fecha para la que se mostrarán los partidos
+	 * @throws LoginException Si ocurre un error relacionado con el login
+	 */
 	private void presentarTablaPartido(LocalDate fecha) throws LoginException {
 		tablaPart = this.cargarTablaPart(fecha);
 		tablaPart.setBounds(0, 0, 15, 15);
 		jscrollPartido.setViewportView(tablaPart);
 	}
 
+	/**
+	 * Carga y devuelve una tabla con los partidos de una fecha específica.
+	 * 
+	 * @param fecha La fecha de los partidos a cargar
+	 * @return JTable con los partidos de la fecha especificada
+	 * @throws LoginException Si ocurre un error relacionado con el login
+	 */
 	private JTable cargarTablaPart(LocalDate fecha) throws LoginException {
 		String[] columnasNombre = { "Liga", "Local", "Visitante", "Ganador" };
 		DefaultTableModel model = new DefaultTableModel(null, columnasNombre) {
@@ -201,6 +221,12 @@ public class VMenuPrincipal extends JFrame implements ActionListener, FocusListe
 		return new JTable(model);
 	}
 
+	/**
+	 * Muestra la tabla de clasificación para una competición específica.
+	 * 
+	 * @param liga La competición para la que se mostrará la clasificación
+	 * @throws LoginException Si ocurre un error relacionado con el login
+	 */
 	private void presentarTabla(Competicion liga) throws LoginException {
 		tablaClasi = this.cargarTabla(liga);
 		tablaClasi.setBounds(0, 10, 75, 75);
@@ -209,6 +235,13 @@ public class VMenuPrincipal extends JFrame implements ActionListener, FocusListe
 		jscrollClasi.setViewportView(tablaClasi);
 	}
 
+	/**
+	 * Carga y devuelve una tabla con la clasificación de una competición.
+	 * 
+	 * @param liga La competición para la que se cargará la clasificación
+	 * @return JTable con la clasificación de la competición especificada
+	 * @throws LoginException Si ocurre un error relacionado con el login
+	 */
 	private JTable cargarTabla(Competicion liga) throws LoginException {
 		String[] coulumnasNombre = { "Posicion", "Nombre", "Victorias" };
 		String[] colum = new String[3];
@@ -248,12 +281,14 @@ public class VMenuPrincipal extends JFrame implements ActionListener, FocusListe
 
 	@Override
 	public void focusGained(FocusEvent e) {
-
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
 	public void focusLost(FocusEvent e) {
-
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override

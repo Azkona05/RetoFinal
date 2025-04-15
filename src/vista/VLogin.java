@@ -29,8 +29,15 @@ public class VLogin extends JDialog implements ActionListener {
 	private JPasswordField passwordField;
 	private JButton btnComprobar;
 	private JButton btnCancelar;
-	
-	
+
+	/**
+	 * Constructor de la ventana de login.
+	 * Inicializa los componentes gráficos y define la configuración inicial de la ventana.
+	 * 
+	 * @author An Azkona, Ander Arilla, Nora Yakoubi, Maleck Benigno
+	 * @param padre Ventana principal que invoca el login.
+	 * @param modal Indica si la ventana será modal o no.
+	 */
 	public VLogin(VMenuPrincipal padre, boolean modal) {
 		super(padre);
 		this.setModal(modal);
@@ -82,6 +89,11 @@ public class VLogin extends JDialog implements ActionListener {
 		contentPane.add(lblImagen);
 	}
 
+	/**
+	 * Método que maneja los eventos de los botones en la ventana de login.
+	 * 
+	 * @param e El evento que se genera al hacer clic en uno de los botones.
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// Crear objeto para manejar los datos del usuario
@@ -92,6 +104,14 @@ public class VLogin extends JDialog implements ActionListener {
 		}
 	}
 
+	/**
+	 * Método para verificar las credenciales de inicio de sesión.
+	 * Obtiene el nombre de usuario y la contraseña del formulario,
+	 * y llama al método login de la clase Principal para verificar el usuario.
+	 * 
+	 * Si las credenciales son correctas, se muestra el menú de administración.
+	 * Si hay un error, se muestra un mensaje de error.
+	 */
 	public void comprobar() {
 		Usuario usuario = new Usuario();
 		usuario.setNombre(txtUsuario.getText());
