@@ -79,7 +79,8 @@ public class MostrarPartidos extends JDialog {
                         String eqLocal = (String) model.getValueAt(row, 1);
                         String eqVisitante = (String) model.getValueAt(row, 2);
                         String ganador = (String) model.getValueAt(row, 3);
-                        LocalDate fecha = ((java.sql.Date) model.getValueAt(row, 4)).toLocalDate();
+                        java.sql.Date sqlDate = (java.sql.Date) model.getValueAt(row, 4);
+                        LocalDate fecha = sqlDate.toLocalDate();
                         String codComp = (String) model.getValueAt(row, 5);
                         dispose();
                         padre.cargarDatosPart(cod, eqLocal, eqVisitante, ganador, fecha, codComp);

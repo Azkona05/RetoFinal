@@ -22,7 +22,7 @@ public class MostrarEquipos extends JDialog {
 	private final JPanel contentPanel = new JPanel();
     private JTable table;
     private DefaultTableModel model;
-
+    
     /**
      * Constructor que crea el diálogo para mostrar los equipos.
      * 
