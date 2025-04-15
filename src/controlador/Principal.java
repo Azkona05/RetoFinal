@@ -20,7 +20,6 @@ public class Principal {
 		VMenuPrincipal vmp;
 			vmp = new VMenuPrincipal();
 			vmp.setVisible(true);
-		
 	}
 
 
@@ -127,5 +126,11 @@ public class Principal {
 	
 	public static int cantidadPartidos () {
 		return dao.cantidadPartidos();
+	}
+	public static List <Jugador> jugadorEquipo (Equipo equi) throws LoginException {
+		return dao.jugadoresEquipo(equi);
+	}
+	public static Equipo devolverEquiNombre(String nombre) {
+		return dao.devolverEquiNombre(nombre);
 	}
 }

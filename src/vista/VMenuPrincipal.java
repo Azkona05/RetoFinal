@@ -6,6 +6,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.net.URL;
 import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Comparator;
@@ -31,6 +32,7 @@ import modelo.Partido;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Graphics;
 
 import javax.swing.JTable;
 
@@ -39,28 +41,29 @@ import java.awt.Image;
 
 import javax.swing.JComboBox;
 import javax.swing.SwingConstants;
+
 import java.awt.Toolkit;
-import javax.swing.JCheckBox;
+import java.awt.Font;
 
 public class VMenuPrincipal extends JFrame implements ActionListener, FocusListener, MouseListener {
 	private static final long serialVersionUID = 1L;
 	private JButton btnLogin, btnCalendario;
 	private JCalendar calendario;
 	private JTable tablaClasi, tablaPart;
-	private JPanel panel_Derecho, panel_Izquierdo, panel_Central;
 	private JComboBox<Competicion> cbElegirLiga;
-	private JScrollPane jscroll, jscrollPartido;
+	private JScrollPane jscrollClasi, jscrollPartido;
 	private LocalDate fecha;
 
 
 	public VMenuPrincipal() throws LoginException {
+		setResizable(false);
 		setTitle("FUTBOL AMERICANO");
 		setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/resources/icono.jpg")));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 1140, 462);
+		setBounds(100, 100, 1080, 720);
 		getContentPane().setLayout(null);
+		setLocationRelativeTo(null);
 		
-
 		// ComboBox de Ligas
 		cbElegirLiga = new JComboBox<Competicion>();
 		cbElegirLiga.setBounds(10, 10, 400, 30);
@@ -69,13 +72,15 @@ public class VMenuPrincipal extends JFrame implements ActionListener, FocusListe
 
 		// Label de equipos
 		JLabel lblEquipo = new JLabel("Equipos");
+		lblEquipo.setFont(new Font("Stencil", Font.BOLD, 12));
+		lblEquipo.setForeground(new Color(255, 255, 255));
 		lblEquipo.setHorizontalAlignment(SwingConstants.CENTER);
-		lblEquipo.setBounds(418, 10, 400, 30);
+		lblEquipo.setBounds(500, 12, 201, 29);
 		getContentPane().add(lblEquipo);
 
 		// Botón Login
 		btnLogin = new JButton("Login");
-		btnLogin.setBounds(828, 10, 288, 30);
+		btnLogin.setBounds(906, 10, 150, 30);
 		btnLogin.addActionListener(this);
 		btnLogin.setBackground(Color.WHITE);
 		getContentPane().add(btnLogin);
@@ -91,28 +96,28 @@ public class VMenuPrincipal extends JFrame implements ActionListener, FocusListe
 		calendario.getDayChooser().setWeekdayForeground(new Color(0, 128, 128));
 		calendario.getDayChooser().setBackground(new Color(0, 128, 128));
 		calendario.getDayChooser().setDecorationBackgroundColor(new Color(255, 255, 128));
-		calendario.setBounds(500, 60, 400, 225);
+		calendario.setBounds(500, 115, 400, 350);
 		getContentPane().add(calendario);
 
 		// Botón actualizar fecha
 		btnCalendario = new JButton("Actualizar Fecha");
-		btnCalendario.setBounds(910, 255, 203, 30);
+		btnCalendario.setBounds(906, 435, 150, 30);
 		btnCalendario.addActionListener(this);
 		btnCalendario.setBackground(Color.WHITE);
 		getContentPane().add(btnCalendario);
 
 		// Scroll de partidos
 		jscrollPartido = new JScrollPane();
-		jscrollPartido.setBounds(497, 306, 460, 101); // Derecha
+		jscrollPartido.setBounds(497, 509, 460, 101);
 		getContentPane().add(jscrollPartido);
 		if (fecha == null) {
 			presentarTablaPartido(LocalDate.now());
 		}
 
 		// Scroll de clasificación
-		jscroll = new JScrollPane();
-		jscroll.setBounds(10, 60, 400, 347); // Izquierda
-		getContentPane().add(jscroll);
+		jscrollClasi = new JScrollPane();
+		jscrollClasi.setBounds(10, 60, 400, 550); // Izquierda
+		getContentPane().add(jscrollClasi);
 
 		// Cargar datos iniciales
 		Map<String, Competicion> competiciones = Principal.leerCompeticiones();
@@ -120,7 +125,13 @@ public class VMenuPrincipal extends JFrame implements ActionListener, FocusListe
 			cbElegirLiga.addItem(comp);
 		}
 		presentarTabla((Competicion) cbElegirLiga.getSelectedItem());
+				
+		JLabel lblFondo = new JLabel();
+		lblFondo.setIcon(new ImageIcon("src/resources/fondoIcono(re).jpg"));
+		lblFondo.setBounds(0, 0, 1080, 720);
+		getContentPane().add(lblFondo);
 	}
+
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -195,7 +206,7 @@ public class VMenuPrincipal extends JFrame implements ActionListener, FocusListe
 		tablaClasi.setBounds(0, 10, 75, 75);
 		tablaClasi.addMouseListener(this);
 
-		jscroll.setViewportView(tablaClasi);
+		jscrollClasi.setViewportView(tablaClasi);
 	}
 
 	private JTable cargarTabla(Competicion liga) throws LoginException {
@@ -248,20 +259,28 @@ public class VMenuPrincipal extends JFrame implements ActionListener, FocusListe
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if (e.getSource().equals(tablaClasi)) {
-			if (e.MOUSE_CLICKED == 2) {
+			if (e.getClickCount() == 2) {
 				int row = tablaClasi.getSelectedRow();
 				if (row != -1) {
-					String nombreEquipo = (String) tablaClasi.getValueAt(row, 1); // Columna del nombre
-					System.out.println("Equipo seleccionado: " + nombreEquipo);
-
-					// Suponiendo que VEquipo tiene constructor (Frame, boolean, String)
-					VEquipo ve = new VEquipo(this, true, nombreEquipo);
-					ve.setVisible(true);
+					String nombreEquipo = (String) tablaClasi.getValueAt(row, 1);
+					System.out.println(nombreEquipo);
+					Equipo equi = Principal.devolverEquiNombre(nombreEquipo);
+					
+					System.out.println("Equipo seleccionado: " + equi);
+					try {
+						VEquipo ve;
+						ve = new VEquipo(this, true, equi);
+						ve.setVisible(true);
+					} catch (LoginException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 				}
 			}
 		}
 
 	}
+	
 
 	@Override
 	public void mousePressed(MouseEvent e) {
@@ -290,5 +309,4 @@ public class VMenuPrincipal extends JFrame implements ActionListener, FocusListe
 		// TODO Auto-generated method stub
 
 	}
-	
 }

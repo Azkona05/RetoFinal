@@ -77,7 +77,7 @@ public class VLogin extends JDialog implements ActionListener {
 		contentPane.add(passwordField);
 		
 		JLabel lblImagen = new JLabel("");
-		lblImagen.setIcon(new ImageIcon("C:\\Users\\anazk\\3EBAL\\RetoFinal\\src\\resources\\iconoPersonaEditado.png"));
+		lblImagen.setIcon(new ImageIcon("/resources/iconoPersonaEditado.png"));
 		lblImagen.setBounds(319, 11, 67, 87);
 		contentPane.add(lblImagen);
 	}
