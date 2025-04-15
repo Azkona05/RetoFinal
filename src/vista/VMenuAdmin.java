@@ -509,44 +509,7 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 			}
 			cbVisitante.setSelectedIndex(-1);
 			
-		} else if (e.getSource().equals(rdbtnLocalNuevo)) {
-			if (rdbtnLocalNuevo.isSelected()) {
-				cbLocal.removeAllItems();
-				comp = (Competicion) cbLiga.getSelectedItem();
-				List<Equipo> equipos = Principal.nuevosEquipos(comp);
-				for (Equipo equ : equipos) {
-					cbLocal.addItem(equ);
-				}
-				cbLocal.setSelectedIndex(-1);
-			} else {
-				cbLocal.removeAllItems();
-				comp = (Competicion) cbLiga.getSelectedItem();
-				List<Equipo> equipos = null;
-				try {
-					equipos = Principal.devolverEquipos(comp);
-				} catch (LoginException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				for (Equipo equ : equipos) {
-					cbLocal.addItem(equ);
-				}
-				cbLocal.setSelectedIndex(-1);
-			}
-		}
-		else if (e.getSource().equals(rdbtnVisitanteNuevo)) {
-			if (rdbtnVisitanteNuevo.isSelected()) {
-				cbVisitante.removeAllItems();
-				comp = (Competicion) cbLiga.getSelectedItem();
-				List<Equipo> equipos = Principal.nuevosEquipos(comp);
-				for (Equipo equ : equipos) {
-					cbVisitante.addItem(equ);
-				}
-				cbVisitante.setSelectedIndex(-1);
-			} else {
-				nuevosVisitante();
-			}
-		}
+		} 
 	}
 	
 	private void nuevosVisitante() {

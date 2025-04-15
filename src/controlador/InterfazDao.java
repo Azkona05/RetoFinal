@@ -18,7 +18,8 @@ public interface InterfazDao {
 	public void bajaJugador(Jugador jug) throws LoginException;
 	public void modificarJugador(Jugador jug) throws LoginException;
 	public List<Jugador> listarJugadores() throws LoginException;
-	public Object[][]  mostrarDatosJugador(Jugador jug) throws LoginException; 
+	public Object[][]  mostrarDatosJugador(Jugador jug) throws LoginException;
+	public List <Jugador> jugadoresEquipo (Equipo equi) throws LoginException; 
 	//COMPETICION
 	public void altaCompeticion(Competicion comp) throws LoginException;
 	public void bajaCompeticion (Competicion comp) throws LoginException;
@@ -33,7 +34,8 @@ public interface InterfazDao {
 	public void modificarEquipo (Equipo eq) throws LoginException;
 	public List<Equipo> buscarEquipos () throws LoginException;
 	public Map<String, Equipo> listarEquipos() throws LoginException;
-	public Object[][]  mostrarDatosEquipo(Equipo eq) throws LoginException; 
+	public Object[][]  mostrarDatosEquipo(Equipo eq) throws LoginException;
+	public Equipo devolverEquiNombre (String equi);
 	//PARTIDO
 	public int cantidadPartidos ();
 	public List<Equipo> nuevosEquipos(Competicion comp);
