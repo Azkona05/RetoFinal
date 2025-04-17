@@ -48,6 +48,7 @@ public class VLogin extends JDialog implements ActionListener {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		this.setResizable(false);
 
 		lblUsuario = new JLabel("Usuario: ");
 		lblUsuario.setFont(new Font("Tahoma", Font.PLAIN, 15));

@@ -73,7 +73,7 @@ public class DaoImplementacion implements InterfazDao {
 	final String BUSCAR_EQUIPO = "SELECT * FROM EQUIPO";
 	final String BUSCAR_EQUIPO_LIGA = "SELECT cod_equi, nombre_equipo from equipo where cod_equi IN (SELECT equipo_local from partido where cod_comp=?) OR cod_equi IN (SELECT equipo_visitante from partido where cod_comp=?)";
 	final String MOSTRAR_DATOS_EQUIPO = "SELECT cod_equi, nombre_equipo FROM equipo";
-	final String ID_EQUIPO = "select * from equipo where nombre_equipo=?";
+	final String ID_EQUIPO = "select cod_equi, nombre_equipo from equipo where nombre_equipo=?";
 	// SQL Partido
 	final String ALTA_PARTIDO = "INSERT INTO PARTIDO (cod_part, equipo_local, equipo_visitante, ganador, fecha, cod_comp) VALUES (?, ?, ?, ?, ?, ?)";
 	final String BAJA_PARTIDO = "DELETE FROM PARTIDO WHERE cod_part = ?";
@@ -1109,6 +1109,7 @@ public class DaoImplementacion implements InterfazDao {
 		openConnection();
 		try {
 			stmt = con.prepareStatement(MOSTRAR_JUGADOR_EQUIPO);
+			stmt.setString(1, equi.getCod_equi());
 			rs = stmt.executeQuery();
 			while (rs.next()) {
 				j = new Jugador();
@@ -1116,9 +1117,10 @@ public class DaoImplementacion implements InterfazDao {
 				j.setNombre(rs.getString(2));
 				j.setApellido(rs.getString(3));
 				j.setDorsal(rs.getInt(4));
-				j.setPosicion((EnumPosicion.valueOf(rs.getString(5))));
+				j.setPosicion(EnumPosicion.valueOf(rs.getString(5).toUpperCase()));
 				jugadores.add(j);
 			}
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -1131,8 +1133,9 @@ public class DaoImplementacion implements InterfazDao {
 		}
 		return jugadores;
 	}
+	
 	public Equipo devolverEquiNombre (String equi) {
-		Equipo e = null;
+		Equipo e= null;
 		ResultSet rs = null;
 		openConnection();
 		try {
@@ -1141,9 +1144,8 @@ public class DaoImplementacion implements InterfazDao {
 			rs = stmt.executeQuery();
 			if (rs.next()) {
 				e = new Equipo();
-				e.setCod_equi(String.valueOf(rs.getInt(1)));
+				e.setCod_equi(rs.getString(1));
 				e.setNombre_equipo(rs.getString(2));
-				System.out.println(e.getCod_equi()+" "+e.getNombre_equipo());
 			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();

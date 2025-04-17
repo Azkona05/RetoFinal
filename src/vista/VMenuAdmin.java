@@ -66,7 +66,7 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 	private ButtonGroup grupoPosicion;
 
 	// Radio botones
-	private JRadioButton rdbtnGuard, rdbtnQuarterback, rdbtnRunning, rdbtnTackle, rdbtnLocalNuevo, rdbtnVisitanteNuevo;
+	private JRadioButton rdbtnGuard, rdbtnQuarterback, rdbtnRunning, rdbtnTackle;
 
 	// Combo box
 	private JComboBox<Competicion> cbLiga;
@@ -78,6 +78,9 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 	private JLabel lblPosicion;
 	private JLabel lblFecha;
 	private JTextField txtFecha;
+	
+	// Labels
+	private JLabel lblCodigo;
 
 	/**
 	 * Constructor que crea el diálogo de administración.
@@ -92,6 +95,8 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 		setBounds(100, 100, 600, 450);
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setModal(modal);
+		this.setResizable(false);
+		
 
 		tabbedPane = new JTabbedPane();
 		getContentPane().add(tabbedPane, BorderLayout.CENTER);
@@ -436,21 +441,24 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 		btnLimpiarDatosPart = new JButton("Limpiar");
 		btnLimpiarDatosPart.setBounds(432, 77, 85, 21);
 		panelPartidos.add(btnLimpiarDatosPart);
+		
+		btnBajaPart.setEnabled(false);
+		btnModificarPart.setEnabled(false);
 
-		JLabel lblCodigo = new JLabel("Codigo: ");
-		lblCodigo.setEnabled(false);
+		lblCodigo = new JLabel("Codigo: ");
+		lblCodigo.setVisible(false);
 		lblCodigo.setBounds(35, 27, 85, 13);
 		panelPartidos.add(lblCodigo);
 
 		txtCodPar = new JTextField();
-		txtCodPar.setEnabled(false);
+		txtCodPar.setVisible(false);
 		txtCodPar.setEditable(false);
 		txtCodPar.setBounds(130, 24, 130, 19);
 		panelPartidos.add(txtCodPar);
 		txtCodPar.setColumns(10);
 
-		btnLimpiarDatosEq.addActionListener(this);
-		btnLimpiarDatosEq.setBackground(Color.WHITE);
+		btnLimpiarDatosPart.addActionListener(this);
+		btnLimpiarDatosPart.setBackground(Color.WHITE);
 
 		lblFecha = new JLabel("Fecha: ");
 		lblFecha.setBounds(35, 233, 85, 13);
@@ -545,6 +553,10 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 		cbVisitante.setSelectedIndex(-1);
 		cbGanador.setSelectedIndex(-1);
 		txtFecha.setText("");
+		
+		btnAltaPart.setEnabled(true);
+		btnBajaPart.setEnabled(false);
+		btnModificarPart.setEnabled(false);
 	}
 
 	/**
@@ -713,7 +725,7 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 			JOptionPane.showMessageDialog(this,
 					"La fecha es superior a la fecha actual por lo tanto no se sabe quien es el ganador", "Aviso",
 					JOptionPane.INFORMATION_MESSAGE);
-			part.setGanador(null);
+			part.setGanador("PSD");
 		} else {
 			if (cbGanador.getSelectedItem().equals("Local")) {
 				part.setGanador(((Equipo) cbLocal.getSelectedItem()).getCod_equi());
@@ -778,9 +790,21 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 			JOptionPane.showMessageDialog(null, "Formato incorrecto. Use aaaa-MM-dd");
 			return;
 		} else {
-			part.setFecha(LocalDate.parse(txtFecha.getText()));
+			part.setFecha(Date.valueOf(txtFecha.getText()).toLocalDate());
+			if (part.getFecha().isAfter(LocalDate.now())) {
+				JOptionPane.showMessageDialog(this,
+						"La fecha es superior a la fecha actual por lo tanto no se sabe quien es el ganador", "Aviso",
+						JOptionPane.INFORMATION_MESSAGE);
+				part.setGanador("PSD");
+			} else {
+				if (cbGanador.getSelectedItem().equals("Local")) {
+					part.setGanador(((Equipo) cbLocal.getSelectedItem()).getCod_equi());
+				} else {
+					part.setGanador(((Equipo) cbVisitante.getSelectedItem()).getCod_equi());
+				}
+			}
+			part.setCod_comp(((Competicion) cbLiga.getSelectedItem()).getCod_comp().toUpperCase());
 		}
-		part.setCod_comp(((Competicion) cbLiga.getSelectedItem()).getCod_comp());
 		Principal.altaPartido(part);
 		JOptionPane.showMessageDialog(this, "ALTA CORRECTA!!", "MENSAJE", JOptionPane.INFORMATION_MESSAGE);
 		limpiarPart();
@@ -1053,7 +1077,6 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 				equiL = eq;
 			}
 		}
-		System.out.println(eqVisitante);
 		for (int i = 0; i < cbVisitante.getItemCount(); i++) {
 			eq = cbVisitante.getItemAt(i);
 			if (eq.getCod_equi().equals(eqVisitante)) {
@@ -1073,6 +1096,8 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 		txtFecha.setText(fecha.toString());
 
 		btnAltaPart.setEnabled(false);
+		lblCodigo.setVisible(true);
+		txtCodPar.setVisible(true);
 		btnBajaPart.setEnabled(true);
 		btnModificarPart.setEnabled(true);
 	}

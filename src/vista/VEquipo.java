@@ -18,10 +18,8 @@ import javax.swing.table.DefaultTableModel;
 
 import controlador.Principal;
 import excepciones.LoginException;
-import modelo.Competicion;
 import modelo.Equipo;
 import modelo.Jugador;
-import modelo.Partido;
 
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
@@ -61,7 +59,7 @@ public class VEquipo extends JDialog {
 
 	private JTable cargarTabla(Equipo equi) throws LoginException {
 		String[] coulumnasNombre = { "Dni", "Nombre", "Apellido","Posicion", "Dorsal" };
-		String[] colum = new String[4];
+		String[] colum = new String[5];
 		DefaultTableModel model = new DefaultTableModel(null, coulumnasNombre) {
 			private static final long serialVersionUID = 1L;
 
@@ -76,7 +74,7 @@ public class VEquipo extends JDialog {
 			colum[1] = jug.getNombre();
 			colum[2] = jug.getApellido();
 			colum[3] = String.valueOf(jug.getDorsal());
-			colum[4] = jug.getPosicion().toString();
+			colum[4] = jug.getPosicion().name();
 			model.addRow(colum);
 		}
 
