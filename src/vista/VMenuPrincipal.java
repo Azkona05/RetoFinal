@@ -300,10 +300,7 @@ public class VMenuPrincipal extends JFrame implements ActionListener, FocusListe
 				int row = tablaClasi.getSelectedRow();
 				if (row != -1) {
 					String nombreEquipo = (String) tablaClasi.getValueAt(row, 1);
-					System.out.println(nombreEquipo);
 					Equipo equi = Principal.devolverEquiNombre(nombreEquipo);
-					
-					System.out.println("Equipo seleccionado: " + equi);
 					try {
 						VEquipo ve;
 						ve = new VEquipo(this, true, equi);
