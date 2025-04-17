@@ -197,16 +197,6 @@ public class Principal {
 	public static Equipo devolverEquiNombre(String nombre) {
 		return dao.devolverEquiNombre(nombre);
 	}
-	
-    /**
-     * Da de baja un equipo en el sistema.
-     * 
-     * @param eq El equipo a dar de baja.
-     * @throws LoginException Si ocurre un error durante la baja del equipo.
-     */
-    public static void bajaEquipo(Equipo eq) throws LoginException {
-        dao.bajaEquipo(eq);
-    }
 
 	/**
 	 * Da de baja un equipo en el sistema.
@@ -349,6 +339,10 @@ public class Principal {
 
 	public static List<Equipo> devolverEquipos() throws LoginException {
 		return dao.buscarEquipos();
+	}
+
+	public static List<Jugador> devolverJugadores() throws LoginException {
+		return dao.listarJugadores();
 	}
 
 }
