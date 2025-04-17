@@ -280,6 +280,7 @@ public class DaoImplementacion implements InterfazDao {
 					jug.setPosicion(EnumPosicion.valueOf(posicionStr.trim().toUpperCase())); // Asegurarse de mayúsculas
 					jugadores.add(jug);
 				}
+				jug.setCod_equi(rs.getString("cod_equi"));
 			}
 		} catch (SQLException e) {
 			throw new LoginException("Problemas en la BDs");

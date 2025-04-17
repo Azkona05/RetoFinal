@@ -78,7 +78,7 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 	private JLabel lblPosicion;
 	private JLabel lblFecha;
 	private JTextField txtFecha;
-	
+
 	// Labels
 	private JLabel lblCodigo;
 
@@ -96,7 +96,6 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setModal(modal);
 		this.setResizable(false);
-		
 
 		tabbedPane = new JTabbedPane();
 		getContentPane().add(tabbedPane, BorderLayout.CENTER);
@@ -441,7 +440,7 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 		btnLimpiarDatosPart = new JButton("Limpiar");
 		btnLimpiarDatosPart.setBounds(432, 77, 85, 21);
 		panelPartidos.add(btnLimpiarDatosPart);
-		
+
 		btnBajaPart.setEnabled(false);
 		btnModificarPart.setEnabled(false);
 
@@ -553,7 +552,7 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 		cbVisitante.setSelectedIndex(-1);
 		cbGanador.setSelectedIndex(-1);
 		txtFecha.setText("");
-		
+
 		btnAltaPart.setEnabled(true);
 		btnBajaPart.setEnabled(false);
 		btnModificarPart.setEnabled(false);
@@ -569,7 +568,7 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 		txtApellido.setText("");
 		txtDorsal.setText("");
 		grupoPosicion.clearSelection();
-		txtCodEquipo_Jugador.setText("");
+		cbCodEqui_J.setSelectedIndex(-1);
 
 		btnAltaJug.setEnabled(true);
 		btnBajaJug.setEnabled(false);
@@ -682,10 +681,19 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 			comp.setNombre_competicion(txtNombreComp.getText());
 
 			try {
-				Principal.altaCompeticion(comp);
-				cbLiga.removeAllItems();
 				List<Competicion> competiciones = new ArrayList<>();
 				competiciones = Principal.devolverCompeticiones();
+				if (txtCodComp != null) {
+					for (Competicion competi : competiciones) {
+						if (competi.getCod_comp().equalsIgnoreCase(comp.getCod_comp())) {
+							JOptionPane.showMessageDialog(this, "El codigo de la liga ya ha sido introduciodo ",
+									"Error", JOptionPane.ERROR_MESSAGE);
+							return;
+						}
+					}
+				} 
+				Principal.altaCompeticion(comp);
+				cbLiga.removeAllItems();
 				for (Competicion compe : competiciones) {
 					cbLiga.addItem(compe);
 				}
@@ -897,7 +905,6 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 			if (!validarDNI(dni)) {
 				throw new DniException("ERROR! DNI no válido. Revíselo e inténtelo de nuevo.");
 			}
-
 			// Verificar si ya existe un jugador con el mismo DNI
 			List<Jugador> jugadores = Principal.devolverJugadores(); // Este método debe existir en Principal
 			for (Jugador existente : jugadores) {
@@ -928,11 +935,20 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 			} else if (rdbtnGuard.isSelected()) {
 				j.setPosicion(EnumPosicion.GUARD);
 			}
+			j.setCod_equi(((Equipo) cbCodEqui_J.getSelectedItem()).getCod_equi());
 
-			// Establecer el equipo seleccionado desde el combo
 			if (cbCodEqui_J.getSelectedItem() != null) {
-				Equipo equipoSeleccionado = (Equipo) cbCodEqui_J.getSelectedItem();
-				j.setCod_equi(equipoSeleccionado.getCod_equi());
+				for (Jugador ju : jugadores) {
+					if (ju.getCod_equi().equals(j.getCod_equi())) {
+						if (ju.getDorsal() == j.getDorsal()) {
+							JOptionPane.showMessageDialog(this,
+									"ERROR! Ya existe un jugador con ese dorsal en el equipo.", "ERROR",
+									JOptionPane.ERROR_MESSAGE);
+							txtDorsal.setText("");
+							return;
+						}
+					}
+				}
 			} else {
 				JOptionPane.showMessageDialog(this, "ERROR! Debe seleccionar un equipo.", "ERROR",
 						JOptionPane.ERROR_MESSAGE);
@@ -969,22 +985,39 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 	 * Modifica los datos de un jugador existente.
 	 */
 	private void modificarJug() {
-		Jugador j = new Jugador();
-		j.setNombre(txtNombre.getText());
-		j.setApellido(txtApellido.getText());
-		j.setDorsal(Integer.parseInt(txtDorsal.getText()));
-		if (rdbtnQuarterback.isSelected()) {
-			j.setPosicion(EnumPosicion.QUARTERBACK);
-		} else if (rdbtnRunning.isSelected()) {
-			j.setPosicion(EnumPosicion.RUNNING);
-		} else if (rdbtnTackle.isSelected()) {
-			j.setPosicion(EnumPosicion.TACKLE);
-		} else if (rdbtnGuard.isSelected()) {
-			j.setPosicion(EnumPosicion.GUARD);
-		}
-		// j.setCod_equi(txtCodEquipo_Jugador.getText());
 		try {
-			Principal.modificarJugador(j);
+			List<Jugador> jugadores = Principal.devolverJugadores();
+			Jugador j = new Jugador();
+			// j.setDni(txtDni.getText());
+			j.setNombre(txtNombre.getText());
+			j.setApellido(txtApellido.getText());
+			j.setDorsal(Integer.parseInt(txtDorsal.getText()));
+			if (rdbtnQuarterback.isSelected()) {
+				j.setPosicion(EnumPosicion.QUARTERBACK);
+			} else if (rdbtnRunning.isSelected()) {
+				j.setPosicion(EnumPosicion.RUNNING);
+			} else if (rdbtnTackle.isSelected()) {
+				j.setPosicion(EnumPosicion.TACKLE);
+			} else if (rdbtnGuard.isSelected()) {
+				j.setPosicion(EnumPosicion.GUARD);
+			}
+			j.setCod_equi(((Equipo) cbCodEqui_J.getSelectedItem()).getCod_equi());
+			if (txtDorsal != null) {
+				for (Jugador ju : jugadores) {
+					if (ju.getCod_equi().equals(j.getCod_equi())) {
+						if (ju.getDorsal() == j.getDorsal()) {
+
+							JOptionPane.showMessageDialog(this,
+									"ERROR! Ya existe un jugador con ese dorsal en el equipo.", "ERROR",
+									JOptionPane.ERROR_MESSAGE);
+							txtDorsal.setText("");
+							return;
+						}
+					}
+				}
+			} else {
+				Principal.modificarJugador(j);
+			}
 		} catch (LoginException e) {
 			e.printStackTrace();
 		}

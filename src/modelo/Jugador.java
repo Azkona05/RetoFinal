@@ -140,6 +140,6 @@ public class Jugador {
     @Override
     public String toString() {
         return "Jugador [dni=" + dni + ", nombre=" + nombre + ", apellido=" + apellido + ", dorsal=" + dorsal
-                + ", posicion=" + posicion + "]";
+                + ", posicion=" + posicion + ", cod_Equi=" + cod_equi + "]";
     }
 }
