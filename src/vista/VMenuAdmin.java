@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.ButtonGroup;
@@ -668,21 +669,22 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 			comp.setCod_comp(codComp);
 			comp.setNombre_competicion(txtNombreComp.getText());
 
-			Principal.altaCompeticion(comp);
+			try {
+				Principal.altaCompeticion(comp);
+				cbLiga.removeAllItems();
+				List<Competicion> competiciones = new ArrayList<>();
+				competiciones = Principal.devolverCompeticiones();
+				for (Competicion compe : competiciones) {
+					cbLiga.addItem(compe);
+				}
+				JOptionPane.showMessageDialog(this, "ALTA CORRECTA!!", "MENSAJE", JOptionPane.INFORMATION_MESSAGE);
+				limpiarComp();
 
-			cbLiga.removeAllItems();
-			competiciones = Principal.devolverCompeticiones();
-			for (Competicion compe : competiciones) {
-				cbLiga.addItem(compe);
+			} catch (LoginException e) {
+				e.printStackTrace();
+				JOptionPane.showMessageDialog(this, "Error al acceder al sistema: " + e.getMessage(), "ERROR",
+						JOptionPane.ERROR_MESSAGE);
 			}
-
-			JOptionPane.showMessageDialog(this, "ALTA CORRECTA!!", "MENSAJE", JOptionPane.INFORMATION_MESSAGE);
-			limpiarComp();
-
-		} catch (LoginException e) {
-			e.printStackTrace();
-			JOptionPane.showMessageDialog(this, "Error al acceder al sistema: " + e.getMessage(), "ERROR",
-					JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
@@ -699,8 +701,8 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 		Equipo local = (Equipo) cbLocal.getSelectedItem();
 		Equipo visi = (Equipo) cbVisitante.getSelectedItem();
 		if (local.equals(visi)) {
-			JOptionPane.showMessageDialog(this, "El equipo local y visitante no pueden ser el mismo.", 
-                    "Error", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(this, "El equipo local y visitante no pueden ser el mismo.", "Error",
+					JOptionPane.ERROR_MESSAGE);
 			return;
 		} else {
 			part.setEquipo_local(((Equipo) cbLocal.getSelectedItem()).getCod_equi());
@@ -708,16 +710,18 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 		}
 		part.setFecha(Date.valueOf(txtFecha.getText()).toLocalDate());
 		if (part.getFecha().isAfter(LocalDate.now())) {
-			JOptionPane.showMessageDialog(this, "La fecha es superior a la fecha actual por lo tanto no se sabe quien es el ganador", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(this,
+					"La fecha es superior a la fecha actual por lo tanto no se sabe quien es el ganador", "Aviso",
+					JOptionPane.INFORMATION_MESSAGE);
 			part.setGanador(null);
 		} else {
 			if (cbGanador.getSelectedItem().equals("Local")) {
 				part.setGanador(((Equipo) cbLocal.getSelectedItem()).getCod_equi());
 			} else {
 				part.setGanador(((Equipo) cbVisitante.getSelectedItem()).getCod_equi());
-			} 
+			}
 		}
-		
+
 		try {
 			Principal.modificarPartido(part);
 		} catch (LoginException e) {
@@ -755,8 +759,8 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 		Equipo local = (Equipo) cbLocal.getSelectedItem();
 		Equipo visi = (Equipo) cbVisitante.getSelectedItem();
 		if (local.equals(visi)) {
-			JOptionPane.showMessageDialog(this, "El equipo local y visitante no pueden ser el mismo.", 
-                    "Error", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(this, "El equipo local y visitante no pueden ser el mismo.", "Error",
+					JOptionPane.ERROR_MESSAGE);
 			return;
 		} else {
 			part.setEquipo_local(((Equipo) cbLocal.getSelectedItem()).getCod_equi());
@@ -1067,7 +1071,7 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 		}
 
 		txtFecha.setText(fecha.toString());
-		
+
 		btnAltaPart.setEnabled(false);
 		btnBajaPart.setEnabled(true);
 		btnModificarPart.setEnabled(true);
