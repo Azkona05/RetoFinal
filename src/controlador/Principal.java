@@ -336,11 +336,26 @@ public class Principal {
 	public static int cantidadPartidos() {
 		return dao.cantidadPartidos();
 	}
+	
+	/**
+	 * Obtiene una lista de equipos
+	 * 
+	 * @return una lista de equipos
+	 * @throws LoginException Si ocurre un error durante la obtención de las
+	 *                        equipos.
+	 * */
 
 	public static List<Equipo> devolverEquipos() throws LoginException {
 		return dao.buscarEquipos();
 	}
 
+	/**
+	 * Obtiene una lista de jugadores
+	 * 
+	 * @return una lista de jugadores
+	 * @throws LoginException Si ocurre un error durante la obtención de las
+	 *                        jugadores.
+	 * */
 	public static List<Jugador> devolverJugadores() throws LoginException {
 		return dao.listarJugadores();
 	}
