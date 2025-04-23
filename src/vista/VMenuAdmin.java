@@ -638,6 +638,7 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 	 */
 	private void modComp() {
 		Competicion comp = new Competicion();
+		comp.setCod_comp(txtCodComp.getText());
 		comp.setNombre_competicion(txtNombreComp.getText());
 		try {
 			Principal.modificarCompeticion(comp);
@@ -825,10 +826,12 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 	 */
 	private void modificarEq() {
 		Equipo eq = new Equipo();
+		eq.setCod_equi(txtCodEquipo_Equipo.getText());
 		eq.setNombre_equipo(txtNombreEq.getText());
 		try {
 			Principal.modificarEquipo(eq);
 		} catch (LoginException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		limpiarEq();
@@ -988,7 +991,7 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 		try {
 			List<Jugador> jugadores = Principal.devolverJugadores();
 			Jugador j = new Jugador();
-			//j.setDni(txtDni.getText());
+			j.setDni(txtDni.getText());
 			j.setNombre(txtNombre.getText());
 			j.setApellido(txtApellido.getText());
 			j.setDorsal(Integer.parseInt(txtDorsal.getText()));

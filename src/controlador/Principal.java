@@ -139,7 +139,6 @@ public class Principal {
 		return dao.jugadoresEquipo(equi);
 	}
 
-    // COMPETICION
 
 	// COMPETICION
 
@@ -175,6 +174,9 @@ public class Principal {
 		dao.altaCompeticion(comp);
 	}
 
+	
+	//EQUIPO
+	
     /**
      * Da de alta un nuevo equipo en el sistema.
      * 
@@ -185,14 +187,12 @@ public class Principal {
         dao.altaEquipo(eq);
     }
 	
-    
-	
-
     /**
-     * Da de alta un nuevo equipo en el sistema.
+     * Busca el nombre de un equipo en el sistema.
      * 
      * @param nombre del equipo a buscar.
      * @throws LoginException Si ocurre un error durante la busqueda del equipo.
+     * @return el nombre del equipo
      */
 	public static Equipo devolverEquiNombre(String nombre) {
 		return dao.devolverEquiNombre(nombre);
@@ -344,7 +344,6 @@ public class Principal {
 	 * @throws LoginException Si ocurre un error durante la obtención de las
 	 *                        equipos.
 	 * */
-
 	public static List<Equipo> devolverEquipos() throws LoginException {
 		return dao.buscarEquipos();
 	}
@@ -359,5 +358,4 @@ public class Principal {
 	public static List<Jugador> devolverJugadores() throws LoginException {
 		return dao.listarJugadores();
 	}
-
 }
