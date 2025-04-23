@@ -34,7 +34,7 @@ public class VEquipo extends JDialog {
 	public VEquipo(VMenuPrincipal padre, boolean modal, Equipo equipo) throws LoginException {
 		super(padre);
 		setModal(modal); 
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 500, 300);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -58,7 +58,7 @@ public class VEquipo extends JDialog {
 	}
 
 	private JTable cargarTabla(Equipo equi) throws LoginException {
-		String[] coulumnasNombre = { "Dni", "Nombre", "Apellido","Posicion", "Dorsal" };
+		String[] coulumnasNombre = { "Dni", "Nombre", "Apellido","Dorsal", "Posicion" };
 		String[] colum = new String[5];
 		DefaultTableModel model = new DefaultTableModel(null, coulumnasNombre) {
 			private static final long serialVersionUID = 1L;
