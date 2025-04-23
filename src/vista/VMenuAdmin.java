@@ -988,7 +988,7 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 		try {
 			List<Jugador> jugadores = Principal.devolverJugadores();
 			Jugador j = new Jugador();
-			// j.setDni(txtDni.getText());
+			//j.setDni(txtDni.getText());
 			j.setNombre(txtNombre.getText());
 			j.setApellido(txtApellido.getText());
 			j.setDorsal(Integer.parseInt(txtDorsal.getText()));
@@ -1039,7 +1039,6 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 	 * @param posicion Posición del jugador
 	 * @param codEq    Código del equipo
 	 */
-
 	public void cargarDatosJug(String dni, String nombre, String apellido, int dorsal, EnumPosicion posicion,
 			String codEq) {
 		tabbedPane.setSelectedComponent(panelJugador);

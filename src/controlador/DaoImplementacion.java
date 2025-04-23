@@ -15,6 +15,8 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.TreeMap;
 
+import com.mysql.cj.jdbc.CallableStatement;
+
 import excepciones.LoginException;
 import modelo.Competicion;
 import modelo.EnumPosicion;
@@ -70,6 +72,7 @@ public class DaoImplementacion implements InterfazDao {
 	final String ALTA_EQUIPO = "INSERT INTO EQUIPO (cod_equi, nombre_equipo) VALUES (?, ?)";
 	final String BAJA_EQUIPO = "DELETE FROM EQUIPO WHERE cod_equi = ?";
 	final String MODIFICAR_EQUIPO = "UPDATE EQUIPO SET nombre_equipo = ? WHERE cod_equi = ?";
+	final String MODIFICAR_EQUIPO_PROC = "{CALL MODIFICAREQUIPO(?,?)}";
 	final String BUSCAR_EQUIPO = "SELECT * FROM EQUIPO";
 	final String BUSCAR_EQUIPO_LIGA = "SELECT cod_equi, nombre_equipo from equipo where cod_equi IN (SELECT equipo_local from partido where cod_comp=?) OR cod_equi IN (SELECT equipo_visitante from partido where cod_comp=?)";
 	final String MOSTRAR_DATOS_EQUIPO = "SELECT cod_equi, nombre_equipo FROM equipo";
@@ -488,6 +491,28 @@ public class DaoImplementacion implements InterfazDao {
 	@Override
 	public void modificarEquipo(Equipo eq) throws LoginException {
 		openConnection();
+//		boolean resultado;
+//		try {
+//			CallableStatement cs = (CallableStatement) con.prepareCall(MODIFICAR_EQUIPO_PROC);
+//			cs.setString(1, eq.getCod_equi());
+//			cs.setString(2, eq.getNombre_equipo());
+//
+//			resultado = cs.execute();
+//
+//			if (resultado) {
+//				try (ResultSet rs = cs.getResultSet()) {
+//					while (rs.next()) {
+//						String mensaje = rs.getString(1);
+//						System.out.println(">> Resultado del procedimiento: " + mensaje);
+//						if (mensaje.contains("ERROR")) {
+//							throw new LoginException("No se pudo modificar el jugador: DNI no encontrado.");
+//						}
+//					}
+//				}
+//			}
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}
 		try {
 			stmt = con.prepareStatement(MODIFICAR_EQUIPO);
 			stmt.setString(1, eq.getCod_equi());
@@ -1103,7 +1128,8 @@ public class DaoImplementacion implements InterfazDao {
 		}
 		return partidos;
 	}
-	public List<Jugador> jugadoresEquipo (Equipo equi) {
+
+	public List<Jugador> jugadoresEquipo(Equipo equi) {
 		Jugador j;
 		ResultSet rs = null;
 		List<Jugador> jugadores = new ArrayList<Jugador>();
@@ -1121,7 +1147,7 @@ public class DaoImplementacion implements InterfazDao {
 				j.setPosicion(EnumPosicion.valueOf(rs.getString(5).toUpperCase()));
 				jugadores.add(j);
 			}
-			
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -1134,9 +1160,9 @@ public class DaoImplementacion implements InterfazDao {
 		}
 		return jugadores;
 	}
-	
-	public Equipo devolverEquiNombre (String equi) {
-		Equipo e= null;
+
+	public Equipo devolverEquiNombre(String equi) {
+		Equipo e = null;
 		ResultSet rs = null;
 		openConnection();
 		try {
@@ -1159,7 +1185,6 @@ public class DaoImplementacion implements InterfazDao {
 			}
 		}
 		return e;
-		
-			
+
 	}
 }
