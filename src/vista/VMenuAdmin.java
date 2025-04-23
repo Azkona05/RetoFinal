@@ -1095,7 +1095,7 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 			String codComp) {
 		tabbedPane.setSelectedComponent(panelPartidos);
 		txtCodPar.setText(String.valueOf(codPart));
-		Equipo equiL = null, equiV = null, eq;
+		Equipo equiL = null, eq;
 		Competicion comp;
 		for (int i = 0; i < cbLiga.getItemCount(); i++) {
 			comp = cbLiga.getItemAt(i);
@@ -1114,7 +1114,6 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 			eq = cbVisitante.getItemAt(i);
 			if (eq.getCod_equi().equals(eqVisitante)) {
 				cbVisitante.setSelectedItem(eq);
-				equiV = eq;
 			}
 		}
 
