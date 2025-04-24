@@ -25,6 +25,20 @@ import javax.swing.JComponent;
 import javax.swing.InputMap;
 import javax.swing.ActionMap;
 
+/**
+ * Clase que representa la ventana de login de la aplicación.
+ * Permite al usuario introducir su nombre de usuario y contraseña para autenticarse.
+ * Implementa {@link ActionListener} para manejar los eventos de los botones.
+ * 
+ * Se pueden realizar las siguientes acciones:
+ *   Autenticarse mediante el botón "Comprobar".
+ *   Cancelar y cerrar la ventana mediante el botón "Cancelar" o la tecla Escape.
+ * 
+ * 
+ * Al presionar Enter, se activa el botón "Comprobar" por defecto.
+ * 
+ * @author An Azkona, Ander Arilla, Maleck Benigno, Nora Yakoubi
+ */
 public class VLogin extends JDialog implements ActionListener {
 
 	private static final long serialVersionUID = 1L;

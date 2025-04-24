@@ -17,7 +17,7 @@ public class DniException extends Exception {
 	/**
      * Constructor que permite pasar un mensaje de error.
      * 
-     * @param message El mensaje que describe el error
+     * @param msg El mensaje que describe el error
      */
     public DniException(String msg) {
         this.msg = msg;

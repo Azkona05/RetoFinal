@@ -60,7 +60,7 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 
 	// Campos de texto
 	private JTextField txtDni, txtNombre, txtApellido, txtDorsal, txtNombreEq, txtCodComp, txtNombreComp,
-			txtCodEquipo_Equipo, txtCodEquipo_Jugador;
+			txtCodEquipo_Equipo;
 
 	// Grupo de botones
 	private ButtonGroup grupoPosicion;
@@ -692,7 +692,7 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 							return;
 						}
 					}
-				} 
+				}
 				Principal.altaCompeticion(comp);
 				cbLiga.removeAllItems();
 				for (Competicion compe : competiciones) {
@@ -976,7 +976,7 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 		Jugador j = new Jugador();
 		j.setDni(txtDni.getText());
 		try {
-			Principal.EliminarJugador(j);
+			Principal.eliminarJugador(j);
 		} catch (LoginException e) {
 			e.printStackTrace();
 		}
@@ -1005,27 +1005,19 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 				j.setPosicion(EnumPosicion.GUARD);
 			}
 			j.setCod_equi(((Equipo) cbCodEqui_J.getSelectedItem()).getCod_equi());
-			if (txtDorsal != null) {
-				for (Jugador ju : jugadores) {
-					if (ju.getCod_equi().equals(j.getCod_equi())) {
-						if (ju.getDorsal() == j.getDorsal()) {
-
-							JOptionPane.showMessageDialog(this,
-									"ERROR! Ya existe un jugador con ese dorsal en el equipo.", "ERROR",
-									JOptionPane.ERROR_MESSAGE);
-							txtDorsal.setText("");
-							return;
-						}
-					}
+			for (Jugador ju : jugadores) {
+				if (ju.getCod_equi().equals(j.getCod_equi()) && ju.getDorsal() == j.getDorsal()) {
+					JOptionPane.showMessageDialog(this, "ERROR! Ya existe un jugador con ese dorsal en el equipo.",
+							"ERROR", JOptionPane.ERROR_MESSAGE);
+					txtDorsal.setText("");
 				}
-			} else {
-				Principal.modificarJugador(j);
 			}
+			Principal.modificarJugador(j);
+			JOptionPane.showMessageDialog(this, "¡MODIFICACIÓN CORRECTA!", "MENSAJE", JOptionPane.INFORMATION_MESSAGE);
+			limpiarJug();
 		} catch (LoginException e) {
-			e.printStackTrace();
+			JOptionPane.showMessageDialog(this, "Error al modificar el jugador.", "ERROR", JOptionPane.ERROR_MESSAGE);
 		}
-		JOptionPane.showMessageDialog(this, "MODIFICACION CORRECTA!!", "MENSAJE", JOptionPane.INFORMATION_MESSAGE);
-		limpiarJug();
 	}
 
 	// Métodos auxiliares
