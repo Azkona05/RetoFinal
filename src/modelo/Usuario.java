@@ -2,6 +2,8 @@ package modelo;
 
 /**
  * @author An Azkona, Ander Arilla, Nora Yakoubi, Maleck Benigno
+ */
+/**
  * Clase que representa a un usuario con un nombre y una contraseña.
  */
 public class Usuario {
@@ -12,6 +14,13 @@ public class Usuario {
     /** Contraseña del usuario */
     private String contrasenia;
 
+    
+    /**
+     * Constructor vacio de la clase usuario
+     */
+    public Usuario() {
+    	
+    }
     /**
      * Obtiene el nombre del usuario.
      * 

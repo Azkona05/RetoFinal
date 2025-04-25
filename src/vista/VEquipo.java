@@ -1,14 +1,8 @@
 package vista;
 
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-import java.time.LocalDate;
-import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
-import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;

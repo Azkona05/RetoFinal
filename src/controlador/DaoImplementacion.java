@@ -9,11 +9,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.TreeMap;
+
+import javax.swing.JOptionPane;
+
+import com.mysql.cj.jdbc.CallableStatement;
 
 import excepciones.LoginException;
 import modelo.Competicion;
@@ -38,16 +41,22 @@ import modelo.Usuario;
  * @see InterfazDao
  */
 public class DaoImplementacion implements InterfazDao {
+	
 	// Atributos
-
 	private ResourceBundle configFile;
+	/**
+	 * 
+	 */
 	private String urlDB;
 	private String userDB;
 	private String passwordDB;
 
 	private Connection con;
 	private PreparedStatement stmt;
+	private CallableStatement cs;
+	
 	// Sentencias SQL
+	
 	// SQL Login
 	final String LOGIN = "SELECT * FROM USUARIO WHERE NOM = ? AND CONTRASENIA = ?";
 	// SQL Jugador
@@ -65,11 +74,10 @@ public class DaoImplementacion implements InterfazDao {
 			+ "	FROM futbol_americano.partido " + "		JOIN equipo ON(equipo_local=cod_equi) "
 			+ "    WHERE fecha between '2020-01-01' and current_date()  AND cod_comp like '%?%' "
 			+ "    order by victorias DESC;";
-	final String Metodo_Burro = "select * from partido where cod_comp=?";
 	// SQL Equipo
 	final String ALTA_EQUIPO = "INSERT INTO EQUIPO (cod_equi, nombre_equipo) VALUES (?, ?)";
 	final String BAJA_EQUIPO = "DELETE FROM EQUIPO WHERE cod_equi = ?";
-	final String MODIFICAR_EQUIPO = "UPDATE EQUIPO SET nombre_equipo = ? WHERE cod_equi = ?";
+	final String MODIFICAR_EQUIPO_PROCEDIMIENTO = "{CALL MODIFICAREQUIPO (?, ?)}";
 	final String BUSCAR_EQUIPO = "SELECT * FROM EQUIPO";
 	final String BUSCAR_EQUIPO_LIGA = "SELECT cod_equi, nombre_equipo from equipo where cod_equi IN (SELECT equipo_local from partido where cod_comp=?) OR cod_equi IN (SELECT equipo_visitante from partido where cod_comp=?)";
 	final String MOSTRAR_DATOS_EQUIPO = "SELECT cod_equi, nombre_equipo FROM equipo";
@@ -83,7 +91,7 @@ public class DaoImplementacion implements InterfazDao {
 
 	final String PARTIDOS_DIA = "SELECT * FROM PARTIDO WHERE DATE(FECHA) = ? ORDER BY fecha ASC";
 	final String EQUIPOS_LIGA = "SELECT * FROM EQUIPO WHERE cod_equi in (select equipo_local from partido ";
-
+	final String BUSCAR_PARTIDO_COMP = "select * from partido where cod_comp=?";
 	final String NUEVOS_EQUIPOS = "select * from equipo where cod_equi not in (select equipo_local from partido where cod_comp=?) and cod_equi not in (select equipo_visitante from partido where cod_comp=?)";
 
 	/**
@@ -124,8 +132,16 @@ public class DaoImplementacion implements InterfazDao {
 		if (stmt != null) {
 			stmt.close();
 		}
-		if (con != null)
+		if (con != null) {
 			con.close();
+		}
+		if (cs != null) {
+			cs.close();
+		}
+		if (con != null) {
+			con.close();
+		}
+
 	}
 
 	/**
@@ -479,7 +495,7 @@ public class DaoImplementacion implements InterfazDao {
 	}
 
 	/**
-	 * Método que modifica los detalles de un equipo en la base de datos.
+	 * Método que modifica los detalles de un equipo en la base de datos mediante un procedimiento.
 	 * 
 	 * @param eq El objeto Equipo que contiene la información actualizada.
 	 * @throws LoginException Si ocurre un error durante la modificación en la base
@@ -489,12 +505,16 @@ public class DaoImplementacion implements InterfazDao {
 	public void modificarEquipo(Equipo eq) throws LoginException {
 		openConnection();
 		try {
-			stmt = con.prepareStatement(MODIFICAR_EQUIPO);
-			stmt.setString(1, eq.getCod_equi());
-			stmt.setString(2, eq.getNombre_equipo());
-			stmt.executeUpdate();
+			cs = (CallableStatement) con.prepareCall(MODIFICAR_EQUIPO_PROCEDIMIENTO);
+			cs.setString(1, eq.getCod_equi());
+			cs.setString(2, eq.getNombre_equipo());
+			cs.execute();
+
+			JOptionPane.showMessageDialog(null, "Nombre del equipo actualizado correctamente.", "Modificación Exitosa",
+					JOptionPane.INFORMATION_MESSAGE);
 		} catch (SQLException e) {
-			throw new LoginException("Problemas en la BDs");
+			JOptionPane.showMessageDialog(null, "Error al modificar el equipo: " + e.getMessage(), "Error SQL",
+					JOptionPane.ERROR_MESSAGE);
 		} finally {
 			try {
 				closeConnection();
@@ -619,7 +639,7 @@ public class DaoImplementacion implements InterfazDao {
 			stmt.setString(2, part.getEquipo_visitante());
 			stmt.setObject(3, part.getGanador());
 			stmt.setDate(4, Date.valueOf(part.getFecha()));
-			stmt.setString(5, part.getCod_comp());
+			stmt.setString(5, part.getCod_comp().toUpperCase());
 			stmt.setInt(6, part.getCod_part());
 			stmt.executeUpdate();
 		} catch (SQLException e) {
@@ -631,47 +651,6 @@ public class DaoImplementacion implements InterfazDao {
 				e.printStackTrace();
 			}
 		}
-	}
-
-	/**
-	 * Método que obtiene todos los partidos registrados en la base de datos.
-	 * 
-	 * @return Un mapa de partidos, donde la clave es el código del partido y el
-	 *         valor es el objeto Partido correspondiente.
-	 * @throws LoginException Si ocurre un error durante la obtención de partidos de
-	 *                        la base de datos.
-	 */
-	@Override
-	public Map<Integer, Partido> listarPartidos() throws LoginException {
-		ResultSet rs = null;
-		Map<Integer, Partido> partidos = new HashMap<Integer, Partido>();
-		openConnection();
-		try {
-			stmt = con.prepareStatement(BUSCAR_PARTIDO);
-			rs = stmt.executeQuery();
-
-			while (rs.next()) {
-				Partido part = new Partido();
-				part.setCod_part(rs.getInt(1));
-				part.setEquipo_local(rs.getString(2));
-				part.setEquipo_visitante(rs.getString(3));
-				part.setGanador(rs.getString(4));
-				part.setFecha(rs.getDate(5).toLocalDate());
-				part.setCod_comp(rs.getString(6));
-				partidos.put(part.getCod_part(), part);
-			}
-
-		} catch (SQLException e) {
-			throw new LoginException("Problemas en la BDs");
-		} finally {
-			try {
-				rs.close();
-				closeConnection();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-		return partidos;
 	}
 
 	/**
@@ -729,7 +708,7 @@ public class DaoImplementacion implements InterfazDao {
 		List<Partido> partidos = new ArrayList<Partido>();
 		openConnection();
 		try {
-			stmt = con.prepareStatement(Metodo_Burro);
+			stmt = con.prepareStatement(BUSCAR_PARTIDO_COMP);
 			stmt.setString(1, liga.getCod_comp());
 			rs = stmt.executeQuery();
 
@@ -1074,7 +1053,13 @@ public class DaoImplementacion implements InterfazDao {
 		return i;
 	}
 
-	public List<Partido> mostarPartidos(Partido part) {
+	/**
+	 * Recupera una lista de partidos desde la base de datos.
+	 * 
+	 * @param part Objeto Partido que puede usarse como filtro (aunque en este método no se utiliza).
+	 * @return Lista de objetos {@link Partido} con los datos obtenidos de la base de datos.
+	 */
+	public List<Partido> mostrarPartidos(Partido part) {
 		Partido p;
 		ResultSet rs = null;
 		List<Partido> partidos = new ArrayList<Partido>();
@@ -1103,7 +1088,14 @@ public class DaoImplementacion implements InterfazDao {
 		}
 		return partidos;
 	}
-	public List<Jugador> jugadoresEquipo (Equipo equi) {
+	
+	/**
+	 * Recupera una lista de jugadores pertenecientes a un equipo específico.
+	 * 
+	 * @param equi Objeto {@link Equipo} que representa el equipo del cual se desea obtener los jugadores.
+	 * @return Lista de objetos {@link Jugador} que pertenecen al equipo especificado.
+	 */
+	public List<Jugador> jugadoresEquipo(Equipo equi) {
 		Jugador j;
 		ResultSet rs = null;
 		List<Jugador> jugadores = new ArrayList<Jugador>();
@@ -1121,7 +1113,7 @@ public class DaoImplementacion implements InterfazDao {
 				j.setPosicion(EnumPosicion.valueOf(rs.getString(5).toUpperCase()));
 				jugadores.add(j);
 			}
-			
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -1134,9 +1126,15 @@ public class DaoImplementacion implements InterfazDao {
 		}
 		return jugadores;
 	}
-	
-	public Equipo devolverEquiNombre (String equi) {
-		Equipo e= null;
+
+	/**
+	 * Recupera un equipo desde la base de datos a partir de su nombre.
+	 * 
+	 * @param equi Nombre del equipo como {@link String}.
+	 * @return Objeto {@link Equipo} con la información correspondiente, o null si no se encuentra.
+	 */
+	public Equipo devolverEquiNombre(String equi) {
+		Equipo e = null;
 		ResultSet rs = null;
 		openConnection();
 		try {
@@ -1159,7 +1157,6 @@ public class DaoImplementacion implements InterfazDao {
 			}
 		}
 		return e;
-		
-			
+
 	}
 }
