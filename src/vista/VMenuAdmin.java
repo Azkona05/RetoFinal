@@ -1012,6 +1012,7 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 					JOptionPane.showMessageDialog(this, "ERROR! Ya existe un jugador con ese dorsal en el equipo.",
 							"ERROR", JOptionPane.ERROR_MESSAGE);
 					txtDorsal.setText("");
+					return;
 				}
 			}
 			Principal.modificarJugador(j);
