@@ -1,3 +1,4 @@
+
 package vista;
 
 import java.awt.BorderLayout;
@@ -866,7 +867,7 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 		if (codEq.length() != 3 || !codEq.matches("^[A-Z]{3}$")) {
 			JOptionPane.showMessageDialog(this, "ERROR! El código no es correcto, debe tener 3 letras.", "ERROR",
 					JOptionPane.ERROR_MESSAGE);
-		}
+		} else {
 
 		try {
 			// Verificar si ya existe un equipo con ese código
@@ -892,6 +893,7 @@ public class VMenuAdmin extends JDialog implements ActionListener {
 			e.printStackTrace();
 			JOptionPane.showMessageDialog(this, "Error al dar de alta el equipo: " + e.getMessage(), "ERROR",
 					JOptionPane.ERROR_MESSAGE);
+			}
 		}
 	}
 
