@@ -213,6 +213,15 @@ public interface InterfazDao {
      * @throws LoginException Si ocurre un error durante la baja del partido.
      */
     public void bajaPartido(Partido part) throws LoginException;
+    
+    /**
+     * Método para obtener una lista de partidos desde la base de datos.
+     * El parámetro puede servir como filtro para la búsqueda, dependiendo de la implementación.
+     * 
+     * @param part Objeto {@link Partido} que puede contener criterios para filtrar los resultados.
+     * @return Lista de objetos {@link Partido} obtenidos según los criterios indicados o todos si no se filtra.
+     */
+    public List<Partido> mostrarPartidos(Partido part);
 
     /**
      * Método para modificar los datos de un partido.
@@ -221,14 +230,6 @@ public interface InterfazDao {
      * @throws LoginException Si ocurre un error durante la modificación del partido.
      */
     public void modificarPartido(Partido part) throws LoginException;
-
-    /**
-     * Método para listar todos los partidos en el sistema.
-     * 
-     * @return Un mapa con los partidos, donde la clave es el código del partido.
-     * @throws LoginException Si ocurre un error al listar los partidos.
-     */
-    public Map<Integer, Partido> listarPartidos() throws LoginException;
 
     /**
      * Método para buscar equipos con diferencias en una competición.
@@ -257,7 +258,19 @@ public interface InterfazDao {
      */
     public Object[][] mostrarDatosPartido(Partido part) throws LoginException;
 
+    /**
+     * Método para obtener los jugadores que pertenecen a un equipo específico.
+     * 
+     * @param equi El equipo del cual se desean obtener los jugadores.
+     * @return Lista de objetos {@link Jugador} que pertenecen al equipo especificado.
+     */
 	public List<Jugador> jugadoresEquipo(Equipo equi);
 
+	/**
+     * Método para obtener un equipo a partir de su nombre.
+     * 
+     * @param nombre El nombre del equipo a buscar.
+     * @return Objeto {@link Equipo} que coincide con el nombre especificado, o null si no se encuentra.
+     */
 	public Equipo devolverEquiNombre(String nombre);
 }

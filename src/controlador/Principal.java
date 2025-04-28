@@ -13,73 +13,76 @@ import modelo.Usuario;
 import vista.VMenuPrincipal;
 
 /**
- * Clase principal que contiene la lógica para gestionar operaciones
- * relacionadas con el login, jugadores, competiciones, equipos y partidos.
- * Utiliza la implementación de la interfaz {@link InterfazDao} para realizar
- * operaciones sobre los datos.
+ * Clase controladora principal que gestiona la lógica de negocio entre la vista
+ * y el DAO. Proporciona métodos para operaciones relacionadas con usuarios,
+ * jugadores, equipos, competiciones y partidos.
+ * 
+ * @author An Azkona, Ander Arilla, Nora Yakoubi, Maleck Benigno
  */
 public class Principal {
 
-	/** Instancia del DAO que implementa las operaciones sobre los datos */
+	/**
+	 * Implementación del DAO para operaciones de base de datos.
+	 */
 	private static InterfazDao dao = new DaoImplementacion();
 
 	/**
-	 * Método principal que inicia la aplicación y muestra el menú principal.
+	 * Punto de entrada principal de la aplicación.
 	 * 
-	 * @author An Azkona, Ander Arilla, Nora Yakoubi, Maleck Benigno
-	 * @param args Argumentos de la línea de comandos.
-	 * @throws LoginException Si ocurre un error durante el login.
+	 * @param args Argumentos de la línea de comandos (no utilizados).
 	 */
-	public static void main(String[] args) throws LoginException {
+	public static void main(String[] args) {
 		VMenuPrincipal vmp;
-		vmp = new VMenuPrincipal();
-		vmp.setVisible(true);
+		try {
+			vmp = new VMenuPrincipal();
+			vmp.setVisible(true);
+		} catch (LoginException e) {
+			e.printStackTrace();
+		}
 	}
 
 	// LOGIN
 
 	/**
-	 * Realiza el login del usuario en el sistema.
+	 * Autentica a un usuario en el sistema.
 	 * 
-	 * @param usuario El usuario que intenta iniciar sesión.
-	 * @throws LoginException Si las credenciales son incorrectas o ocurre un error
-	 *                        durante el login.
+	 * @param usuario Usuario con credenciales (nombre y contraseña).
+	 * @throws LoginException Si las credenciales son incorrectas o hay un error en
+	 *                        la base de datos.
 	 */
 	public static void login(Usuario usuario) throws LoginException {
 		dao.login(usuario);
 	}
 
-	// COMPETICION
+	// COMPETICIÓN
 
 	/**
-	 * Busca las competiciones asociadas a una liga.
+	 * Busca los partidos asociados a una competición.
 	 * 
-	 * @param liga La competición a buscar.
-	 * @return Una lista de partidos asociados a la competición.
-	 * @throws LoginException Si ocurre un error durante la búsqueda de
-	 *                        competiciones.
+	 * @param liga Competición de la que se buscan los partidos.
+	 * @return Lista de partidos de la competición.
+	 * @throws LoginException Si ocurre un error al acceder a la base de datos.
 	 */
 	public static List<Partido> buscarEquiLiga(Competicion liga) throws LoginException {
 		return dao.buscarEquiLiga(liga);
 	}
 
 	/**
-	 * Obtiene un mapa de todas las competiciones disponibles en el sistema.
+	 * Obtiene todas las competiciones del sistema.
 	 * 
-	 * @return Un mapa de competiciones, con su código como clave.
-	 * @throws LoginException Si ocurre un error durante la obtención de
-	 *                        competiciones.
+	 * @return Mapa de competiciones con su código como clave.
+	 * @throws LoginException Si ocurre un error al acceder a la base de datos.
 	 */
 	public static Map<String, Competicion> leerCompeticiones() throws LoginException {
 		return dao.listarCompeticiones();
 	}
 
 	/**
-	 * Devuelve los equipos que participan en una competición.
+	 * Devuelve los equipos de una competición.
 	 * 
-	 * @param liga La competición a consultar.
-	 * @return Lista de equipos asociados a la competición.
-	 * @throws LoginException Si ocurre un error durante la búsqueda de equipos.
+	 * @param liga Competición a consultar.
+	 * @return Lista de equipos participantes.
+	 * @throws LoginException Si ocurre un error al acceder a la base de datos.
 	 */
 	public static List<Equipo> devolverEquipos(Competicion liga) throws LoginException {
 		return dao.buscarDifEquipo(liga);
@@ -88,9 +91,9 @@ public class Principal {
 	/**
 	 * Devuelve los partidos de una fecha específica.
 	 * 
-	 * @param fecha La fecha de los partidos.
-	 * @return Lista de partidos jugados en esa fecha.
-	 * @throws LoginException Si ocurre un error durante la búsqueda de partidos.
+	 * @param fecha Fecha de los partidos a buscar.
+	 * @return Lista de partidos en esa fecha.
+	 * @throws LoginException Si ocurre un error al acceder a la base de datos.
 	 */
 	public static List<Partido> devolverPartidos(LocalDate fecha) throws LoginException {
 		return dao.devolverPartidos(fecha);
@@ -101,128 +104,126 @@ public class Principal {
 	/**
 	 * Elimina un jugador del sistema.
 	 * 
-	 * @param j El jugador a eliminar.
-	 * @throws LoginException Si ocurre un error durante la eliminación del jugador.
+	 * @param jugador Jugador a eliminar.
+	 * @throws LoginException Si ocurre un error al acceder a la base de datos.
 	 */
-	public static void EliminarJugador(Jugador j) throws LoginException {
-		dao.bajaJugador(j);
+	public static void eliminarJugador(Jugador jugador) throws LoginException {
+		dao.bajaJugador(jugador);
 	}
 
 	/**
-	 * Modifica los datos de un jugador en el sistema.
+	 * Modifica los datos de un jugador.
 	 * 
-	 * @param j El jugador a modificar.
-	 * @throws LoginException Si ocurre un error durante la modificación del
-	 *                        jugador.
+	 * @param jugador Jugador con los nuevos datos.
+	 * @throws LoginException Si ocurre un error al acceder a la base de datos.
 	 */
-	public static void modificarJugador(Jugador j) throws LoginException {
-		dao.modificarJugador(j);
+	/**
+	 * @param jugador
+	 * @throws LoginException
+	 */
+	public static void modificarJugador(Jugador jugador) throws LoginException {
+		dao.modificarJugador(jugador);
 	}
 
 	/**
-	 * Da de alta un nuevo jugador en el sistema.
+	 * Registra un nuevo jugador en el sistema.
 	 * 
-	 * @param j El jugador a dar de alta.
-	 * @throws LoginException Si ocurre un error durante el alta del jugador.
+	 * @param jugador Jugador a registrar.
+	 * @throws LoginException Si ocurre un error al acceder a la base de datos.
 	 */
-	public static void altaJugador(Jugador j) throws LoginException {
-		dao.altaJugador(j);
+	public static void altaJugador(Jugador jugador) throws LoginException {
+		dao.altaJugador(jugador);
 	}
-
-    /**
-     * Da de alta un nuevo jugador en el sistema.
-     * 
-     * @param equi El equipo a buscar sus jugadores.
-     * @throws LoginException Si ocurre un error durante la busqueda del equipo.
-     */
-    public static List <Jugador> jugadorEquipo (Equipo equi)  {
-		return dao.jugadoresEquipo(equi);
-	}
-
-
-	// COMPETICION
 
 	/**
-	 * Modifica los datos de una competición.
+	 * Obtiene los jugadores de un equipo.
 	 * 
-	 * @param comp La competición a modificar.
-	 * @throws LoginException Si ocurre un error durante la modificación de la
-	 *                        competición.
+	 * @param equipo Equipo del que se buscan los jugadores.
+	 * @return Lista de jugadores del equipo.
 	 */
-	public static void modificarCompeticion(Competicion comp) throws LoginException {
-		dao.modificarCompeticion(comp);
+	public static List<Jugador> jugadorEquipo(Equipo equipo) {
+		return dao.jugadoresEquipo(equipo);
+	}
+
+	// COMPETICIÓN (Operaciones CRUD)
+
+	/**
+	 * Actualiza los datos de una competición.
+	 * 
+	 * @param competicion Competición con los nuevos datos.
+	 * @throws LoginException Si ocurre un error al acceder a la base de datos.
+	 */
+	public static void modificarCompeticion(Competicion competicion) throws LoginException {
+		dao.modificarCompeticion(competicion);
 	}
 
 	/**
 	 * Elimina una competición del sistema.
 	 * 
-	 * @param comp La competición a eliminar.
-	 * @throws LoginException Si ocurre un error durante la eliminación de la
-	 *                        competición.
+	 * @param competicion Competición a eliminar.
+	 * @throws LoginException Si ocurre un error al acceder a la base de datos.
 	 */
-	public static void eliminarCompeticion(Competicion comp) throws LoginException {
-		dao.bajaCompeticion(comp);
+	public static void eliminarCompeticion(Competicion competicion) throws LoginException {
+		dao.bajaCompeticion(competicion);
 	}
 
 	/**
-	 * Da de alta una nueva competición en el sistema.
+	 * Registra una nueva competición en el sistema.
 	 * 
-	 * @param comp La competición a dar de alta.
-	 * @throws LoginException Si ocurre un error durante el alta de la competición.
+	 * @param competicion Competición a registrar.
+	 * @throws LoginException Si ocurre un error al acceder a la base de datos.
 	 */
-	public static void altaCompeticion(Competicion comp) throws LoginException {
-		dao.altaCompeticion(comp);
+	public static void altaCompeticion(Competicion competicion) throws LoginException {
+		dao.altaCompeticion(competicion);
 	}
 
-	
-	//EQUIPO
-	
-    /**
-     * Da de alta un nuevo equipo en el sistema.
-     * 
-     * @param eq El equipo a dar de alta.
-     * @throws LoginException Si ocurre un error durante el alta del equipo.
-     */
-    public static void altaEquipo(Equipo eq) throws LoginException {
-        dao.altaEquipo(eq);
-    }
-	
-    /**
-     * Busca el nombre de un equipo en el sistema.
-     * 
-     * @param nombre del equipo a buscar.
-     * @throws LoginException Si ocurre un error durante la busqueda del equipo.
-     * @return el nombre del equipo
-     */
+	// EQUIPO
+
+	/**
+	 * Registra un nuevo equipo en el sistema.
+	 * 
+	 * @param equipo Equipo a registrar.
+	 * @throws LoginException Si ocurre un error al acceder a la base de datos.
+	 */
+	public static void altaEquipo(Equipo equipo) throws LoginException {
+		dao.altaEquipo(equipo);
+	}
+
+	/**
+	 * Busca un equipo por su nombre.
+	 * 
+	 * @param nombre Nombre del equipo a buscar.
+	 * @return Equipo encontrado o null si no existe.
+	 */
 	public static Equipo devolverEquiNombre(String nombre) {
 		return dao.devolverEquiNombre(nombre);
 	}
 
 	/**
-	 * Da de baja un equipo en el sistema.
+	 * Elimina un equipo del sistema.
 	 * 
-	 * @param eq El equipo a dar de baja.
-	 * @throws LoginException Si ocurre un error durante la baja del equipo.
+	 * @param equipo Equipo a eliminar.
+	 * @throws LoginException Si ocurre un error al acceder a la base de datos.
 	 */
-	public static void bajaEquipo(Equipo eq) throws LoginException {
-		dao.bajaEquipo(eq);
+	public static void bajaEquipo(Equipo equipo) throws LoginException {
+		dao.bajaEquipo(equipo);
 	}
 
 	/**
-	 * Modifica los datos de un equipo en el sistema.
+	 * Modifica los datos de un equipo.
 	 * 
-	 * @param eq El equipo a modificar.
-	 * @throws LoginException Si ocurre un error durante la modificación del equipo.
+	 * @param equipo Equipo con los nuevos datos.
+	 * @throws LoginException Si ocurre un error al acceder a la base de datos.
 	 */
-	public static void modificarEquipo(Equipo eq) throws LoginException {
-		dao.modificarEquipo(eq);
+	public static void modificarEquipo(Equipo equipo) throws LoginException {
+		dao.modificarEquipo(equipo);
 	}
 
 	/**
-	 * Busca todos los equipos en el sistema.
+	 * Obtiene todos los equipos del sistema.
 	 * 
-	 * @return Lista de equipos.
-	 * @throws LoginException Si ocurre un error durante la búsqueda de equipos.
+	 * @return Lista de todos los equipos.
+	 * @throws LoginException Si ocurre un error al acceder a la base de datos.
 	 */
 	public static List<Equipo> buscarEquipos() throws LoginException {
 		return dao.buscarEquipos();
@@ -231,130 +232,126 @@ public class Principal {
 	// PARTIDO
 
 	/**
-	 * Da de alta un nuevo partido en el sistema.
+	 * Registra un nuevo partido en el sistema.
 	 * 
-	 * @param par El partido a dar de alta.
-	 * @throws LoginException Si ocurre un error durante el alta del partido.
+	 * @param partido Partido a registrar.
+	 * @throws LoginException Si ocurre un error al acceder a la base de datos.
 	 */
-	public static void altaPartido(Partido par) throws LoginException {
-		dao.altaPartido(par);
+	public static void altaPartido(Partido partido) throws LoginException {
+		dao.altaPartido(partido);
 	}
 
 	/**
-	 * Da de baja un partido en el sistema.
+	 * Elimina un partido del sistema.
 	 * 
-	 * @param par El partido a dar de baja.
-	 * @throws LoginException Si ocurre un error durante la baja del partido.
+	 * @param partido Partido a eliminar.
+	 * @throws LoginException Si ocurre un error al acceder a la base de datos.
 	 */
-	public static void bajaPartido(Partido par) throws LoginException {
-		dao.bajaPartido(par);
+	public static void bajaPartido(Partido partido) throws LoginException {
+		dao.bajaPartido(partido);
 	}
 
 	/**
-	 * Modifica los datos de un partido en el sistema.
+	 * Modifica los datos de un partido.
 	 * 
-	 * @param par El partido a modificar.
-	 * @throws LoginException Si ocurre un error durante la modificación del
-	 *                        partido.
+	 * @param partido Partido con los nuevos datos.
+	 * @throws LoginException Si ocurre un error al acceder a la base de datos.
 	 */
-	public static void modificarPartido(Partido par) throws LoginException {
-		dao.modificarPartido(par);
+	public static void modificarPartido(Partido partido) throws LoginException {
+		dao.modificarPartido(partido);
 	}
 
 	// DATOS
 
 	/**
-	 * Devuelve los datos de una competición en formato de tabla.
+	 * Obtiene los datos de una competición en formato de tabla.
 	 * 
-	 * @param comp La competición cuyos datos se van a devolver.
-	 * @return Un arreglo bidimensional con los datos de la competición.
-	 * @throws LoginException Si ocurre un error durante la obtención de los datos.
+	 * @param competicion Competición a consultar.
+	 * @return Matriz de objetos con los datos.
+	 * @throws LoginException Si ocurre un error al acceder a la base de datos.
 	 */
-	public static Object[][] devolverCompeticiones(Competicion comp) throws LoginException {
-		return dao.mostrarDatosCompeticion(comp);
+	public static Object[][] devolverCompeticiones(Competicion competicion) throws LoginException {
+		return dao.mostrarDatosCompeticion(competicion);
 	}
 
 	/**
-	 * Devuelve los datos de un partido en formato de tabla.
+	 * Obtiene los datos de un partido en formato de tabla.
 	 * 
-	 * @param part El partido cuyos datos se van a devolver.
-	 * @return Un arreglo bidimensional con los datos del partido.
-	 * @throws LoginException Si ocurre un error durante la obtención de los datos.
+	 * @param partido Partido a consultar.
+	 * @return Matriz de objetos con los datos.
+	 * @throws LoginException Si ocurre un error al acceder a la base de datos.
 	 */
-	public static Object[][] devolverPartidos(Partido part) throws LoginException {
-		return dao.mostrarDatosPartido(part);
+	public static Object[][] devolverPartidos(Partido partido) throws LoginException {
+		return dao.mostrarDatosPartido(partido);
 	}
 
 	/**
-	 * Devuelve los datos de un jugador en formato de tabla.
+	 * Obtiene los datos de un jugador en formato de tabla.
 	 * 
-	 * @param jug El jugador cuyos datos se van a devolver.
-	 * @return Un arreglo bidimensional con los datos del jugador.
-	 * @throws LoginException Si ocurre un error durante la obtención de los datos.
+	 * @param jugador Jugador a consultar.
+	 * @return Matriz de objetos con los datos.
+	 * @throws LoginException Si ocurre un error al acceder a la base de datos.
 	 */
-	public static Object[][] devolverJugadores(Jugador jug) throws LoginException {
-		return dao.mostrarDatosJugador(jug);
+	public static Object[][] devolverJugadores(Jugador jugador) throws LoginException {
+		return dao.mostrarDatosJugador(jugador);
 	}
 
 	/**
-	 * Devuelve los datos de un equipo en formato de tabla.
+	 * Obtiene los datos de un equipo en formato de tabla.
 	 * 
-	 * @param eq El equipo cuyos datos se van a devolver.
-	 * @return Un arreglo bidimensional con los datos del equipo.
-	 * @throws LoginException Si ocurre un error durante la obtención de los datos.
+	 * @param equipo Equipo a consultar.
+	 * @return Matriz de objetos con los datos.
+	 * @throws LoginException Si ocurre un error al acceder a la base de datos.
 	 */
-	public static Object[][] devolverEquipos(Equipo eq) throws LoginException {
-		return dao.mostrarDatosEquipo(eq);
+	public static Object[][] devolverEquipos(Equipo equipo) throws LoginException {
+		return dao.mostrarDatosEquipo(equipo);
 	}
 
 	/**
-	 * Devuelve una lista de competiciones del sistema.
+	 * Obtiene todas las competiciones del sistema.
 	 * 
 	 * @return Lista de competiciones.
-	 * @throws LoginException Si ocurre un error durante la obtención de las
-	 *                        competiciones.
+	 * @throws LoginException Si ocurre un error al acceder a la base de datos.
 	 */
 	public static List<Competicion> devolverCompeticiones() throws LoginException {
 		return dao.devolverCompeticiones();
 	}
 
 	/**
-	 * Devuelve los nuevos equipos asociados a una competición.
+	 * Obtiene los equipos que no están en una competición.
 	 * 
-	 * @param comp La competición para buscar los equipos.
-	 * @return Lista de equipos nuevos en la competición.
+	 * @param competicion Competición de referencia.
+	 * @return Lista de equipos no participantes.
 	 */
-	public static List<Equipo> nuevosEquipos(Competicion comp) {
-		return dao.nuevosEquipos(comp);
+	public static List<Equipo> nuevosEquipos(Competicion competicion) {
+		return dao.nuevosEquipos(competicion);
 	}
 
 	/**
-	 * Obtiene la cantidad total de partidos en el sistema.
+	 * Obtiene el número total de partidos registrados.
 	 * 
-	 * @return El número total de partidos.
+	 * @return Cantidad de partidos.
 	 */
 	public static int cantidadPartidos() {
 		return dao.cantidadPartidos();
 	}
-	
+
 	/**
-	 * Obtiene una lista de equipos
+	 * Obtiene todos los equipos del sistema.
 	 * 
-	 * @return una lista de equipos
-	 * @throws LoginException Si ocurre un error durante la obtención de las
-	 *                        equipos.
-	 * */
+	 * @return Lista de equipos.
+	 * @throws LoginException Si ocurre un error al acceder a la base de datos.
+	 */
 	public static List<Equipo> devolverEquipos() throws LoginException {
 		return dao.buscarEquipos();
 	}
 
 	/**
-	 * Obtiene una lista de jugadores
+	 * Obtiene todos los jugadores del sistema.
 	 * 
-	 * @return una lista de jugadores
-	 * @throws LoginException Si ocurre un error durante la obtención de las
-	 *                        jugadores.
-	 * */
+	 * @return Lista de jugadores.
+	 * @throws LoginException Si ocurre un error al acceder a la base de datos.
+	 */
 	public static List<Jugador> devolverJugadores() throws LoginException {
 		return dao.listarJugadores();
 	}

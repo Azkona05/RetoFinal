@@ -85,7 +85,6 @@ public class MostrarPartidos extends JDialog {
                         dispose();
                         padre.cargarDatosPart(cod, eqLocal, eqVisitante, ganador, fecha, codComp);
                         padre.setVisible(true);
-                       // dispose();
                     }
                 }
             }
